@@ -89,6 +89,42 @@
   opacity: 1;
   animation: fadeInLeftPanel 0.5s cubic-bezier(.4,0,.2,1);
 }
+.leftPanelPersonajes {
+  flex: 1 1 50%;
+  background: linear-gradient(135deg, #ffb347 0%, #ffcc33 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  animation: fadeInLeftPanel 0.5s cubic-bezier(.4,0,.2,1);
+}
+.leftPanelLugares {
+  flex: 1 1 50%;
+  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  animation: fadeInLeftPanel 0.5s cubic-bezier(.4,0,.2,1);
+}
+.leftPanelTrailers {
+  flex: 1 1 50%;
+  background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  animation: fadeInLeftPanel 0.5s cubic-bezier(.4,0,.2,1);
+}
+.leftPanelDescargas {
+  flex: 1 1 50%;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  animation: fadeInLeftPanel 0.5s cubic-bezier(.4,0,.2,1);
+}
 .leftPanelOut {
   flex: 1 1 50%;
   background: linear-gradient(135deg, #3a6c7a 0%, #6e5c7b 100%);
@@ -97,6 +133,18 @@
   justify-content: center;
   opacity: 0;
   animation: fadeOutLeftPanel 0.4s cubic-bezier(.4,0,.2,1) forwards;
+}
+.leftPanelImg {
+  flex: 1 1 50%;
+  background: #222;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  animation: fadeInLeftPanel 0.5s cubic-bezier(.4,0,.2,1);
 }
 @keyframes fadeInLeftPanel {
   from { opacity: 0; transform: scale(0.98); }
