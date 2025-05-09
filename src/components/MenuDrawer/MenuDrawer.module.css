@@ -1,0 +1,206 @@
+.menuButton {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 100;
+  background: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s, transform 0.18s;
+}
+.menuButton:active, .menuButton:focus {
+  background: #f0f0f0;
+  transform: scale(0.97);
+}
+.iconWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.line {
+  width: 28px;
+  height: 4px;
+  background: #222;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.srOnly {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.18);
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  opacity: 1;
+  animation: fadeInOverlay 0.35s cubic-bezier(.4,0,.2,1);
+}
+.drawerOverlayOut {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.18);
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  opacity: 0;
+  animation: fadeOutOverlay 0.4s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeOutOverlay {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.drawerContainer {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+.drawerContainerOut {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+.leftPanel {
+  flex: 1 1 50%;
+  background: linear-gradient(135deg, #3a6c7a 0%, #6e5c7b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  animation: fadeInLeftPanel 0.5s cubic-bezier(.4,0,.2,1);
+}
+.leftPanelOut {
+  flex: 1 1 50%;
+  background: linear-gradient(135deg, #3a6c7a 0%, #6e5c7b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeOutLeftPanel 0.4s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes fadeInLeftPanel {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeOutLeftPanel {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.98); }
+}
+.rightPanel {
+  flex: 1 1 50%;
+  background: #181622;
+  color: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 3rem 2rem 3rem;
+  min-width: 350px;
+  max-width: 700px;
+  box-shadow: -2px 0 24px rgba(0,0,0,0.12);
+  transform: translateX(0);
+  animation: slideInRightPanel 0.45s cubic-bezier(.4,0,.2,1);
+}
+.rightPanelOut {
+  flex: 1 1 50%;
+  background: #181622;
+  color: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 3rem 2rem 3rem;
+  min-width: 350px;
+  max-width: 700px;
+  box-shadow: -2px 0 24px rgba(0,0,0,0.12);
+  transform: translateX(100%);
+  animation: slideOutRightPanel 0.4s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes slideInRightPanel {
+  from { transform: translateX(100%); opacity: 0.7; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutRightPanel {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0.7; }
+}
+.closeButton {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s, transform 0.18s;
+}
+.closeButton:hover {
+  background: rgba(255,255,255,0.18);
+  transform: scale(1.08);
+}
+.menuNav {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.menuNav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menuNav li {
+  margin-bottom: 2.2rem;
+}
+.menuNav a {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: color 0.2s;
+}
+.menuNav a:hover {
+  color: #ff0066;
+}
+
+@media (max-width: 900px) {
+  .drawerContainer, .drawerContainerOut {
+    flex-direction: column;
+  }
+  .leftPanel, .rightPanel, .leftPanelOut, .rightPanelOut {
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: none;
+    min-height: 40vh;
+  }
+  .rightPanel, .rightPanelOut {
+    padding: 2rem 1.5rem;
+  }
+  .menuNav a {
+    font-size: 2rem;
+  }
+} 

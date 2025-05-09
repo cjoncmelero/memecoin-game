@@ -1,0 +1,53 @@
+:root {
+  /* Colores principales */
+  --color-primary: #ff0066;
+  --color-primary-light: #ff3385;
+  --color-secondary: #1a0a0f;
+  
+  /* Fondos */
+  --color-bg-dark: #0a0205;
+  --color-bg-light: #ffffff;
+  --color-bg-gradient: linear-gradient(135deg, var(--color-bg-dark) 0%, #330e1a 100%);
+  
+  /* Textos */
+  --color-text: #ffffff;
+  --color-text-secondary: #ffccdd;
+  --color-text-accent: #ff3385;
+  --color-text-highlight: #ff9dbc;
+  
+  /* Efectos */
+  --color-shadow-pink: rgba(255, 0, 102, 0.7);
+  --color-shadow-pink-light: rgba(255, 0, 102, 0.3);
+  --color-shadow-red: rgba(255, 0, 51, 0.7);
+  --color-bg-dark-translucent: rgba(10, 2, 5, 0.7);
+  --color-text-glow: 0 0 10px var(--color-shadow-pink), 0 0 20px var(--color-shadow-pink);
+  --color-text-glow-strong: 0 0 15px var(--color-shadow-pink), 0 0 30px var(--color-primary);
+  
+  /* Bordes y divisores */
+  --border-primary: 2px solid var(--color-primary);
+  --border-radius: 16px;
+  --border-radius-lg: 24px;
+  --border-radius-xl: 32px;
+  --border-radius-pill: 9999px;
+  
+  /* Fondos de texto */
+  --text-bg-gradient: linear-gradient(90deg, rgba(255, 0, 102, 0.1), rgba(255, 51, 133, 0.2));
+  --text-bg-dark: rgba(0, 0, 0, 0.7);
+  --text-bg-highlight: rgba(255, 0, 102, 0.15);
+  
+  /* Fuentes */
+  --font-base: 'Inter var', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: var(--font-base);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  /* Propiedades tipográficas */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-normal: 0.02em;
+  --letter-spacing-wide: 0.04em;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.6;
+  --line-height-loose: 1.8;
+} 

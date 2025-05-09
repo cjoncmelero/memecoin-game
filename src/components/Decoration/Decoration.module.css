@@ -1,0 +1,242 @@
+/* Estilos base para los contenedores de patrones */
+.circlePatternContainer,
+.squarePatternContainer {
+  position: absolute;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Posiciones para los patrones */
+.top-right {
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 250px;
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+  width: 250px;
+  height: 250px;
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  width: 280px;
+  height: 280px;
+}
+
+/* ----- Estilos para el patrón de círculos ----- */
+.circlePattern {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.circlePattern .circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  animation: pulse 8s infinite alternate ease-in-out;
+  filter: blur(1px);
+}
+
+.circle1 {
+  width: 120px;
+  height: 120px;
+  top: 50px;
+  right: 70px;
+  animation-delay: 0s;
+}
+
+.circle2 {
+  width: 80px;
+  height: 80px;
+  top: 30px;
+  right: 40px;
+  opacity: 0.1;
+  animation-delay: 0.5s;
+}
+
+.circle3 {
+  width: 60px;
+  height: 60px;
+  top: 170px;
+  right: 100px;
+  opacity: 0.08;
+  animation-delay: 1s;
+}
+
+.circle4 {
+  width: 150px;
+  height: 150px;
+  top: 120px;
+  right: 15px;
+  opacity: 0.05;
+  animation-delay: 1.5s;
+  filter: blur(2px);
+}
+
+.symbols {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+}
+
+.symbols .triangle,
+.symbols .square,
+.symbols .circle {
+  position: absolute;
+  border: 2px solid var(--color-primary);
+  opacity: 0.3;
+  animation: rotateSlow 15s infinite linear;
+}
+
+.symbols .triangle {
+  width: 50px;
+  height: 50px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  top: 0;
+  right: 0;
+  animation-duration: 25s;
+}
+
+.symbols .square {
+  width: 40px;
+  height: 40px;
+  top: 70px;
+  right: 40px;
+  animation-direction: reverse;
+}
+
+.symbols .circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  top: 30px;
+  right: 60px;
+  animation-duration: 20s;
+}
+
+/* ----- Estilos para el patrón de cuadrados ----- */
+.squareGroup {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.squareGroup .square {
+  position: absolute;
+  transform: rotate(45deg);
+  border: 2px solid var(--color-primary);
+  opacity: 0.2;
+  animation: pulse 10s infinite alternate ease-in-out;
+}
+
+.square1 {
+  width: 100px;
+  height: 100px;
+  bottom: 50px;
+  left: 70px;
+  animation-delay: 0s;
+}
+
+.square2 {
+  width: 70px;
+  height: 70px;
+  bottom: 120px;
+  left: 50px;
+  opacity: 0.15;
+  animation-delay: 0.7s;
+}
+
+.square3 {
+  width: 130px;
+  height: 130px;
+  bottom: 90px;
+  left: 120px;
+  opacity: 0.08;
+  animation-delay: 1.3s;
+}
+
+.dotPattern {
+  position: absolute;
+  bottom: 50px;
+  left: 40px;
+  width: 120px;
+  height: 120px;
+}
+
+.dotPattern .dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  opacity: 0.4;
+  animation: blink 2s infinite alternate ease-in-out;
+}
+
+/* ----- Animaciones ----- */
+@keyframes pulse {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(1.05) rotate(5deg);
+    opacity: 0.15;
+  }
+}
+
+@keyframes rotateSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.1;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .top-right, .top-left, .bottom-right, .bottom-left {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .circle1 {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .square1 {
+    width: 70px;
+    height: 70px;
+  }
+} 
