@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./MenuDrawer.module.css";
 
 const leftPanelImages = {
@@ -12,9 +12,14 @@ const leftPanelImages = {
 };
 
 export default function MenuDrawer() {
+  const [isClient, setIsClient] = useState(false);
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [hovered, setHovered] = useState(null);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
@@ -51,6 +56,22 @@ export default function MenuDrawer() {
         return leftPanelImages.default;
     }
   };
+
+  // Si no estamos en el cliente, renderizamos un botón sin funcionalidad
+  if (!isClient) {
+    return (
+      <button
+        type="button"
+        className={styles.menuButton}
+      >
+        <div className={styles.iconWrapper}>
+          <div className={styles.line}></div>
+          <div className={styles.line}></div>
+        </div>
+        <span className={styles.srOnly}>Ampliar el menú de navegación</span>
+      </button>
+    );
+  }
 
   return (
     <>

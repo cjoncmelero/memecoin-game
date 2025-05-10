@@ -1,0 +1,532 @@
+@font-face {
+  font-family: 'Game Of Squids';
+  src: url('/fonts/Game Of Squids.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.rulesSection {
+  position: relative;
+  padding: 100px 0;
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+  overflow: hidden;
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  will-change: opacity, transform;
+}
+
+.rulesSectionVisible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.rulesSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 20, 83, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+  z-index: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+  margin-bottom: 50px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, rgba(255, 20, 83, 0), rgba(255, 20, 83, 1), rgba(255, 20, 83, 0));
+}
+
+.sectionTitle {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: #ff1453;
+  text-align: center;
+  margin: 60px 0 30px;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sectionTitle::before,
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  background-color: rgba(255, 20, 83, 0.3);
+  top: 50%;
+  width: 50px;
+}
+
+.sectionTitle::before {
+  right: calc(50% + 120px);
+}
+
+.sectionTitle::after {
+  left: calc(50% + 120px);
+}
+
+.description {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.highlight {
+  color: #ff1453;
+  font-weight: bold;
+}
+
+.gameplayContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.rulesBlock {
+  flex: 1;
+  min-width: 300px;
+  background-color: rgba(20, 20, 20, 0.7);
+  border: 1px solid rgba(255, 20, 83, 0.3);
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.rulesBlock ul {
+  padding-left: 20px;
+}
+
+.rulesBlock li {
+  margin-bottom: 15px;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 10px;
+  font-size: 1.1rem;
+}
+
+.rulesBlock li::before {
+  content: '•';
+  color: #ff1453;
+  position: absolute;
+  left: -15px;
+  top: 0;
+  font-size: 1.5rem;
+}
+
+.characters {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: opacity, transform;
+  margin: 0 auto 60px;
+}
+
+.charactersVisible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.character {
+  width: 220px;
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+  transition: all 0.4s ease;
+  will-change: transform;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.characterWrapper {
+  background-color: rgba(20, 20, 20, 0.7);
+  border-radius: 15px;
+  padding: 20px 15px;
+  border: 2px solid transparent;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s ease;
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+}
+
+.character:hover .characterWrapper {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.character.selected .characterWrapper {
+  border-color: #ff1453;
+  background-color: rgba(35, 35, 35, 0.9);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 20, 83, 0.3);
+}
+
+.characterImg {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 15px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.4));
+}
+
+.characterImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.6s ease;
+}
+
+.character:hover .characterImg img {
+  transform: scale(1.05);
+}
+
+.character.selected .characterImg img {
+  transform: scale(1.08);
+}
+
+.multiplierTag {
+  position: absolute;
+  bottom: -10px;
+  right: 5px;
+  background: linear-gradient(135deg, #ff1453, #ff7bb2);
+  border-radius: 12px;
+  padding: 5px 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transform: rotate(-5deg);
+  z-index: 2;
+}
+
+.multiplier {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: 'Game Of Squids', sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.characterInfo {
+  padding: 10px 0;
+}
+
+.characterName {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.4rem;
+  margin: 0 0 5px;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.characterDetails {
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+}
+
+.selected .characterDetails {
+  max-height: 150px;
+  opacity: 1;
+  padding-top: 15px;
+}
+
+.characterDetails p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.pepe .characterWrapper {
+  border-color: rgba(95, 186, 74, 0.5);
+}
+
+.pepe.selected .characterWrapper {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(95, 186, 74, 0.3);
+  border-color: rgb(95, 186, 74);
+}
+
+.doge .characterWrapper {
+  border-color: rgba(230, 181, 42, 0.5);
+}
+
+.doge.selected .characterWrapper {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(230, 181, 42, 0.3);
+  border-color: rgb(230, 181, 42);
+}
+
+.chillguy .characterWrapper {
+  border-color: rgba(30, 144, 255, 0.5);
+}
+
+.chillguy.selected .characterWrapper {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(30, 144, 255, 0.3);
+  border-color: rgb(30, 144, 255);
+}
+
+.brett .characterWrapper {
+  border-color: rgba(204, 51, 102, 0.5);
+}
+
+.brett.selected .characterWrapper {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(204, 51, 102, 0.3);
+  border-color: rgb(204, 51, 102);
+}
+
+.gameflowContainer {
+  margin-bottom: 60px;
+}
+
+.gameflow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 200px;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.stepNumber {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff1453, #ff7bb2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px;
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.8rem;
+  color: white;
+  box-shadow: 0 5px 15px rgba(255, 20, 83, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.stepContent {
+  background-color: rgba(20, 20, 20, 0.7);
+  border: 1px solid rgba(255, 20, 83, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stepContent h4 {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.2rem;
+  margin: 0 0 10px;
+  color: #ff1453;
+}
+
+.stepContent p {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.arrow {
+  flex-grow: 1;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255, 20, 83, 0.2), rgba(255, 20, 83, 1), rgba(255, 20, 83, 0.2));
+  margin: 0 10px 20px;
+  position: relative;
+  min-width: 50px;
+  align-self: flex-start;
+  margin-top: 30px;
+}
+
+.arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 10px solid #ff1453;
+}
+
+.gameRewards {
+  background: linear-gradient(to bottom right, rgba(20, 20, 20, 0.7), rgba(40, 40, 40, 0.7));
+  border: 1px solid rgba(255, 20, 83, 0.3);
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  max-width: 800px;
+  margin: 0 auto 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gameRewards::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, #ff1453, #ff7bb2);
+}
+
+.gameRewards h3 {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: #ff1453;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.gameRewards p {
+  line-height: 1.7;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.gameRewards p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 1100px) {
+  .sectionTitle::before,
+  .sectionTitle::after {
+    width: 30px;
+  }
+  
+  .sectionTitle::before {
+    right: calc(50% + 100px);
+  }
+  
+  .sectionTitle::after {
+    left: calc(50% + 100px);
+  }
+}
+
+@media (max-width: 900px) {
+  .characters {
+    gap: 15px;
+  }
+  
+  .character {
+    width: 200px;
+  }
+  
+  .sectionTitle::before,
+  .sectionTitle::after {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .gameplayContainer {
+    flex-direction: column;
+  }
+  
+  .characters {
+    justify-content: center;
+  }
+  
+  .character {
+    width: 180px;
+  }
+  
+  .characterImg {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .arrow {
+    display: none;
+  }
+  
+  .step {
+    margin: 0 auto 30px;
+    width: 80%;
+  }
+  
+  .gameflow {
+    flex-direction: column;
+  }
+  
+  .gameRewards {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .character {
+    width: 100%;
+    max-width: 220px;
+  }
+  
+  .stepContent {
+    min-height: auto;
+    padding: 15px;
+  }
+} 

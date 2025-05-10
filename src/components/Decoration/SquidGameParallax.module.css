@@ -1,0 +1,63 @@
+.parallaxContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.shape {
+  position: absolute;
+  opacity: 0.1;
+  will-change: transform;
+}
+
+.circle {
+  top: 15%;
+  right: 10%;
+  width: 120px;
+  height: 120px;
+  border: 3px solid var(--color-primary);
+  border-radius: 50%;
+}
+
+.triangle {
+  bottom: 25%;
+  left: 15%;
+  width: 0;
+  height: 0;
+  border-left: 70px solid transparent;
+  border-right: 70px solid transparent;
+  border-bottom: 120px solid var(--color-primary);
+  filter: drop-shadow(0 0 20px rgba(255, 0, 102, 0.3));
+}
+
+.square {
+  top: 45%;
+  right: 20%;
+  width: 80px;
+  height: 80px;
+  border: 3px solid var(--color-primary);
+  transform: rotate(15deg);
+}
+
+@media (max-width: 768px) {
+  .circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .triangle {
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 70px solid var(--color-primary);
+  }
+  
+  .square {
+    width: 50px;
+    height: 50px;
+  }
+} 

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
     "next": "15.3.2",
     "particles.js": "^2.0.0",
     "react": "^19.0.0",
