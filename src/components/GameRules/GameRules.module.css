@@ -8,7 +8,6 @@
 .rulesSection {
   position: relative;
   padding: 100px 0;
-  background-color: #000;
   color: #fff;
   min-height: 100vh;
   overflow: hidden;
@@ -179,15 +178,18 @@
 }
 
 .characterWrapper {
-  background-color: rgba(20, 20, 20, 0.7);
-  border-radius: 15px;
-  padding: 20px 15px;
-  border: 2px solid transparent;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: all 0.4s ease;
-  transform-style: preserve-3d;
   position: relative;
-  overflow: hidden;
+  width: 300px;
+  height: 400px;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .character:hover .characterWrapper {
@@ -203,22 +205,22 @@
 }
 
 .characterImg {
-  width: 160px;
-  height: 160px;
-  margin: 0 auto 15px;
+  width: 260px;
+  height: 320px;
+  margin: 0 auto;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.3s ease;
-  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.4));
+  transition: transform 0.4s ease;
+  background: none;
 }
 
 .characterImg img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: transform 0.6s ease;
+  transition: transform 0.5s ease;
 }
 
 .character:hover .characterImg img {
@@ -231,32 +233,35 @@
 
 .multiplierTag {
   position: absolute;
-  bottom: -10px;
-  right: 5px;
+  bottom: 40px;
+  right: 20px;
   background: linear-gradient(135deg, #ff1453, #ff7bb2);
-  border-radius: 12px;
-  padding: 5px 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 8px 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   transform: rotate(-5deg);
   z-index: 2;
 }
 
 .multiplier {
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: bold;
   font-family: 'Game Of Squids', sans-serif;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .characterInfo {
-  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  padding: 15px 0 0;
+  margin-top: auto;
 }
 
 .characterName {
   font-family: 'Game Of Squids', sans-serif;
-  font-size: 1.4rem;
-  margin: 0 0 5px;
+  font-size: 2.2rem;
+  margin: 0;
   color: #fff;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -528,5 +533,259 @@
   .stepContent {
     min-height: auto;
     padding: 15px;
+  }
+}
+
+/* Añadir nuevo layout de contenido */
+.contentLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.leftContent {
+  padding-right: 20px;
+}
+
+.rightContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Estilos del carousel */
+.carouselContainer {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  position: sticky;
+  top: 100px;
+}
+
+.carouselControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  height: 540px;
+  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid #ff1453;
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.7s cubic-bezier(0.215, 0.610, 0.355, 1);
+  width: 100%;
+  height: 100%;
+}
+
+.characterCard {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: all 0.4s ease;
+  background-color: transparent;
+}
+
+.activeCard {
+  opacity: 1;
+}
+
+.carouselButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ff1453;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.carouselButton:hover {
+  background: #ff1453;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carouselButton:first-child {
+  left: -20px;
+}
+
+.carouselButton:last-child {
+  right: -20px;
+}
+
+.prevArrow, .nextArrow {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid white;
+  border-right: 2px solid white;
+}
+
+.prevArrow {
+  transform: rotate(-135deg);
+  margin-left: 3px;
+}
+
+.nextArrow {
+  transform: rotate(45deg);
+  margin-right: 3px;
+}
+
+.carouselIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.activeIndicator {
+  background: #ff1453;
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 20, 83, 0.7);
+}
+
+.characterWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.characterImg {
+  width: 280px;
+  height: 340px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.characterImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.multiplierTag {
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
+  background: linear-gradient(135deg, #ff1453, #ff7bb2);
+  border-radius: 10px;
+  padding: 8px 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform: rotate(-5deg);
+  z-index: 2;
+}
+
+.multiplier {
+  color: white;
+  font-size: 1.6rem;
+  font-weight: bold;
+  font-family: 'Game Of Squids', sans-serif;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.characterInfo {
+  width: 100%;
+  text-align: center;
+  padding: 15px 0 0;
+  margin-top: auto;
+}
+
+.characterName {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 2.2rem;
+  margin: 0;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.pepe .characterImg {
+  background: none;
+}
+
+.doge .characterImg {
+  background: none;
+}
+
+.chillguy .characterImg {
+  background: none;
+}
+
+.brett .characterImg {
+  background: none;
+}
+
+/* Media queries para responsive */
+@media (max-width: 1200px) {
+  .contentLayout {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 992px) {
+  .contentLayout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .leftContent {
+    padding-right: 0;
+  }
+  
+  .carouselContainer {
+    margin: 40px auto;
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .carouselContainer {
+    max-width: 300px;
+  }
+  
+  .characterImg {
+    width: 160px;
+    height: 160px;
+  }
+
+  .carouselButton {
+    width: 35px;
+    height: 35px;
   }
 } 

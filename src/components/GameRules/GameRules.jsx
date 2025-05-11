@@ -8,6 +8,43 @@ const GameRules = () => {
   const charactersRef = useRef(null);
   const [sectionVisible, setSectionVisible] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [activeCharIndex, setActiveCharIndex] = useState(0);
+  
+  // Array de personajes para facilitar el carrusel
+  const characters = [
+    {
+      id: 'pepe',
+      name: 'Pepe',
+      img: '/images/pj/pepe.png',
+      multiplier: 'x1',
+      probability: 'Alta',
+      reward: 'Baja'
+    },
+    {
+      id: 'doge',
+      name: 'Doge',
+      img: '/images/pj/doge.png',
+      multiplier: 'x2.5',
+      probability: 'Media',
+      reward: 'Media'
+    },
+    {
+      id: 'chillguy',
+      name: 'Chill Guy',
+      img: '/images/pj/chillguy.png',
+      multiplier: 'x5',
+      probability: 'Baja',
+      reward: 'Alta'
+    },
+    {
+      id: 'brett',
+      name: 'Brett',
+      img: '/images/pj/brett.png',
+      multiplier: 'x10',
+      probability: 'Muy baja',
+      reward: 'Muy alta'
+    }
+  ];
   
   // Usar useCallback para optimizar el event listener
   const handleScroll = useCallback(() => {
@@ -58,6 +95,15 @@ const GameRules = () => {
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character === selectedCharacter ? null : character);
   };
+  
+  // Funciones para el carrusel
+  const nextCharacter = () => {
+    setActiveCharIndex((prev) => (prev + 1) % characters.length);
+  };
+  
+  const prevCharacter = () => {
+    setActiveCharIndex((prev) => (prev - 1 + characters.length) % characters.length);
+  };
 
   return (
     <section 
@@ -74,169 +120,68 @@ const GameRules = () => {
           </p>
         </div>
         
-        <h3 className={styles.sectionTitle}>¿Cómo se juega?</h3>
-        
-        <div className={styles.gameplayContainer}>
-          <div className={styles.rulesBlock}>
-            <ul>
-              <li>Cuatro personajes icónicos de memecoins compiten entre sí</li>
-              <li>Cada personaje tiene su propio multiplicador de recompensa</li>
-              <li>Hay una fase de apuestas que dura 6 minutos</li>
-              <li>Después, los personajes comienzan a ser eliminados automáticamente</li>
-              <li>El último personaje en pie determina el ganador</li>
-              <li>Los apostadores del personaje ganador obtienen su recompensa multiplicada</li>
-            </ul>
-          </div>
-        </div>
-        
-        <h3 className={styles.sectionTitle}>Los Participantes</h3>
-        
-        <div ref={charactersRef} className={styles.characters}>
-          <div 
-            className={`${styles.character} ${styles.pepe} ${selectedCharacter === 'pepe' ? styles.selected : ''}`}
-            onClick={() => handleCharacterClick('pepe')}
-          >
-            <div className={styles.characterWrapper}>
-              <div className={styles.characterImg}>
-                <img src="/images/pj/pepe.png" alt="Pepe" />
-                <div className={styles.multiplierTag}>
-                  <span className={styles.multiplier}>x1</span>
-                </div>
-              </div>
-              <div className={styles.characterInfo}>
-                <h4 className={styles.characterName}>Pepe</h4>
-                {selectedCharacter === 'pepe' && (
-                  <div className={styles.characterDetails}>
-                    <p>Probabilidad de ganar: Alta</p>
-                    <p>Multiplicador: x1</p>
-                    <p>Recompensa: Baja</p>
-                  </div>
-                )}
+        <div className={styles.contentLayout}>
+          <div className={styles.leftContent}>
+            <h3 className={styles.sectionTitle}>¿Cómo se juega?</h3>
+            
+            <div className={styles.gameplayContainer}>
+              <div className={styles.rulesBlock}>
+                <ul>
+                  <li>Cuatro personajes icónicos de memecoins compiten entre sí</li>
+                  <li>Cada personaje tiene su propio multiplicador de recompensa</li>
+                  <li>Hay una fase de apuestas que dura 6 minutos</li>
+                  <li>Después, los personajes comienzan a ser eliminados automáticamente</li>
+                  <li>El último personaje en pie determina el ganador</li>
+                  <li>Los apostadores del personaje ganador obtienen su recompensa multiplicada</li>
+                </ul>
               </div>
             </div>
           </div>
           
-          <div 
-            className={`${styles.character} ${styles.doge} ${selectedCharacter === 'doge' ? styles.selected : ''}`}
-            onClick={() => handleCharacterClick('doge')}
-          >
-            <div className={styles.characterWrapper}>
-              <div className={styles.characterImg}>
-                <img src="/images/pj/doge.png" alt="Doge" />
-                <div className={styles.multiplierTag}>
-                  <span className={styles.multiplier}>x2.5</span>
+          <div className={styles.rightContent}>
+            <h3 className={styles.sectionTitle}>Los Participantes</h3>
+            
+            <div ref={charactersRef} className={styles.carouselContainer}>
+              <div className={styles.carouselControls}>
+                <button className={styles.carouselButton} onClick={prevCharacter}>
+                  <span className={styles.prevArrow}></span>
+                </button>
+                <div className={styles.carouselTrack} style={{ transform: `translateX(-${activeCharIndex * 100}%)` }}>
+                  {characters.map((char, index) => (
+                    <div 
+                      key={char.id}
+                      className={`${styles.characterCard} ${styles[char.id]} ${activeCharIndex === index ? styles.activeCard : ''}`}
+                    >
+                      <div className={styles.characterWrapper}>
+                        <div className={styles.characterImg}>
+                          <img src={char.img} alt={char.name} />
+                          <div className={styles.multiplierTag}>
+                            <span className={styles.multiplier}>{char.multiplier}</span>
+                          </div>
+                        </div>
+                        <div className={styles.characterInfo}>
+                          <h4 className={styles.characterName}>{char.name}</h4>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
+                <button className={styles.carouselButton} onClick={nextCharacter}>
+                  <span className={styles.nextArrow}></span>
+                </button>
               </div>
-              <div className={styles.characterInfo}>
-                <h4 className={styles.characterName}>Doge</h4>
-                {selectedCharacter === 'doge' && (
-                  <div className={styles.characterDetails}>
-                    <p>Probabilidad de ganar: Media</p>
-                    <p>Multiplicador: x2.5</p>
-                    <p>Recompensa: Media</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          
-          <div 
-            className={`${styles.character} ${styles.chillguy} ${selectedCharacter === 'chillguy' ? styles.selected : ''}`}
-            onClick={() => handleCharacterClick('chillguy')}
-          >
-            <div className={styles.characterWrapper}>
-              <div className={styles.characterImg}>
-                <img src="/images/pj/chillguy.png" alt="Chill Guy" />
-                <div className={styles.multiplierTag}>
-                  <span className={styles.multiplier}>x5</span>
-                </div>
-              </div>
-              <div className={styles.characterInfo}>
-                <h4 className={styles.characterName}>Chill Guy</h4>
-                {selectedCharacter === 'chillguy' && (
-                  <div className={styles.characterDetails}>
-                    <p>Probabilidad de ganar: Baja</p>
-                    <p>Multiplicador: x5</p>
-                    <p>Recompensa: Alta</p>
-                  </div>
-                )}
+              
+              <div className={styles.carouselIndicators}>
+                {characters.map((_, index) => (
+                  <div 
+                    key={index} 
+                    className={`${styles.indicator} ${activeCharIndex === index ? styles.activeIndicator : ''}`}
+                    onClick={() => setActiveCharIndex(index)}
+                  ></div>
+                ))}
               </div>
             </div>
           </div>
-          
-          <div 
-            className={`${styles.character} ${styles.brett} ${selectedCharacter === 'brett' ? styles.selected : ''}`}
-            onClick={() => handleCharacterClick('brett')}
-          >
-            <div className={styles.characterWrapper}>
-              <div className={styles.characterImg}>
-                <img src="/images/pj/brett.png" alt="Brett" />
-                <div className={styles.multiplierTag}>
-                  <span className={styles.multiplier}>x10</span>
-                </div>
-              </div>
-              <div className={styles.characterInfo}>
-                <h4 className={styles.characterName}>Brett</h4>
-                {selectedCharacter === 'brett' && (
-                  <div className={styles.characterDetails}>
-                    <p>Probabilidad de ganar: Muy baja</p>
-                    <p>Multiplicador: x10</p>
-                    <p>Recompensa: Muy alta</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <h3 className={styles.sectionTitle}>Flujo del Juego</h3>
-        
-        <div className={styles.gameflowContainer}>
-          <div className={styles.gameflow}>
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>1</div>
-              <div className={styles.stepContent}>
-                <h4>Fase de apuestas</h4>
-                <p>6 minutos para realizar tus apuestas</p>
-              </div>
-            </div>
-            <div className={styles.arrow}></div>
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>2</div>
-              <div className={styles.stepContent}>
-                <h4>Inicio de eliminación</h4>
-                <p>Los personajes empiezan a caer</p>
-              </div>
-            </div>
-            <div className={styles.arrow}></div>
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>3</div>
-              <div className={styles.stepContent}>
-                <h4>Superviviente</h4>
-                <p>El último personaje de pie gana</p>
-              </div>
-            </div>
-            <div className={styles.arrow}></div>
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>4</div>
-              <div className={styles.stepContent}>
-                <h4>Recompensas</h4>
-                <p>Distribución del pozo acumulado</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className={styles.gameRewards}>
-          <h3>Sistema de Recompensas</h3>
-          <p>
-            Todo el pozo acumulado de apuestas se distribuye entre los ganadores según el multiplicador
-            del personaje. <span className={styles.highlight}>A mayor riesgo, mayor recompensa</span>.
-          </p>
-          <p>
-            Los multiplicadores están inversamente relacionados con la probabilidad de ganar de cada personaje,
-            lo que genera un equilibrio entre riesgo y recompensa.
-          </p>
         </div>
       </div>
     </section>

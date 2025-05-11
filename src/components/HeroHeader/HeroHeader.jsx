@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react';
 import styles from './HeroHeader.module.css';
+import Link from 'next/link';
 
 const HeroHeader = () => {
   const headerRef = useRef(null);
@@ -140,6 +141,24 @@ const HeroHeader = () => {
       <div className={styles.starsBackground}></div>
       <div ref={bgColorRef} className={styles.colorOverlay}></div>
       
+      <div className={styles.socialButtons}>
+        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
+          <i className="fab fa-twitter"></i> TWITTER
+        </a>
+        <a href="https://telegram.org/" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
+          <i className="fab fa-telegram-plane"></i> TELEGRAM
+        </a>
+        <a href="https://dexscreener.com/" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
+          <i className="fas fa-chart-line"></i> DEX_SCREENER
+        </a>
+        <a href="#" className={styles.socialButton}>
+          <i className="fas fa-shopping-cart"></i> BUY
+        </a>
+        <a href="#" className={styles.socialButton}>
+          <i className="fas fa-file-alt"></i> WHITEPAPER
+        </a>
+      </div>
+      
       <div ref={welcomeRef} className={styles.welcomeContainer}>
         <div className={styles.welcomeText}>
           Bienvenido
@@ -173,6 +192,15 @@ const HeroHeader = () => {
         <div className={styles.scrollText}>Scroll para continuar</div>
         <div className={styles.scrollIcon}></div>
       </div>
+
+      <Link href="/game" className={styles.startGameButton}>
+        <div className={styles.startGameContainer}>
+          <div className={styles.startGameText}>
+            EMPIEZA HORA
+            <span className={styles.startGameSubtext}>IR AL JUEGO</span>
+          </div>
+        </div>
+      </Link>
     </header>
   );
 };

@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import './globals.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import ClientLayout from '../components/ClientLayout/ClientLayout';
 
 const inter = Inter({
@@ -10,9 +11,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Memecoin Game",
-  description: "La mejor plataforma para jugar y ganar con memecoins",
-};
+  title: 'Memecoin Game',
+  description: 'La mejor plataforma para jugar y ganar con memecoins',
+}
 
 export default function RootLayout({
   children,
@@ -23,9 +24,9 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning={true} data-lt-installed="true">
       <body suppressHydrationWarning={true} className={inter.variable + " antialiased"}>
         <ClientLayout>
-          {children}
+        {children}
         </ClientLayout>
       </body>
     </html>
-  );
+  )
 }
