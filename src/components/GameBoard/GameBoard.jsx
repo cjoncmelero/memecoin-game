@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './GameBoard.module.css';
 
 export default function GameBoard() {
@@ -8,6 +8,24 @@ export default function GameBoard() {
   const [balance, setBalance] = useState(2345.67);
   const [chatInput, setChatInput] = useState("");
   const [showAllEmojis, setShowAllEmojis] = useState(false);
+  const [activeTab, setActiveTab] = useState('players'); // Para las pestañas móviles
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSmallMobile, setIsSmallMobile] = useState(false);
+  
+  // Detectar si estamos en un dispositivo móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 430);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
   
   // Emojis comunes para el chat
   const commonEmojis = ["😀", "👍", "🔥", "🚀", "💰", "😎", "🎮", "🎯"];
@@ -29,25 +47,29 @@ export default function GameBoard() {
       id: 'pepe',
       name: 'Pepe',
       img: '/images/pj/pepe.png',
-      multiplier: '1.5x'
+      multiplier: '1.5x',
+      position: 'top-left'
     },
     {
       id: 'doge',
       name: 'Doge',
       img: '/images/pj/doge.png',
-      multiplier: '2x'
+      multiplier: '2x',
+      position: 'top-right'
     },
     {
       id: 'chillguy',
       name: 'Chill Guy',
       img: '/images/pj/chillguy.png',
-      multiplier: '3x'
+      multiplier: '3x',
+      position: 'bottom-left'
     },
     {
       id: 'brett',
       name: 'Brett',
       img: '/images/pj/brett.png',
-      multiplier: '5x'
+      multiplier: '5x',
+      position: 'bottom-right'
     }
   ];
 
@@ -76,35 +98,37 @@ export default function GameBoard() {
 
   return (
     <div className={styles.gameContainer}>
-      {/* Logo en la parte superior */}
+      {/* Logo y balance en la parte superior */}
       <div className={styles.logoHeader}>
         <h1 className={styles.logo}>MEME GAME</h1>
-      </div>
-
-      {/* Información del balance del usuario */}
-      <div className={styles.balanceContainer}>
-        <span className={styles.balanceLabel}>BALANCE</span>
-        <span className={styles.balanceAmount}>${balance.toFixed(2)}</span>
+        
+        {/* Información del balance del usuario */}
+        <div className={styles.balanceContainer}>
+          <span className={styles.balanceLabel}>BALANCE</span>
+          <span className={styles.balanceAmount}>${balance.toFixed(2)}</span>
+        </div>
       </div>
 
       {/* Contenedor principal del juego */}
       <div className={styles.mainGameArea}>
-        {/* Lista de jugadores a la izquierda */}
-        <div className={styles.playersListContainer}>
-          <h3 className={styles.sectionTitle}>
-            JUGADORES
-            <span className={styles.playersCount}>{players.length}</span>
-          </h3>
-          <div className={styles.playersList}>
-            {players.map(player => (
-              <div key={player.id} className={styles.playerItem}>
-                <span className={styles.playerName}>{player.name}</span>
-                <span className={styles.playerBet}>${player.bet}</span>
-                <span className={`${styles.playerCharacter} ${styles[player.character]}`}></span>
-              </div>
-            ))}
+        {/* Lista de jugadores a la izquierda (solo desktop) */}
+        {!isMobile && (
+          <div className={styles.playersListContainer}>
+            <h3 className={styles.sectionTitle}>
+              JUGADORES
+              <span className={styles.playersCount}>{players.length}</span>
+            </h3>
+            <div className={styles.playersList}>
+              {players.map(player => (
+                <div key={player.id} className={styles.playerItem}>
+                  <span className={styles.playerName}>{player.name}</span>
+                  <span className={styles.playerBet}>${player.bet}</span>
+                  <span className={`${styles.playerCharacter} ${styles[player.character]}`}></span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Área central con los personajes y apuestas */}
         <div className={styles.charactersContainer}>
@@ -113,11 +137,11 @@ export default function GameBoard() {
             <span className={styles.potAmount}>$3000</span>
           </div>
 
-          <div className={styles.charactersGrid}>
+          <div className={isSmallMobile ? `${styles.charactersGrid} ${styles.mobileGrid}` : styles.charactersGrid}>
             {characters.map(character => (
               <div 
                 key={character.id} 
-                className={`${styles.characterCard} ${styles[character.id]}`}
+                className={`${styles.characterCard} ${styles[character.id]} ${isSmallMobile ? styles[character.position] : ''}`}
                 data-multiplier={character.multiplier}
               >
                 <div className={styles.characterImageContainer}>
@@ -162,52 +186,133 @@ export default function GameBoard() {
               </div>
             ))}
           </div>
+
+          {/* Tabs para móvil - siempre presente en dispositivos móviles */}
+          <div className={styles.mobileTabs}>
+            <div className={styles.tabsContainer}>
+              <div 
+                className={`${styles.tab} ${activeTab === 'players' ? styles.active : ''}`}
+                onClick={() => setActiveTab('players')}
+              >
+                Jugadores
+              </div>
+              <div 
+                className={`${styles.tab} ${activeTab === 'chat' ? styles.active : ''}`}
+                onClick={() => setActiveTab('chat')}
+              >
+                Chat
+              </div>
+            </div>
+            
+            {activeTab === 'players' && (
+              <div className={styles.mobilePanel}>
+                <h3 className={styles.sectionTitle}>
+                  JUGADORES
+                  <span className={styles.playersCount}>{players.length}</span>
+                </h3>
+                {players.map(player => (
+                  <div key={player.id} className={styles.playerItem}>
+                    <span className={styles.playerName}>{player.name}</span>
+                    <span className={styles.playerBet}>${player.bet}</span>
+                    <span className={`${styles.playerCharacter} ${styles[player.character]}`}></span>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {activeTab === 'chat' && (
+              <div className={styles.mobilePanel}>
+                <h3 className={styles.sectionTitle}>CHAT</h3>
+                <div className={styles.chatMessages}>
+                  {chatMessages.map(msg => (
+                    <div key={msg.id} className={styles.chatMessage}>
+                      <span className={styles.chatUser}>{msg.user}:</span>
+                      <span className={styles.chatText}>{msg.message}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className={styles.emojiSection}>
+                  <div className={styles.emojiContainer}>
+                    {(showAllEmojis ? allEmojis : commonEmojis).map((emoji, index) => (
+                      <button 
+                        key={index} 
+                        className={styles.emojiButton}
+                        onClick={() => insertEmoji(emoji)}
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                  <button 
+                    className={styles.emojiToggleButton}
+                    onClick={() => setShowAllEmojis(!showAllEmojis)}
+                  >
+                    {showAllEmojis ? "Menos emojis" : "Más emojis"}
+                  </button>
+                </div>
+                
+                <div className={styles.chatInputContainer}>
+                  <input 
+                    type="text" 
+                    className={styles.chatInput} 
+                    placeholder="Escribe un mensaje..."
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                  />
+                  <button className={styles.chatSendButton}>Enviar</button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Área de chat a la derecha */}
-        <div className={styles.chatContainer}>
-          <h3 className={styles.sectionTitle}>CHAT</h3>
-          <div className={styles.chatMessages}>
-            {chatMessages.map(msg => (
-              <div key={msg.id} className={styles.chatMessage}>
-                <span className={styles.chatUser}>{msg.user}:</span>
-                <span className={styles.chatText}>{msg.message}</span>
-              </div>
-            ))}
-          </div>
-          
-          {/* Sección de emojis rápidos */}
-          <div className={styles.emojiSection}>
-            <div className={styles.emojiContainer}>
-              {(showAllEmojis ? allEmojis : commonEmojis).map((emoji, index) => (
-                <button 
-                  key={index} 
-                  className={styles.emojiButton}
-                  onClick={() => insertEmoji(emoji)}
-                >
-                  {emoji}
-                </button>
+        {/* Área de chat a la derecha (solo desktop) */}
+        {!isMobile && (
+          <div className={styles.chatContainer}>
+            <h3 className={styles.sectionTitle}>CHAT</h3>
+            <div className={styles.chatMessages}>
+              {chatMessages.map(msg => (
+                <div key={msg.id} className={styles.chatMessage}>
+                  <span className={styles.chatUser}>{msg.user}:</span>
+                  <span className={styles.chatText}>{msg.message}</span>
+                </div>
               ))}
             </div>
-            <button 
-              className={styles.emojiToggleButton}
-              onClick={() => setShowAllEmojis(!showAllEmojis)}
-            >
-              {showAllEmojis ? "Menos emojis" : "Más emojis"}
-            </button>
+            
+            {/* Sección de emojis rápidos */}
+            <div className={styles.emojiSection}>
+              <div className={styles.emojiContainer}>
+                {(showAllEmojis ? allEmojis : commonEmojis).map((emoji, index) => (
+                  <button 
+                    key={index} 
+                    className={styles.emojiButton}
+                    onClick={() => insertEmoji(emoji)}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+              <button 
+                className={styles.emojiToggleButton}
+                onClick={() => setShowAllEmojis(!showAllEmojis)}
+              >
+                {showAllEmojis ? "Menos emojis" : "Más emojis"}
+              </button>
+            </div>
+            
+            <div className={styles.chatInputContainer}>
+              <input 
+                type="text" 
+                className={styles.chatInput} 
+                placeholder="Escribe un mensaje..."
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+              />
+              <button className={styles.chatSendButton}>Enviar</button>
+            </div>
           </div>
-          
-          <div className={styles.chatInputContainer}>
-            <input 
-              type="text" 
-              className={styles.chatInput} 
-              placeholder="Escribe un mensaje..."
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-            />
-            <button className={styles.chatSendButton}>Enviar</button>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Barra de notificaciones en la parte inferior */}
