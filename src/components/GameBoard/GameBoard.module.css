@@ -1,175 +1,709 @@
-.gameBoard {
-  background: rgba(10, 2, 5, 0.7);
-  border: 2px solid var(--color-primary);
-  border-radius: var(--border-radius-lg);
-  padding: 2rem;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+@font-face {
+  font-family: 'Game Of Squids';
+  src: url('/fonts/Game Of Squids.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.gameContainer {
   position: relative;
-  min-height: 500px;
-  box-shadow: 0 0 30px rgba(255, 0, 102, 0.3);
-  backdrop-filter: blur(10px);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  width: 100%;
+  color: #fff;
+  z-index: 10;
+  gap: 0;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-.gameInfo {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 0, 102, 0.3);
-}
-
-.scoreContainer, .timeContainer {
-  background: rgba(0, 0, 0, 0.2);
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  min-width: 150px;
+/* Logo en la parte superior */
+.logoHeader {
   text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-.scoreContainer h2, .timeContainer h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  color: var(--color-text-secondary);
-}
-
-.score, .time {
-  font-size: 2rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-  text-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
-}
-
-.startScreen, .endScreen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: 350px;
-}
-
-.startScreen h2, .endScreen h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #ffffff, var(--color-primary));
+.logo {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 3rem;
+  background: linear-gradient(to right, #ff1453, #ff7bb2);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px rgba(255, 20, 83, 0.5);
+  margin: 5px 0;
 }
 
-.startScreen p, .endScreen p {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-  max-width: 80%;
-  color: var(--color-text-secondary);
-}
-
-.startButton, .restartButton {
-  background: linear-gradient(135deg, var(--color-primary), #ff0033);
-  color: white;
-  font-size: 1.25rem;
-  font-weight: var(--font-weight-bold);
-  padding: 1rem 2.5rem;
-  border: none;
-  border-radius: var(--border-radius-pill);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(255, 0, 102, 0.4);
-}
-
-.startButton:hover, .restartButton:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(255, 0, 102, 0.6);
-}
-
-.playArea {
-  position: relative;
-  height: 350px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-}
-
-.coin {
+/* Balance del usuario */
+.balanceContainer {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #ff1453;
+  border-radius: 8px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  box-shadow: 0 0 15px rgba(255, 20, 83, 0.2);
+  z-index: 10;
+}
+
+.balanceLabel {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.balanceAmount {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.5rem;
+  color: #ff1453;
+  font-weight: bold;
+}
+
+/* Área principal del juego */
+.mainGameArea {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr 1fr;
+  gap: 0;
+  height: 100%;
+  padding: 0;
+}
+
+/* Títulos de sección */
+.sectionTitle {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.3rem;
+  color: #ff1453;
+  border-bottom: 1px solid rgba(255, 20, 83, 0.3);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  margin-top: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* Lista de jugadores */
+.playersListContainer {
+  background: rgba(0, 0, 0, 0.6);
+  border-right: 1px solid rgba(255, 20, 83, 0.3);
+  padding: 15px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.playersList {
+  overflow-y: auto;
+  flex-grow: 1;
+  scrollbar-width: thin;
+  scrollbar-color: #ff1453 rgba(0, 0, 0, 0.2);
+}
+
+.playersList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.playersList::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.playersList::-webkit-scrollbar-thumb {
+  background-color: #ff1453;
+  border-radius: 6px;
+}
+
+.playerItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.playerItem:hover {
+  background-color: rgba(255, 20, 83, 0.1);
+}
+
+.playerName {
+  font-weight: bold;
+  flex: 1;
+}
+
+.playerBet {
+  color: #ff1453;
+  margin: 0 10px;
+}
+
+.playerCharacter {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.playerCharacter.pepe {
+  background-color: #5fba4a;
+}
+
+.playerCharacter.doge {
+  background-color: #e6b52a;
+}
+
+.playerCharacter.chillguy {
+  background-color: #1e90ff;
+}
+
+.playerCharacter.brett {
+  background-color: #cc3366;
+}
+
+/* Área central con los personajes */
+.charactersContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border: none;
+}
+
+.potInfo {
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px 25px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.potLabel {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.potAmount {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 2rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.charactersGrid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  gap: 15px;
+  flex-grow: 1;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  position: relative;
+  padding-top: 100px; /* Espacio para el mecanismo de eliminación y los multiplicadores */
+}
+
+/* Línea horizontal del mecanismo de eliminación */
+.charactersGrid::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 5%;
+  right: 5%;
+  height: 4px;
+  background: rgba(255, 20, 83, 0.7);
+  border-radius: 2px;
+  box-shadow: 0 0 15px rgba(255, 20, 83, 0.7);
+}
+
+/* Añadimos cuatro líneas verticales, una sobre cada personaje */
+.characterCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  width: 22%;
+  max-width: 150px;
+}
+
+/* Líneas verticales para cada personaje individualmente */
+.characterCard::after {
+  content: '';
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  width: 2px;
+  height: 70px;
+  background: rgba(255, 20, 83, 0.7);
+  transform: translateX(-50%);
+  z-index: 1;
+  box-shadow: 0 0 10px rgba(255, 20, 83, 0.5);
+}
+
+/* Multiplicadores encima de cada personaje */
+.characterCard::before {
+  content: attr(data-multiplier);
+  position: absolute;
+  top: -110px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 2.2rem;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 15px rgba(255, 20, 83, 0.7);
+  z-index: 2;
+}
+
+.characterImageContainer {
+  position: relative;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  animation: appear 0.5s ease-out;
-  font-size: 2.5rem;
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+  margin-bottom: 10px;
 }
 
-.coin::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+.characterImage {
   width: 100%;
-  height: 100%;
+  max-width: 120px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+}
+
+/* Estilizando personajes individuales */
+.characterCard.pepe .characterImage {
+  filter: drop-shadow(0 5px 10px rgba(95, 186, 74, 0.3));
+}
+
+.characterCard.doge .characterImage {
+  filter: drop-shadow(0 5px 10px rgba(230, 181, 42, 0.3));
+}
+
+.characterCard.chillguy .characterImage {
+  filter: drop-shadow(0 5px 10px rgba(30, 144, 255, 0.3));
+}
+
+.characterCard.brett .characterImage {
+  filter: drop-shadow(0 5px 10px rgba(204, 51, 102, 0.3));
+}
+
+.characterInfo {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.characterName {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.2rem;
+  margin: 0;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.pepe .characterName {
+  text-shadow: 0 0 10px rgba(95, 186, 74, 0.7);
+}
+
+.doge .characterName {
+  text-shadow: 0 0 10px rgba(230, 181, 42, 0.7);
+}
+
+.chillguy .characterName {
+  text-shadow: 0 0 10px rgba(30, 144, 255, 0.7);
+}
+
+.brett .characterName {
+  text-shadow: 0 0 10px rgba(204, 51, 102, 0.7);
+}
+
+.betIndicator {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
-  animation: pulse 2s infinite;
-  z-index: -1;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
 }
 
-.coin:hover {
-  transform: scale(1.2) rotate(10deg);
+.betAmount {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
 }
 
-.finalScore {
-  color: var(--color-primary);
-  font-size: 2.5rem;
-  font-weight: var(--font-weight-bold);
+.betControls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0;
+  padding: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@keyframes appear {
+.betInputContainer {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 120px;
+  height: 40px;
+}
+
+.characterBetInput {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  outline: none;
+  padding: 0;
+  -moz-appearance: textfield; /* Firefox */
+  margin: 0 10px;
+}
+
+/* Botones de flecha para incrementar/decrementar */
+.betArrow {
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+}
+
+.betArrow:hover {
+  background: rgba(255, 20, 83, 0.8);
+  color: white;
+  transform: scale(1.1);
+}
+
+.betArrowUp, .betArrowDown {
+  position: static;
+}
+
+.pepe .betArrow:hover {
+  background: rgba(95, 186, 74, 0.8);
+}
+
+.doge .betArrow:hover {
+  background: rgba(230, 181, 42, 0.8);
+}
+
+.chillguy .betArrow:hover {
+  background: rgba(30, 144, 255, 0.8);
+}
+
+.brett .betArrow:hover {
+  background: rgba(204, 51, 102, 0.8);
+}
+
+/* Ocultar las flechas de incremento/decremento en Chrome, Safari, Edge, Opera */
+.characterBetInput::-webkit-outer-spin-button,
+.characterBetInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.characterBetInput:focus {
+  border-color: #ff1453;
+  box-shadow: 0 0 10px rgba(255, 20, 83, 0.5);
+}
+
+.pepe .characterBetInput:focus {
+  border-color: #5fba4a;
+  box-shadow: 0 0 10px rgba(95, 186, 74, 0.5);
+}
+
+.doge .characterBetInput:focus {
+  border-color: #e6b52a;
+  box-shadow: 0 0 10px rgba(230, 181, 42, 0.5);
+}
+
+.chillguy .characterBetInput:focus {
+  border-color: #1e90ff;
+  box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
+}
+
+.brett .characterBetInput:focus {
+  border-color: #cc3366;
+  box-shadow: 0 0 10px rgba(204, 51, 102, 0.5);
+}
+
+/* Área de chat */
+.chatContainer {
+  background: rgba(0, 0, 0, 0.6);
+  border-left: 1px solid rgba(255, 20, 83, 0.3);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chatMessages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  scrollbar-width: thin;
+  scrollbar-color: #ff1453 rgba(0, 0, 0, 0.2);
+}
+
+.chatMessages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatMessages::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.chatMessages::-webkit-scrollbar-thumb {
+  background-color: #ff1453;
+  border-radius: 6px;
+}
+
+.chatMessage {
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  word-break: break-word;
+}
+
+.chatUser {
+  font-weight: bold;
+  color: #ff1453;
+  margin-right: 5px;
+}
+
+.chatText {
+  color: #e5e5e5;
+}
+
+.chatInputContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.chatInput {
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 20, 83, 0.3);
+  border-radius: 5px;
+  padding: 8px 12px;
+  color: white;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.chatInput:focus {
+  border-color: #ff1453;
+}
+
+.chatSendButton {
+  background: #ff1453;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chatSendButton:hover {
+  background: #ff3066;
+}
+
+/* Barra de notificaciones */
+.notificationsBar {
+  background: rgba(0, 0, 0, 0.8);
+  border-top: 1px solid rgba(255, 20, 83, 0.3);
+  padding: 15px 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.notificationsScroller {
+  display: flex;
+  white-space: nowrap;
+  animation: scroll 20s linear infinite;
+  padding: 0 20px;
+}
+
+.notificationItem {
+  display: inline-block;
+  margin-right: 30px;
+  color: #e5e5e5;
+  position: relative;
+}
+
+.notificationItem::after {
+  content: "•";
+  position: absolute;
+  right: -18px;
+  color: #ff1453;
+}
+
+@keyframes scroll {
   0% {
-    opacity: 0;
-    transform: scale(0);
+    transform: translateX(100%);
   }
   100% {
-    opacity: 1;
-    transform: scale(1);
+    transform: translateX(-100%);
   }
 }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+/* Media queries para responsive */
+@media (max-width: 1200px) {
+  .mainGameArea {
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 15px;
   }
-  70% {
-    box-shadow: 0 0 0 15px rgba(255, 215, 0, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  
+  .betButtons {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 768px) {
-  .gameBoard {
-    padding: 1rem;
+@media (max-width: 992px) {
+  .mainGameArea {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
   }
   
-  .scoreContainer, .timeContainer {
-    min-width: auto;
-    padding: 0.5rem;
-    flex: 1;
+  .balanceContainer {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin: 10px auto;
+    align-items: center;
   }
   
-  .scoreContainer h2, .timeContainer h2 {
-    font-size: 1rem;
+  .charactersGrid {
+    gap: 10px;
   }
   
-  .score, .time {
-    font-size: 1.5rem;
+  .notificationsScroller {
+    animation: scroll 15s linear infinite;
   }
+}
+
+.playersCount {
+  font-size: 1rem;
+  background-color: rgba(255, 20, 83, 0.2);
+  border: 1px solid rgba(255, 20, 83, 0.5);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  vertical-align: text-top;
+}
+
+/* Sección de emojis */
+.emojiSection {
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid rgba(255, 20, 83, 0.2);
+}
+
+.emojiContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 8px;
+  max-height: 100px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ff1453 rgba(0, 0, 0, 0.2);
+}
+
+.emojiContainer::-webkit-scrollbar {
+  width: 5px;
+}
+
+.emojiContainer::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.emojiContainer::-webkit-scrollbar-thumb {
+  background-color: #ff1453;
+  border-radius: 5px;
+}
+
+.emojiButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.emojiButton:hover {
+  background: rgba(255, 20, 83, 0.3);
+  transform: scale(1.1);
+}
+
+.emojiToggleButton {
+  width: 100%;
+  padding: 5px;
+  background: rgba(255, 20, 83, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 20, 83, 0.3);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+}
+
+.emojiToggleButton:hover {
+  background: rgba(255, 20, 83, 0.4);
 }

@@ -109,6 +109,7 @@ const GameRules = () => {
     <section 
       ref={sectionRef} 
       className={`${styles.rulesSection} ${sectionVisible ? styles.rulesSectionVisible : ''}`}
+      style={{ position: 'relative', zIndex: 10 }}
     >
       <div className={styles.container}>
         <h2 className={styles.title}>Reglas del Juego</h2>
@@ -141,9 +142,20 @@ const GameRules = () => {
           <div className={styles.rightContent}>
             <h3 className={styles.sectionTitle}>Los Participantes</h3>
             
-            <div ref={charactersRef} className={styles.carouselContainer}>
-              <div className={styles.carouselControls}>
-                <button className={styles.carouselButton} onClick={prevCharacter}>
+            <div 
+              ref={charactersRef} 
+              className={styles.carouselContainer}
+              style={{ position: 'relative', zIndex: 20 }}
+            >
+              <div 
+                className={styles.carouselControls}
+                style={{ position: 'relative', zIndex: 20 }}
+              >
+                <button 
+                  className={styles.carouselButton} 
+                  onClick={prevCharacter}
+                  style={{ zIndex: 30 }}
+                >
                   <span className={styles.prevArrow}></span>
                 </button>
                 <div className={styles.carouselTrack} style={{ transform: `translateX(-${activeCharIndex * 100}%)` }}>
@@ -166,17 +178,25 @@ const GameRules = () => {
                     </div>
                   ))}
                 </div>
-                <button className={styles.carouselButton} onClick={nextCharacter}>
+                <button 
+                  className={styles.carouselButton} 
+                  onClick={nextCharacter}
+                  style={{ zIndex: 30 }}
+                >
                   <span className={styles.nextArrow}></span>
                 </button>
               </div>
               
-              <div className={styles.carouselIndicators}>
+              <div 
+                className={styles.carouselIndicators}
+                style={{ position: 'relative', zIndex: 20 }}
+              >
                 {characters.map((_, index) => (
                   <div 
                     key={index} 
                     className={`${styles.indicator} ${activeCharIndex === index ? styles.activeIndicator : ''}`}
                     onClick={() => setActiveCharIndex(index)}
+                    style={{ zIndex: 30 }}
                   ></div>
                 ))}
               </div>
