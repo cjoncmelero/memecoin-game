@@ -29,9 +29,7 @@ export default function GameObjectives() {
       
       <div className={styles.container}>
         <div className={styles.titleContainer}>
-          <div className={styles.titleSymbol}></div>
           <h2 className={styles.title}>Objetivos del Juego</h2>
-          <div className={styles.titleSymbol}></div>
         </div>
         
         <div className={styles.gridContainer}>

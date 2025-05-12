@@ -1,0 +1,163 @@
+.scrollTopButton {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #111;
+  color: white;
+  border: 2px solid #ff1453;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 0 20px rgba(255, 20, 83, 0.3);
+  overflow: hidden;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scrollTopButton:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 30px rgba(255, 20, 83, 0.5);
+}
+
+.scrollTopButton:active {
+  transform: translateY(0) scale(0.95);
+}
+
+.buttonContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Formas distintivas del Juego del Calamar */
+.triangle {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  opacity: 0.1;
+  background-color: transparent;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 20px solid #ff1453;
+  transform: rotate(180deg) scale(0.6);
+  z-index: -1;
+  top: -5px;
+  transition: opacity 0.3s ease;
+}
+
+.circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #ff1453;
+  opacity: 0.1;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.scrollTopButton:hover .triangle,
+.scrollTopButton:hover .circle {
+  opacity: 0.25;
+  animation: pulse 2s infinite;
+}
+
+.arrow {
+  width: 24px;
+  height: 24px;
+  color: #ff1453;
+  z-index: 5;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+}
+
+/* Efecto de borde brillante */
+.scrollTopButton::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff1453, transparent, #ff1453);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scrollTopButton:hover::before {
+  opacity: 1;
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .scrollTopButton {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .arrow {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .triangle {
+    transform: rotate(180deg) scale(0.5);
+  }
+  
+  .circle {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .scrollTopButton {
+    bottom: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+  }
+} 

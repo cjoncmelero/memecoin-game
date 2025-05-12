@@ -29,7 +29,6 @@ export default function GameFlow() {
       <div className={styles.container}>
         <div className={styles.titleWrapper}>
           <h2 className={styles.title}>Flujo del Juego</h2>
-          <div className={styles.titleUnderline}></div>
         </div>
         
         <div className={styles.flowContainer}>

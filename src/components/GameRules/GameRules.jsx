@@ -6,9 +6,12 @@ import styles from './GameRules.module.css';
 const GameRules = () => {
   const sectionRef = useRef(null);
   const charactersRef = useRef(null);
+  const carouselTrackRef = useRef(null);
   const [sectionVisible, setSectionVisible] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [activeCharIndex, setActiveCharIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isCarouselLoaded, setIsCarouselLoaded] = useState(false);
   
   // Array de personajes para facilitar el carrusel
   const characters = [
@@ -66,6 +69,10 @@ const GameRules = () => {
         
         if (elementTop < windowHeight * 0.75) {
           charactersRef.current.classList.add(styles.charactersVisible);
+          // Iniciar la animación de carga del carrusel
+          setTimeout(() => {
+            setIsCarouselLoaded(true);
+          }, 300);
         }
       }
     });
@@ -91,6 +98,19 @@ const GameRules = () => {
     };
   }, [handleScroll]);
 
+  // Intervalo automático para el carrusel
+  useEffect(() => {
+    if (!isCarouselLoaded) return;
+    
+    const autoplayInterval = setInterval(() => {
+      if (!isTransitioning) {
+        nextCharacter();
+      }
+    }, 5000); // Cambiar cada 5 segundos
+    
+    return () => clearInterval(autoplayInterval);
+  }, [activeCharIndex, isTransitioning, isCarouselLoaded]);
+
   // Función para mostrar detalles al seleccionar un personaje
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character === selectedCharacter ? null : character);
@@ -98,11 +118,56 @@ const GameRules = () => {
   
   // Funciones para el carrusel
   const nextCharacter = () => {
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
     setActiveCharIndex((prev) => (prev + 1) % characters.length);
+    
+    // Reset the transition flag after animation completes
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 700); // Matches the CSS transition time
   };
   
   const prevCharacter = () => {
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
     setActiveCharIndex((prev) => (prev - 1 + characters.length) % characters.length);
+    
+    // Reset the transition flag after animation completes
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 700); // Matches the CSS transition time
+  };
+  
+  const goToCharacter = (index) => {
+    if (isTransitioning || index === activeCharIndex) return;
+    
+    setIsTransitioning(true);
+    setActiveCharIndex(index);
+    
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 700);
+  };
+
+  const getTouchStartX = useRef(0);
+  const handleTouchStart = (e) => {
+    getTouchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = getTouchStartX.current - touchEndX;
+    
+    if (Math.abs(diff) > 50) { // Mínimo desplazamiento para considerar swipe
+      if (diff > 0) {
+        nextCharacter(); // Swipe izquierda
+      } else {
+        prevCharacter(); // Swipe derecha
+      }
+    }
   };
 
   return (
@@ -141,32 +206,67 @@ const GameRules = () => {
           <div className={styles.rightContent}>
             <h3 className={styles.sectionTitle}>Los Participantes</h3>
             
-            <div ref={charactersRef} className={styles.carouselContainer}>
-              <div className={styles.carouselControls}>
-                <button className={styles.carouselButton} onClick={prevCharacter}>
+            <div 
+              ref={charactersRef} 
+              className={`${styles.carouselContainer} ${isCarouselLoaded ? styles.carouselLoaded : ''}`}
+            >
+              <div className={styles.carouselWrapper}>
+                <button 
+                  className={`${styles.carouselButton} ${styles.prevButton} ${isTransitioning ? styles.disabled : ''}`} 
+                  onClick={prevCharacter}
+                  disabled={isTransitioning}
+                >
                   <span className={styles.prevArrow}></span>
                 </button>
-                <div className={styles.carouselTrack} style={{ transform: `translateX(-${activeCharIndex * 100}%)` }}>
-                  {characters.map((char, index) => (
-                    <div 
-                      key={char.id}
-                      className={`${styles.characterCard} ${styles[char.id]} ${activeCharIndex === index ? styles.activeCard : ''}`}
-                    >
-                      <div className={styles.characterWrapper}>
-                        <div className={styles.characterImg}>
-                          <img src={char.img} alt={char.name} />
-                          <div className={styles.multiplierTag}>
-                            <span className={styles.multiplier}>{char.multiplier}</span>
+                
+                <div 
+                  className={styles.carouselControls} 
+                  onTouchStart={handleTouchStart} 
+                  onTouchEnd={handleTouchEnd}
+                >
+                  <div 
+                    ref={carouselTrackRef}
+                    className={styles.carouselTrack} 
+                    style={{ transform: `translateX(-${activeCharIndex * 100}%)` }}
+                  >
+                    {characters.map((char, index) => (
+                      <div 
+                        key={char.id}
+                        className={`${styles.characterCard} ${styles[char.id]} ${activeCharIndex === index ? styles.activeCard : ''}`}
+                      >
+                        <div className={styles.characterWrapper}>
+                          <div className={styles.characterImg}>
+                            <img src={char.img} alt={char.name} />
+                            <div className={styles.multiplierTag}>
+                              <span className={styles.multiplier}>{char.multiplier}</span>
+                            </div>
+                          </div>
+                          <div className={styles.characterInfo}>
+                            <h4 className={styles.characterName}>{char.name}</h4>
+                            {activeCharIndex === index && (
+                              <div className={styles.characterStats}>
+                                <div className={styles.statItem}>
+                                  <span className={styles.statLabel}>Probabilidad:</span>
+                                  <span className={styles.statValue}>{char.probability}</span>
+                                </div>
+                                <div className={styles.statItem}>
+                                  <span className={styles.statLabel}>Recompensa:</span>
+                                  <span className={styles.statValue}>{char.reward}</span>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
-                        <div className={styles.characterInfo}>
-                          <h4 className={styles.characterName}>{char.name}</h4>
-                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-                <button className={styles.carouselButton} onClick={nextCharacter}>
+                
+                <button 
+                  className={`${styles.carouselButton} ${styles.nextButton} ${isTransitioning ? styles.disabled : ''}`} 
+                  onClick={nextCharacter}
+                  disabled={isTransitioning}
+                >
                   <span className={styles.nextArrow}></span>
                 </button>
               </div>
@@ -176,7 +276,7 @@ const GameRules = () => {
                   <div 
                     key={index} 
                     className={`${styles.indicator} ${activeCharIndex === index ? styles.activeIndicator : ''}`}
-                    onClick={() => setActiveCharIndex(index)}
+                    onClick={() => goToCharacter(index)}
                   ></div>
                 ))}
               </div>
@@ -188,4 +288,4 @@ const GameRules = () => {
   );
 };
 
-export default GameRules; 
+export default GameRules;
