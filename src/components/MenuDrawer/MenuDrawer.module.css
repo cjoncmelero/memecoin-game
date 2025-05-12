@@ -163,7 +163,7 @@
   flex-direction: column;
   padding: 2.5rem 3rem 2rem 3rem;
   min-width: 350px;
-  max-width: 700px;
+  max-width: 50%;
   box-shadow: -2px 0 24px rgba(0,0,0,0.12);
   transform: translateX(0);
   animation: slideInRightPanel 0.45s cubic-bezier(.4,0,.2,1);

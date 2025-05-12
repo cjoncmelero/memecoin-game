@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import styles from "./MenuDrawer.module.css";
 
 const leftPanelImages = {
-  default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMXODX22aL1HJe5LgwiWuWNFR33R5vIvdcJQ&s",
-  personajes: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbC5CAg2yYAEp8Sfq9nQx-oBSrADALx65IaGV1DU5wKekaYgmVXj5KkjIdhEc2kxDl4XLz4TpfPyGK4iElS7jri4JHB1tyJmI2q2oNvYMDEcBrLnMO5pXkNb69ig5j7VtD4bLoKkBC4U4/s1600/nicolas-maduro.jpg",
-  lugares: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn566tFo6TNwSrG7C6IMp7cDstG9RnwSayhg&s",
-  trailers: "https://image.winudf.com/v2/image1/Y28ud2N1Lm1lbWVzb25pZG9zbmljb2xhc21hZHVyb3ByZXNpZGVudGV2ZW5lenVlbGFfc2NyZWVuX2VzLUVTXzBfMTU3NTQyNDI2Nl8wNjI/screen-0.jpg?fakeurl=1&type=.jpg",
-  descargas: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdLygYluN-CcC1_4XffZWKU5G7UtzCSH6GlA&s",
+  default: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
+  personajes: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
+  lugares: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
+  trailers: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
+  descargas: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
 };
 
 export default function MenuDrawer() {
