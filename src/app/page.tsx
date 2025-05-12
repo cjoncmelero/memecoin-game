@@ -43,6 +43,11 @@ const GameFlow = dynamic(() => import('../components/GameFlow/GameFlow'), {
   loading: () => null 
 });
 
+const Footer = dynamic(() => import('../components/Footer/Footer'), { 
+  ssr: false, 
+  loading: () => null 
+});
+
 export default function Home() {
   return (
     <div className="relative min-h-screen font-sans text-base">
@@ -59,6 +64,7 @@ export default function Home() {
           {/* Contenido adicional de la página */}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,0 +1,343 @@
+@font-face {
+  font-family: 'Game Of Squids';
+  src: url('/fonts/Game Of Squids.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.footer {
+  position: relative;
+  background: linear-gradient(to bottom, #111111, #1a1a1a);
+  color: #ffffff;
+  padding: 5rem 0 2rem;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 20, 83, 0.3);
+}
+
+/* Elementos decorativos del Juego del Calamar */
+.footerDecoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.decorCircle {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 8px solid rgba(255, 20, 83, 0.1);
+  opacity: 0.3;
+}
+
+.decorTriangle {
+  position: absolute;
+  bottom: -80px;
+  left: 10%;
+  width: 0;
+  height: 0;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-bottom: 180px solid rgba(255, 20, 83, 0.07);
+  transform: rotate(180deg);
+  opacity: 0.3;
+}
+
+.decorSquare {
+  position: absolute;
+  top: 40%;
+  left: 5%;
+  width: 80px;
+  height: 80px;
+  border: 6px solid rgba(255, 20, 83, 0.1);
+  transform: rotate(45deg);
+  opacity: 0.3;
+}
+
+.footerContent {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  z-index: 1;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footerBranding {
+  margin-bottom: 1.5rem;
+}
+
+.footerTitle {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 2.2rem;
+  color: #ff1453;
+  margin: 0 0 0.8rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(255, 20, 83, 0.3);
+}
+
+.tagline {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  max-width: 240px;
+  line-height: 1.6;
+}
+
+.footerNav h4 {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin: 0 0 1.2rem;
+  position: relative;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+
+.footerNav h4::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: #ff1453;
+  opacity: 0.6;
+}
+
+.footerNav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerNav li {
+  margin-bottom: 0.8rem;
+}
+
+.footerNav a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  position: relative;
+  padding-left: 15px;
+}
+
+.footerNav a::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #ff1453;
+  opacity: 0.8;
+}
+
+.footerNav a:hover {
+  color: #ffffff;
+  transform: translateX(5px);
+}
+
+.footerSocial h4 {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin: 0 0 1.2rem;
+  position: relative;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+
+.footerSocial h4::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: #ff1453;
+  opacity: 0.6;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.socialIcons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 20, 83, 0.3);
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.socialIcons a:hover {
+  background: rgba(255, 20, 83, 0.2);
+  color: #ffffff;
+  border-color: #ff1453;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 20, 83, 0.2);
+}
+
+.footerBottom {
+  text-align: center;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 20, 83, 0.4), transparent);
+  margin-bottom: 2rem;
+}
+
+.copyright, .disclaimer {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer {
+    padding: 4rem 0 2rem;
+  }
+  
+  .footerGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+  }
+  
+  .footerTitle {
+    font-size: 1.8rem;
+  }
+  
+  .decorCircle, .decorTriangle, .decorSquare {
+    transform: scale(0.7);
+  }
+}
+
+@media (max-width: 480px) {
+  .footerGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .socialIcons {
+    justify-content: center;
+  }
+  
+  .footerNav {
+    text-align: center;
+  }
+  
+  .footerNav h4, .footerSocial h4 {
+    display: block;
+    text-align: center;
+  }
+  
+  .footerNav h4::after, .footerSocial h4::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .footerNav a {
+    padding-left: 0;
+  }
+  
+  .footerNav a::before {
+    display: none;
+  }
+  
+  .footerBranding {
+    text-align: center;
+  }
+  
+  .tagline {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.logoSymbol {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.logoTriangle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid #ff1453;
+  opacity: 0.8;
+}
+
+.logoCircle {
+  position: absolute;
+  bottom: 0;
+  left: 7px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ff1453;
+  opacity: 0.8;
+}
+
+.logoSquare {
+  position: absolute;
+  bottom: 0;
+  right: 7px;
+  width: 12px;
+  height: 12px;
+  background-color: #ff1453;
+  opacity: 0.8;
+}
+
+.poweredBy {
+  margin-top: 1.5rem;
+}
+
+.poweredLink {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  text-decoration: none;
+  padding: 4px 12px;
+  border: 1px solid rgba(255, 20, 83, 0.3);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.poweredLink:hover {
+  color: #ffffff;
+  background-color: rgba(255, 20, 83, 0.1);
+  border-color: rgba(255, 20, 83, 0.5);
+} 
