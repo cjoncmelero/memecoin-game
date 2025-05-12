@@ -1,123 +1,134 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './GameFlow.module.css';
 
-const GameFlow = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const componentRef = useRef(null);
-
+export default function GameFlow() {
+  const sectionRef = useRef(null);
+  
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add(styles.visible);
         }
-      },
-      { threshold: 0.3 }
-    );
+      });
+    }, { threshold: 0.1 });
 
-    if (componentRef.current) {
-      observer.observe(componentRef.current);
+    if(sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
-
-    return () => {
-      if (componentRef.current) {
-        observer.unobserve(componentRef.current);
-      }
-    };
+    
+    return () => observer.disconnect();
   }, []);
 
-  // Datos para los pasos del flujo
-  const flowSteps = [
-    {
-      number: 1,
-      title: "Fase de apuestas",
-      description: "6 minutos para realizar tus apuestas"
-    },
-    {
-      number: 2,
-      title: "Inicio de eliminación",
-      description: "Los personajes empiezan a caer"
-    },
-    {
-      number: 3,
-      title: "Superviviente",
-      description: "El último personaje de pie gana"
-    },
-    {
-      number: 4,
-      title: "Recompensas",
-      description: "Distribución del pozo acumulado"
-    }
-  ];
-
   return (
-    <section 
-      ref={componentRef}
-      className={`${styles.gameFlowSection} ${isVisible ? styles.visible : ''}`}
-    >
-      <h3 className={styles.title}>Flujo del Juego</h3>
+    <section ref={sectionRef} className={styles.gameFlowSection}>
+      <div className={styles.bgShape1}></div>
+      <div className={styles.bgShape2}></div>
+      <div className={styles.bgShape3}></div>
       
-      <div className={styles.flowContainer}>
-        <div className={styles.gameFlow}>
-          {flowSteps.map((step, index) => (
-            <React.Fragment key={step.number}>
-              <div className={styles.step}>
-                <div className={styles.stepNumber}>{step.number}</div>
-                <div className={styles.stepContent}>
-                  <h4>{step.title}</h4>
-                  <p>{step.description}</p>
-                </div>
+      <div className={styles.container}>
+        <div className={styles.titleWrapper}>
+          <h2 className={styles.title}>Flujo del Juego</h2>
+          <div className={styles.titleUnderline}></div>
+        </div>
+        
+        <div className={styles.flowContainer}>
+          <div className={styles.gameFlow}>
+            
+            {/* Paso 1 */}
+            <div className={styles.step}>
+              <div className={styles.stepNumber}>1</div>
+              <div className={styles.stepContent}>
+                <h4>Fase de Preparación</h4>
+                <p>Los participantes se unen y realizan sus apuestas iniciales para entrar en la competencia</p>
+                <div className={styles.stepHighlight}></div>
               </div>
-              {index < flowSteps.length - 1 && (
-                <div className={styles.arrow}>
-                  <div className={styles.arrowLine}></div>
-                  <div className={styles.arrowPoint}></div>
-                </div>
-              )}
-            </React.Fragment>
-          ))}
+              <div className={styles.stepGlow}></div>
+            </div>
+            
+            <div className={styles.arrowContainer}>
+              <div className={styles.arrow}></div>
+            </div>
+
+            {/* Paso 2 */}
+            <div className={styles.step}>
+              <div className={styles.stepNumber}>2</div>
+              <div className={styles.stepContent}>
+                <h4>Elección de Avatar</h4>
+                <p>Selecciona tu meme preferido con su correspondiente nivel de riesgo y recompensa</p>
+                <div className={styles.stepHighlight}></div>
+              </div>
+              <div className={styles.stepGlow}></div>
+            </div>
+            
+            <div className={styles.arrowContainer}>
+              <div className={styles.arrow}></div>
+            </div>
+
+            {/* Paso 3 */}
+            <div className={styles.step}>
+              <div className={styles.stepNumber}>3</div>
+              <div className={styles.stepContent}>
+                <h4>Competición</h4>
+                <p>Compite contra otros jugadores recolectando monedas rápidamente antes del tiempo límite</p>
+                <div className={styles.stepHighlight}></div>
+              </div>
+              <div className={styles.stepGlow}></div>
+            </div>
+
+            <div className={styles.arrowContainer}>
+              <div className={styles.arrow}></div>
+            </div>
+
+            {/* Paso 4 */}
+            <div className={styles.step}>
+              <div className={styles.stepNumber}>4</div>
+              <div className={styles.stepContent}>
+                <h4>Distribución Final</h4>
+                <p>Los últimos supervivientes reciben recompensas según su desempeño y multiplicadores</p>
+                <div className={styles.stepHighlight}></div>
+              </div>
+              <div className={styles.stepGlow}></div>
+            </div>
+
+          </div>
         </div>
-      </div>
-      
-      <div className={styles.gameRewards}>
-        <div className={styles.rewardsHeader}>
-          <h3>Sistema de Recompensas</h3>
-        </div>
-        <div className={styles.rewardsContent}>
-          <p>
-            Todo el pozo acumulado de apuestas se distribuye entre los ganadores según el multiplicador
-            del personaje. <span className={styles.highlight}>A mayor riesgo, mayor recompensa</span>.
-          </p>
-          <p>
-            Los multiplicadores están inversamente relacionados con la probabilidad de ganar de cada personaje,
-            lo que genera un equilibrio entre riesgo y recompensa.
-          </p>
-          <div className={styles.multiplyGraphic}>
-            <div className={styles.multiplyItem}>
-              <span className={styles.multiplyValue}>x1</span>
-              <span className={styles.multiplyText}>Bajo riesgo</span>
-            </div>
-            <div className={styles.multiplyItem}>
-              <span className={styles.multiplyValue}>x2.5</span>
-              <span className={styles.multiplyText}>Medio riesgo</span>
-            </div>
-            <div className={styles.multiplyItem}>
-              <span className={styles.multiplyValue}>x5</span>
-              <span className={styles.multiplyText}>Alto riesgo</span>
-            </div>
-            <div className={styles.multiplyItem}>
-              <span className={styles.multiplyValue}>x10</span>
-              <span className={styles.multiplyText}>Muy alto riesgo</span>
+
+        <div className={styles.gameRewards}>
+          <div className={styles.rewardsHeader}>
+            <div className={styles.rewardsSymbol}></div>
+            <h3>Sistema de Recompensas</h3>
+            <div className={styles.rewardsSymbol}></div>
+          </div>
+          <div className={styles.rewardsContent}>
+            <p>El pozo de premios se distribuye entre los supervivientes aplicando los multiplicadores correspondientes</p>
+            <div className={styles.multiplierGrid}>
+              <div className={styles.multiplierItem}>
+                <span className={styles.multiplierValue}>x1</span>
+                <span className={styles.multiplierLabel}>Riesgo Bajo</span>
+              </div>
+              <div className={styles.multiplierItem}>
+                <span className={styles.multiplierValue}>x3</span>
+                <span className={styles.multiplierLabel}>Riesgo Medio</span>
+              </div>
+              <div className={styles.multiplierItem}>
+                <span className={styles.multiplierValue}>x5</span>
+                <span className={styles.multiplierLabel}>Riesgo Alto</span>
+              </div>
+              <div className={styles.multiplierItem}>
+                <span className={styles.multiplierValue}>x10</span>
+                <span className={styles.multiplierLabel}>Riesgo Extremo</span>
+              </div>
             </div>
           </div>
+        </div>
+        
+        <div className={styles.gameNote}>
+          <p>En el juego del calamar, solo uno puede sobrevivir</p>
         </div>
       </div>
     </section>
   );
-};
-
-export default GameFlow; 
+} 
