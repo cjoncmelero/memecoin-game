@@ -33,6 +33,16 @@ const GameRules = dynamic(() => import('../components/GameRules/GameRules'), {
   loading: () => null 
 });
 
+const GameObjectives = dynamic(() => import('../components/GameObjectives/GameObjectives'), { 
+  ssr: false, 
+  loading: () => null 
+});
+
+const GameFlow = dynamic(() => import('../components/GameFlow/GameFlow'), { 
+  ssr: false, 
+  loading: () => null 
+});
+
 export default function Home() {
   return (
     <div className="relative min-h-screen font-sans text-base">
@@ -42,9 +52,9 @@ export default function Home() {
       <main>
         <HeroHeader />
         <GameIntro />
-        <div className="relative" style={{ marginTop: '-15vh' }} id="game-rules">
-          <GameRules />
-        </div>
+        <GameObjectives />
+        <GameFlow />
+        <GameRules />
         <div className="py-20 px-4 max-w-6xl mx-auto">
           {/* Contenido adicional de la página */}
         </div>
