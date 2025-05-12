@@ -266,6 +266,7 @@
   color: #fff;
   letter-spacing: 1px;
   text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 20, 83, 0.7);
 }
 
 .characterDetails {
@@ -526,15 +527,44 @@
 }
 
 @media (max-width: 480px) {
-  .character {
-    width: 100%;
-    max-width: 220px;
+  .carouselContainer {
+    max-width: 300px;
   }
   
-  .stepContent {
-    min-height: auto;
-    padding: 15px;
+  .characterImg {
+    width: 160px;
+    height: 160px;
   }
+
+  .carouselButton {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .prevButton {
+    left: 5px;
+  }
+  
+  .nextButton {
+    right: 5px;
+  }
+}
+
+/* Efectos para botones del carrusel */
+.carouselButton:hover .prevArrow,
+.carouselButton:hover .nextArrow {
+  border-color: white;
+  transform: rotate(-135deg) scale(1.2);
+  transition: all 0.3s ease;
+}
+
+.carouselButton:hover .nextArrow {
+  transform: rotate(45deg) scale(1.2);
+}
+
+/* Asegurar que los botones sean siempre visibles */
+.carouselWrapper {
+  padding: 0 20px;
 }
 
 /* Añadir nuevo layout de contenido */
@@ -564,8 +594,23 @@
   margin: 0 auto;
   position: sticky;
   top: 100px;
-  z-index: 10;
-  margin-top: -100px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.carouselLoaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.carouselWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .carouselControls {
@@ -575,10 +620,16 @@
   position: relative;
   overflow: hidden;
   height: 540px;
+  width: 100%;
   border-radius: 15px;
   background-color: rgba(0, 0, 0, 0.6);
   border: 1px solid #ff1453;
-  z-index: 10;
+  box-shadow: 0 0 30px rgba(255, 20, 83, 0.2);
+  transition: all 0.5s ease;
+}
+
+.carouselContainer:hover .carouselControls {
+  box-shadow: 0 0 40px rgba(255, 20, 83, 0.4);
 }
 
 .carouselTrack {
@@ -597,10 +648,18 @@
   padding: 20px;
   transition: all 0.4s ease;
   background-color: transparent;
+  opacity: 0.5;
+  transform: scale(0.9);
 }
 
 .activeCard {
   opacity: 1;
+  transform: scale(1);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.carouselLoaded .activeCard {
+  animation: cardEntrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .carouselButton {
@@ -613,7 +672,7 @@
   background: #ff1453;
   border: none;
   cursor: pointer;
-  z-index: 11;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -621,17 +680,25 @@
   transition: all 0.3s ease;
 }
 
+.prevButton {
+  left: -5px;
+}
+
+.nextButton {
+  right: -5px;
+}
+
 .carouselButton:hover {
   background: #ff1453;
   transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 25px rgba(255, 20, 83, 0.5);
 }
 
-.carouselButton:first-child {
-  left: -20px;
-}
-
-.carouselButton:last-child {
-  right: -20px;
+.carouselButton.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: translateY(-50%) scale(1);
+  box-shadow: none;
 }
 
 .prevArrow, .nextArrow {
@@ -737,6 +804,42 @@
   color: #fff;
   letter-spacing: 1px;
   text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 20, 83, 0.7);
+}
+
+.characterStats {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.statItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 15px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 20, 83, 0.3);
+}
+
+.statLabel {
+  color: #ccc;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.statValue {
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-shadow: 0 0 5px rgba(255, 20, 83, 0.7);
 }
 
 .pepe .characterImg {
@@ -793,4 +896,16 @@
     width: 35px;
     height: 35px;
   }
-} 
+}
+
+.activeCard .multiplierTag {
+  animation: pulse 3s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(255, 20, 83, 0.5);
+}
+
+/* Añadir animación al carrusel */
+@keyframes cardEntrance {
+  0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+  70% { opacity: 1; transform: scale(1.05) translateY(-5px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}

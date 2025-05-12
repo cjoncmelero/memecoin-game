@@ -25,15 +25,11 @@ export default function GameObjectives() {
 
   return (
     <section ref={sectionRef} className={styles.objectivesSection}>
-      <div className={styles.decorationCircle}></div>
-      <div className={styles.decorationTriangle}></div>
-      <div className={styles.decorationSquare}></div>
+      
       
       <div className={styles.container}>
         <div className={styles.titleContainer}>
-          <div className={styles.titleSymbol}></div>
           <h2 className={styles.title}>Objetivos del Juego</h2>
-          <div className={styles.titleSymbol}></div>
         </div>
         
         <div className={styles.gridContainer}>
@@ -43,7 +39,7 @@ export default function GameObjectives() {
             onMouseLeave={() => setActiveCard(null)}
           >
             <div className={styles.cardSymbol}></div>
-            <div className={styles.cardIcon}>🎯</div>
+            <br />
             <h3 className={styles.cardTitle}>Recolectar Monedas</h3>
             <p className={styles.cardText}>
               Consigue la mayor cantidad de memecoins antes que el tiempo se agote para maximizar tus ganancias
@@ -58,7 +54,7 @@ export default function GameObjectives() {
             onMouseLeave={() => setActiveCard(null)}
           >
             <div className={styles.cardSymbol}></div>
-            <div className={styles.cardIcon}>💎</div>
+            <br />
             <h3 className={styles.cardTitle}>Multiplicadores</h3>
             <p className={styles.cardText}>
               Activa bonificaciones especiales para aumentar tus ganancias y superar a la competencia
@@ -73,7 +69,7 @@ export default function GameObjectives() {
             onMouseLeave={() => setActiveCard(null)}
           >
             <div className={styles.cardSymbol}></div>
-            <div className={styles.cardIcon}>🏆</div>
+            <br />
             <h3 className={styles.cardTitle}>Clasificación</h3>
             <p className={styles.cardText}>
               Supera a otros jugadores en la tabla de líderes global y conviértete en el último superviviente
@@ -83,7 +79,7 @@ export default function GameObjectives() {
           </div>
         </div>
 
-        <div className={styles.warningBox}>
+        {/* <div className={styles.warningBox}>
           <div className={styles.warningIcon}>
             <span>⚠️</span>
           </div>
@@ -94,7 +90,7 @@ export default function GameObjectives() {
             </p>
           </div>
           <div className={styles.pulse}></div>
-        </div>
+        </div> */}
         
         <div className={styles.finalMessage}>
           <p>La única manera de ganar es sobrevivir</p>

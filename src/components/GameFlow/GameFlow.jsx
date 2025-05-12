@@ -24,14 +24,11 @@ export default function GameFlow() {
 
   return (
     <section ref={sectionRef} className={styles.gameFlowSection}>
-      <div className={styles.bgShape1}></div>
-      <div className={styles.bgShape2}></div>
-      <div className={styles.bgShape3}></div>
+      
       
       <div className={styles.container}>
         <div className={styles.titleWrapper}>
           <h2 className={styles.title}>Flujo del Juego</h2>
-          <div className={styles.titleUnderline}></div>
         </div>
         
         <div className={styles.flowContainer}>
@@ -47,10 +44,6 @@ export default function GameFlow() {
               </div>
               <div className={styles.stepGlow}></div>
             </div>
-            
-            <div className={styles.arrowContainer}>
-              <div className={styles.arrow}></div>
-            </div>
 
             {/* Paso 2 */}
             <div className={styles.step}>
@@ -62,10 +55,6 @@ export default function GameFlow() {
               </div>
               <div className={styles.stepGlow}></div>
             </div>
-            
-            <div className={styles.arrowContainer}>
-              <div className={styles.arrow}></div>
-            </div>
 
             {/* Paso 3 */}
             <div className={styles.step}>
@@ -76,10 +65,6 @@ export default function GameFlow() {
                 <div className={styles.stepHighlight}></div>
               </div>
               <div className={styles.stepGlow}></div>
-            </div>
-
-            <div className={styles.arrowContainer}>
-              <div className={styles.arrow}></div>
             </div>
 
             {/* Paso 4 */}
