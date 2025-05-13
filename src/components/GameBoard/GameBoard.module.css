@@ -5,6 +5,105 @@
   font-style: normal;
 }
 
+@keyframes lineLeftToRight {
+  0% { 
+    transform: translateX(-100%);
+  }
+  100% { 
+    transform: translateX(100%);
+  }
+}
+
+@keyframes growShrinkBar {
+  0% { width: 0; left: 0; }
+  50% { width: 100%; left: 0; }
+  100% { width: 0; left: 100%; }
+}
+
+@keyframes textGlow {
+  0% { text-shadow: 0 0 15px rgba(255, 20, 83, 0.7); }
+  50% { text-shadow: 0 0 25px rgba(255, 20, 83, 1); }
+  100% { text-shadow: 0 0 15px rgba(255, 20, 83, 0.7); }
+}
+
+@keyframes countUp {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); color: #ff56a0; }
+  100% { transform: scale(1); }
+}
+
+@keyframes moneyAdd {
+  0% { opacity: 0; transform: translateY(10px); }
+  50% { opacity: 1; transform: translateY(-15px); }
+  100% { opacity: 0; transform: translateY(-40px); }
+}
+
+@keyframes moneySymbolAnimation1 {
+  0% { opacity: 0; transform: translate(-10px, 10px) scale(0.9); }
+  30% { opacity: 0.7; transform: translate(-40px, -35px) scale(1); }
+  100% { opacity: 0; transform: translate(-70px, -80px) scale(0.8); }
+}
+
+@keyframes moneySymbolAnimation2 {
+  0% { opacity: 0; transform: translate(15px, 5px) scale(0.8); }
+  40% { opacity: 0.7; transform: translate(40px, -35px) scale(1.1); }
+  100% { opacity: 0; transform: translate(65px, -90px) scale(0.9); }
+}
+
+@keyframes moneySymbolAnimation3 {
+  0% { opacity: 0; transform: translate(-25px, 0px) scale(0.7); }
+  35% { opacity: 0.6; transform: translate(-65px, -40px) scale(1); }
+  100% { opacity: 0; transform: translate(-85px, -100px) scale(0.8); }
+}
+
+@keyframes moneySymbolAnimation4 {
+  0% { opacity: 0; transform: translate(25px, 10px) scale(0.8); }
+  45% { opacity: 0.7; transform: translate(60px, -30px) scale(1.1); }
+  100% { opacity: 0; transform: translate(90px, -80px) scale(0.9); }
+}
+
+@keyframes moneySymbolAnimation5 {
+  0% { opacity: 0; transform: translate(-5px, 15px) scale(0.9); }
+  50% { opacity: 0.6; transform: translate(-25px, -50px) scale(1); }
+  100% { opacity: 0; transform: translate(-45px, -120px) scale(0.7); }
+}
+
+@keyframes moneySymbolAnimation6 {
+  0% { opacity: 0; transform: translate(30px, 5px) scale(0.7); }
+  40% { opacity: 0.6; transform: translate(80px, -20px) scale(0.9); }
+  100% { opacity: 0; transform: translate(130px, -60px) scale(0.7); }
+}
+
+@keyframes moneySymbolAnimation7 {
+  0% { opacity: 0; transform: translate(-35px, -5px) scale(0.8); }
+  45% { opacity: 0.6; transform: translate(-90px, -25px) scale(1); }
+  100% { opacity: 0; transform: translate(-150px, -75px) scale(0.8); }
+}
+
+@keyframes timerPulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+@keyframes borderPulse {
+  0% { border-color: rgba(255, 20, 83, 0.5); }
+  50% { border-color: rgba(255, 20, 83, 0.9); }
+  100% { border-color: rgba(255, 20, 83, 0.5); }
+}
+
+@keyframes countdownBeep {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes progressGlow {
+  0% { box-shadow: 0 0 8px rgba(255, 20, 83, 0.6); }
+  50% { box-shadow: 0 0 15px rgba(255, 20, 83, 1); }
+  100% { box-shadow: 0 0 8px rgba(255, 20, 83, 0.6); }
+}
+
 .gameContainer {
   position: relative;
   display: grid;
@@ -22,7 +121,7 @@
   text-align: left;
   padding: 10px 20px;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,44 +129,112 @@
 
 .logo {
   font-family: 'Game Of Squids', sans-serif;
-  font-size: 2.5rem;
-  background: linear-gradient(to right, #ff1453, #ff7bb2);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: 2px;
+  font-size: 2.9rem;
+  position: relative;
+  letter-spacing: 0;
   text-transform: uppercase;
-  text-shadow: 0 0 15px rgba(255, 20, 83, 0.5);
-  margin: 5px 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+}
+
+.logo span:first-child {
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+  position: relative;
+  padding-bottom: 0;
+  display: inline-block;
+  font-weight: bold;
+  margin-right: -2px;
+  overflow: hidden;
+}
+
+.logo span:first-child::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.8);
+  animation: growShrinkBar 3s ease-in-out infinite;
+  transform-origin: left;
+}
+
+.logo span:first-child::before {
+  display: none;
+}
+
+.logo span:last-child {
+  background: linear-gradient(to right, #ff1453, #ff94c2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(255, 51, 153, 0.5);
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
 }
 
 /* Balance del usuario */
 .balanceContainer {
   position: relative;
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid #ff1453;
-  border-radius: 8px;
-  padding: 10px 20px;
+  background: transparent;
+  border-radius: 0;
+  padding: 8px 15px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  box-shadow: 0 0 15px rgba(255, 20, 83, 0.2);
   z-index: 10;
   margin-left: auto;
+  position: relative;
+}
+
+.balanceContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: -1;
 }
 
 .balanceLabel {
-  font-size: 0.8rem;
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 0.9rem;
   opacity: 0.7;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  color: white;
+  margin-bottom: 2px;
 }
 
 .balanceAmount {
   font-family: 'Game Of Squids', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #ff1453;
   font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 20, 83, 0.7);
+  letter-spacing: 1px;
+}
+
+@keyframes balancePulse {
+  0% { color: #ff1453; }
+  50% { color: #ff5e85; }
+  100% { color: #ff1453; }
+}
+
+.balanceAmount.increasing {
+  animation: balancePulse 1.5s ease-in-out;
+}
+
+.balanceAmount.decreasing {
+  animation: balancePulse 1.5s ease-in-out;
+  color: white;
 }
 
 /* Área principal del juego */
@@ -77,6 +244,7 @@
   gap: 0;
   height: 100%;
   padding: 0;
+  background-color: transparent;
 }
 
 /* Títulos de sección */
@@ -95,8 +263,8 @@
 
 /* Lista de jugadores */
 .playersListContainer {
-  background: rgba(0, 0, 0, 0.6);
-  border-right: 1px solid rgba(255, 20, 83, 0.3);
+  background: rgba(0, 0, 0, 0.8);
+  border-right: none;
   padding: 15px;
   height: 100%;
   overflow: hidden;
@@ -175,34 +343,46 @@
   flex-direction: column;
   height: 100%;
   position: relative;
-  background: rgba(0, 0, 0, 0.3);
+  background: transparent;
   padding: 20px;
   border: none;
 }
 
 .potInfo {
-  margin: 0 auto;
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 10px 25px;
+  position: relative;
+  margin: 50px auto 0 auto;
+  background: transparent;
+  border: none;
+  padding: 12px 30px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+  z-index: 5;
+}
+
+.potInfo::before {
+  display: none;
 }
 
 .potLabel {
-  font-size: 0.9rem;
-  opacity: 0.8;
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.3rem;
+  opacity: 0.9;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  margin-bottom: 5px;
 }
 
 .potAmount {
   font-family: 'Game Of Squids', sans-serif;
-  font-size: 2rem;
-  color: #fff;
+  font-size: 4.2rem;
+  color: #ff1a8a;
   font-weight: bold;
+  text-shadow: 0 0 20px rgba(255, 20, 83, 0.9);
+  letter-spacing: 2px;
+  animation: textGlow 3s infinite ease-in-out;
 }
 
 .charactersGrid {
@@ -210,24 +390,24 @@
   flex-direction: row;
   justify-content: space-evenly;
   align-items: flex-end;
-  gap: 15px;
+  gap: 20px;
   flex-grow: 1;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 0px;
+  margin-bottom: 30px;
   position: relative;
-  padding-top: 100px; /* Espacio para el mecanismo de eliminación y los multiplicadores */
+  padding-top: 140px; /* Más espacio para los multiplicadores */
 }
 
 /* Línea horizontal del mecanismo de eliminación */
 .charactersGrid::before {
   content: '';
   position: absolute;
-  top: 40px;
-  left: 5%;
-  right: 5%;
-  height: 4px;
-  background: rgba(255, 20, 83, 0.7);
-  border-radius: 2px;
+  top: 70px;
+  left: 2%;
+  right: 2%;
+  height: 2px;
+  background: #ff1453;
+  border-radius: 1px;
   box-shadow: 0 0 15px rgba(255, 20, 83, 0.7);
 }
 
@@ -239,33 +419,20 @@
   justify-content: flex-end;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
-  width: 22%;
-  max-width: 150px;
+  width: 24%;
+  max-width: 220px;
 }
 
 /* Líneas verticales para cada personaje individualmente */
-.characterCard::after {
-  content: '';
-  position: absolute;
-  top: -70px;
-  left: 50%;
-  width: 2px;
-  height: 70px;
-  background: rgba(255, 20, 83, 0.7);
-  transform: translateX(-50%);
-  z-index: 1;
-  box-shadow: 0 0 10px rgba(255, 20, 83, 0.5);
-}
-
 /* Multiplicadores encima de cada personaje */
 .characterCard::before {
   content: attr(data-multiplier);
   position: absolute;
-  top: -110px;
+  top: -100px;
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Game Of Squids', sans-serif;
-  font-size: 2.2rem;
+  font-size: 3rem;
   color: white;
   font-weight: bold;
   text-shadow: 0 0 15px rgba(255, 20, 83, 0.7);
@@ -278,12 +445,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .characterImage {
   width: 100%;
-  max-width: 120px;
+  max-width: 200px;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
@@ -313,7 +480,7 @@
 
 .characterName {
   font-family: 'Game Of Squids', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   margin: 0;
   letter-spacing: 1px;
   color: #fff;
@@ -470,8 +637,8 @@
 
 /* Área de chat */
 .chatContainer {
-  background: rgba(0, 0, 0, 0.6);
-  border-left: 1px solid rgba(255, 20, 83, 0.3);
+  background: rgba(0, 0, 0, 0.8);
+  border-left: none;
   padding: 15px;
   display: flex;
   flex-direction: column;
@@ -503,7 +670,7 @@
   margin-bottom: 10px;
   padding: 8px 10px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(20, 20, 20, 0.7);
   word-break: break-word;
 }
 
@@ -1241,4 +1408,620 @@
 .bottom-right {
   grid-area: 2 / 2 / 3 / 3;
   margin: 40px auto 0;
+}
+
+.countingUp {
+  animation: countUp 0.5s ease-out;
+  position: relative;
+}
+
+.moneySymbol {
+  position: absolute;
+  color: #ff56a0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.symbolPlus1 {
+  top: 0;
+  left: 30%;
+  font-size: 1.8rem;
+  animation: moneySymbolAnimation1 2.5s ease-in-out;
+}
+
+.symbolDollar1 {
+  top: 10px;
+  right: 20%;
+  font-size: 1.6rem;
+  animation: moneySymbolAnimation2 2.2s ease-in-out;
+}
+
+.symbolPlus2 {
+  top: -15px;
+  left: 10%;
+  font-size: 1.4rem;
+  animation: moneySymbolAnimation3 3s ease-in-out;
+}
+
+.symbolDollar2 {
+  bottom: 5px;
+  right: 5%;
+  font-size: 1.5rem;
+  animation: moneySymbolAnimation4 2.7s ease-in-out;
+}
+
+.symbolPlus3 {
+  bottom: -10px;
+  left: 40%;
+  font-size: 1.7rem;
+  animation: moneySymbolAnimation5 2.3s ease-in-out;
+}
+
+.symbolDollar3 {
+  top: 5px;
+  right: 40%;
+  font-size: 1.3rem;
+  animation: moneySymbolAnimation6 2.8s ease-in-out;
+}
+
+.symbolPlus4 {
+  bottom: 0;
+  left: 60%;
+  font-size: 1.5rem;
+  animation: moneySymbolAnimation7 2.6s ease-in-out;
+}
+
+.placeBetButton {
+  background: rgba(255, 20, 83, 0.7);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 15px;
+  margin-top: 10px;
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.placeBetButton:hover {
+  background: rgba(255, 20, 83, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 20, 83, 0.4);
+}
+
+.placeBetButton:active {
+  transform: translateY(0);
+}
+
+/* Contador de ronda */
+.roundTimerContainer {
+  position: relative;
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 20, 83, 0.5);
+  border-bottom: 1px solid rgba(255, 20, 83, 0.5);
+  animation: borderPulse 3s infinite;
+}
+
+.roundTimerLabel {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: white;
+  opacity: 0.8;
+  margin-bottom: 5px;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.roundTimer {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 2.5rem;
+  color: white;
+  font-weight: bold;
+  min-width: 160px;
+  text-align: center;
+  position: relative;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  padding: 0;
+}
+
+.roundTimer::before {
+  display: none;
+}
+
+.roundTimerWarning {
+  color: #ff1453;
+  animation: timerPulse 1s infinite, countdownBeep 1s infinite;
+}
+
+.roundProgressContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  margin-top: 15px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) inset;
+}
+
+.roundProgressBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(to right, #ff1453, #ff4d83);
+  box-shadow: 0 0 15px rgba(255, 20, 83, 0.8);
+  transition: width 1s linear;
+  animation: progressGlow 2s infinite;
+  border-radius: 5px;
+}
+
+.roundProgressMarkers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.roundProgressMarker {
+  width: 1px;
+  height: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.roundProgressMarker:nth-child(4n) {
+  height: 80%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.roundProgressText {
+  position: absolute;
+  top: -18px;
+  right: 10px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.roundTimeDigit {
+  display: inline-block;
+  position: relative;
+}
+
+.roundTimeDigit:nth-child(3n) {
+  margin: 0 5px;
+}
+
+.timeColon {
+  animation: timerPulse 1s infinite;
+}
+
+.timeSeconds {
+  position: relative;
+}
+
+@keyframes progressMarkerPulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+  100% { opacity: 0.3; }
+}
+
+.roundProgressMarker {
+  width: 1px;
+  height: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.5s ease;
+}
+
+.roundProgressMarker:nth-child(4n) {
+  height: 80%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: progressMarkerPulse 3s infinite;
+  animation-delay: calc(var(--index) * 0.2s);
+}
+
+.roundProgressBar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7));
+  filter: blur(3px);
+  animation: brightenEnd 2s infinite ease-in-out;
+}
+
+@keyframes brightenEnd {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+/* Modal de cuenta regresiva final */
+.countdownModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.countdownModalVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.countdownContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.countdownNumber {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 15rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
+  animation: countdownPulse 1s ease-out;
+  position: relative;
+}
+
+.countdownMessage {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 5rem;
+  text-transform: uppercase;
+  color: #ff1453;
+  margin-top: 20px;
+  text-shadow: 0 0 30px rgba(255, 20, 83, 0.9), 0 0 15px rgba(255, 20, 83, 1);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: messageAppear 0.8s ease-out forwards;
+  letter-spacing: 3px;
+  background: linear-gradient(to right, #ff1453, #ff99bd, #ff1453);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 15px 30px;
+  border-radius: 10px;
+  position: relative;
+}
+
+
+@keyframes messageBorderPulse {
+  0% { box-shadow: 0 0 15px rgba(255, 20, 83, 0.5); border-color: rgba(255, 20, 83, 0.5); }
+  50% { box-shadow: 0 0 25px rgba(255, 20, 83, 0.9); border-color: rgba(255, 20, 83, 0.9); }
+  100% { box-shadow: 0 0 15px rgba(255, 20, 83, 0.5); border-color: rgba(255, 20, 83, 0.5); }
+}
+
+@keyframes countdownPulse {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes messageAppear {
+  0% { opacity: 0; transform: translateY(30px) scale(0.8); }
+  20% { opacity: 0.5; transform: translateY(15px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.countdownCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  border: 3px solid #ff1453;
+  border-radius: 50%;
+  opacity: 0;
+  animation: circleAppear 0.8s ease-out forwards;
+}
+
+@keyframes circleAppear {
+  0% { width: 0; height: 0; opacity: 0; }
+  100% { width: 300px; height: 300px; opacity: 1; }
+}
+
+.countdownRipple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #ff1453;
+  border-radius: 50%;
+  opacity: 0;
+  animation: rippleEffect 2s ease-out infinite;
+}
+
+.countdownRipple:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.countdownRipple:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.countdownRipple:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes rippleEffect {
+  0% { width: 150px; height: 150px; opacity: 0.8; }
+  100% { width: 500px; height: 500px; opacity: 0; }
+}
+
+.countdownModalFading {
+  animation: messageFadeOut 1.5s forwards;
+  pointer-events: none !important;
+}
+
+.countdownMessageFading {
+  animation: messageFadeOut 1.5s forwards;
+}
+
+@keyframes messageFadeOut {
+  0% { opacity: 1; transform: scale(1); }
+  70% { opacity: 0.8; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.1); visibility: hidden; }
+}
+
+.modalCloseButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 2rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 1010;
+}
+
+.modalCloseButton:hover {
+  color: #fff;
+  background: rgba(255, 20, 83, 0.3);
+  transform: scale(1.1);
+}
+
+/* Estilos para la animación de selección y eliminación */
+@keyframes targetScan {
+  0% { transform: scale(0); opacity: 0; }
+  20% { transform: scale(1.2); opacity: 0.8; }
+  40% { transform: scale(0.9); opacity: 1; }
+  60% { transform: scale(1.1); opacity: 1; }
+  80% { transform: scale(0.95); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes targetPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
+
+@keyframes characterScanning {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+  20% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+  40% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+  60% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+  80% { box-shadow: 0 0 0 5px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+@keyframes characterSelect {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.15); filter: brightness(1.5); }
+  100% { transform: scale(1.1); filter: brightness(1.3); }
+}
+
+@keyframes characterEliminate {
+  0% { transform: scale(1); filter: grayscale(0); opacity: 1; }
+  20% { transform: scale(1.05); filter: grayscale(0.3); opacity: 0.9; }
+  40% { transform: scale(0.95); filter: grayscale(0.6); opacity: 0.8; }
+  60% { transform: scale(1.02); filter: grayscale(0.8); opacity: 0.6; }
+  80% { transform: scale(0.98); filter: grayscale(0.9); opacity: 0.4; }
+  100% { transform: scale(0.9); filter: grayscale(1); opacity: 0.3; }
+}
+
+@keyframes characterShake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes bloodSplatter {
+  0% { opacity: 0; transform: scale(0); }
+  20% { opacity: 1; transform: scale(1.2); }
+  80% { opacity: 0.8; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+.sniper {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23ff0000' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ff0000' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='5' fill='%23ff0000'/%3E%3Cline x1='5' y1='50' x2='25' y2='50' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='75' y1='50' x2='95' y2='50' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='50' y1='5' x2='50' y2='25' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='50' y1='75' x2='50' y2='95' stroke='%23ff0000' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 500;
+  animation: targetScan 0.5s ease-out, targetPulse 1.5s infinite;
+  display: none;
+}
+
+.winner {
+  animation: characterSelect 0.5s forwards;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 0 30px rgba(255, 255, 0, 0.7);
+  transform-origin: center bottom;
+}
+
+.winner::after {
+  content: '¡GANADOR!';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 0, 0.9);
+  text-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
+  animation: winnerText 1s infinite alternate;
+  white-space: nowrap;
+}
+
+@keyframes winnerText {
+  0% { transform: translateX(-50%) scale(1); }
+  100% { transform: translateX(-50%) scale(1.1); }
+}
+
+.loser {
+  animation: characterEliminate 1s forwards, characterShake 0.5s;
+  position: relative;
+}
+
+.scanning {
+  position: relative;
+}
+
+.scanning::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  z-index: 5;
+  animation: characterScanning 1.5s infinite;
+}
+
+.bloodSplatter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,50 c10,-15 25,-10 15,5 c10,10 0,20 -15,15 c-5,15 -15,5 -15,-5 c-20,0 -15,-20 15,-15 z' fill='%23cc0000' fill-opacity='0.7'/%3E%3Cpath d='M60,55 c5,-10 15,-5 5,5 c5,5 -5,10 -10,5 c0,10 -10,5 -5,-5 c-10,-5 0,-10 10,-5 z' fill='%23cc0000' fill-opacity='0.7'/%3E%3Cpath d='M40,40 c-5,10 -15,5 -5,-5 c-5,-5 5,-10 10,-5 c0,-10 10,-5 5,5 c10,5 0,10 -10,5 z' fill='%23cc0000' fill-opacity='0.7'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 15;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: bloodSplatter 1s forwards;
+  display: none;
+}
+
+/* Estilos para el laserbeam */
+.laserBeam {
+  position: fixed;
+  width: 2px;
+  height: 100vh;
+  background: linear-gradient(to bottom, rgba(255, 0, 0, 0), rgba(255, 0, 0, 0.8) 10%, rgba(255, 0, 0, 1), rgba(255, 0, 0, 0.8) 90%, rgba(255, 0, 0, 0));
+  transform-origin: top center;
+  z-index: 490;
+  display: none;
+  opacity: 0;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+}
+
+@keyframes laserFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes gunshot {
+  0% { transform: scale(1); opacity: 1; }
+  20% { transform: scale(1.5); opacity: 0.9; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.gunshotFlash {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,0,0.9) 0%, rgba(255,140,0,0.8) 30%, rgba(255,0,0,0.7) 70%, transparent 100%);
+  z-index: 495;
+  display: none;
+  animation: gunshot 0.3s forwards;
+  box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+}
+
+/* Efecto extra: temblor de pantalla cuando se dispara */
+@keyframes screenShake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, -5px); }
+  50% { transform: translate(5px, 5px); }
+  75% { transform: translate(-3px, 3px); }
+  100% { transform: translate(0, 0); }
+}
+
+.bodyShaking {
+  animation: screenShake 0.5s;
+}
+
+/* Estilo para el destello de muerte */
+.deathFlash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 0, 0, 0.15);
+  z-index: 489;
+  pointer-events: none;
+  display: none;
+  animation: deathFlash 0.3s forwards;
+}
+
+@keyframes deathFlash {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
 }
