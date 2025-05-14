@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './GameBoard.module.css';
+import DebugModals from '../DebugModals/DebugModals';
 
 export default function GameBoard() {
   // Estados para manejar los diferentes elementos del juego (sin lógica, solo estructura)
@@ -80,109 +81,88 @@ export default function GameBoard() {
         setRoundTime(prevTime => {
           const newTime = prevTime - 1;
           
-          // Iniciar cuenta regresiva si quedan 5 segundos
-          if (newTime === 5) {
-            // Asegurarse de que todos los estados del modal estén reiniciados
+          if (newTime === 5 && !showCountdown) {
             setIsFadingOut(false);
             setShowFinalMessage(false);
             setCountdownNumber(5);
-            // Ahora mostrar el modal
             setShowCountdown(true);
           }
           
           return newTime;
         });
       }, 1000);
-    } else if (roundTime === 0) {
-      // La ronda ha terminado
+    } else if (roundTime === 0 && isRoundActive) {
       setIsRoundActive(false);
-      // Asegurarse de que el modal se cierre limpiamente
-      setIsFadingOut(true);
-      setTimeout(() => {
+      
+      if (!showCountdown) {
         setShowCountdown(false);
         setShowFinalMessage(false);
         setIsFadingOut(false);
-        setCountdownNumber(5);
-      }, 800);
+        setCountdownNumber(5); 
+      }
     }
     
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isRoundActive, roundTime]);
+  }, [isRoundActive, roundTime, showCountdown]);
   
   // Para depuración: monitorear el estado del modal
   useEffect(() => {
-    console.log("Estado del modal:", { showCountdown, showFinalMessage, isFadingOut });
+    // console.log("Estado del modal:", { showCountdown, showFinalMessage, isFadingOut });
   }, [showCountdown, showFinalMessage, isFadingOut]);
   
   // Efecto para la cuenta regresiva
   useEffect(() => {
-    let countdownTimer;
-    
-    if (showCountdown && countdownNumber > 0) {
-      console.log(`Cuenta regresiva: ${countdownNumber}`);
-      countdownTimer = setTimeout(() => {
+    let initialCountdownTimerId;
+    let finalMessageSequenceTimerId; // Un solo timer para la secuencia final
+
+    if (showCountdown && countdownNumber > 0 && !showFinalMessage) {
+      initialCountdownTimerId = setTimeout(() => {
         setCountdownNumber(prev => prev - 1);
       }, 1000);
-    } else if (countdownNumber === 0 && !showFinalMessage) {
-      console.log("Llegó a cero, mostrando mensaje final");
-      // Al llegar a 0, mostrar solo el mensaje final
-      setShowFinalMessage(true);
-      
-      // Mostrar el mensaje por 4 segundos (antes eran 2)
-      countdownTimer = setTimeout(() => {
-        console.log("Iniciando animación de desvanecimiento");
-        // Iniciar la animación de desvanecimiento
-        setIsFadingOut(true);
-        
-        // Esperar a que termine la animación antes de ocultar completamente
-        countdownTimer = setTimeout(() => {
-          console.log("Finalizando animación, reiniciando estados");
-          // Esta es la parte crítica - asegurarse de que todo se resetee
-          setShowCountdown(false);
-          setShowFinalMessage(false);
-          setIsFadingOut(false);
-          setCountdownNumber(5);
-          
-          console.log("Ahora vamos a empezar la animación de selección");
-          // Iniciar la animación de selección y eliminación
+    } else if (showCountdown && countdownNumber === 0 && !showFinalMessage) {
+      setShowFinalMessage(true); // Esto re-ejecutará el efecto
+    } else if (showCountdown && countdownNumber === 0 && showFinalMessage) {
+      if (!isFadingOut && !document.body.dataset.finalSequenceRunning) { 
+        document.body.dataset.finalSequenceRunning = "true"; 
+
+        finalMessageSequenceTimerId = setTimeout(() => {
+          setIsFadingOut(true); 
+
           setTimeout(() => {
-            console.log("Llamando a startSelectionAndElimination");
             startSelectionAndElimination();
-          }, 100);
-          
-          // Forzar actualización del estado
-          setTimeout(() => {
-            console.log("Estados después de reset:", { 
-              showCountdown: false, 
-              showFinalMessage: false, 
-              isFadingOut: false 
-            });
-          }, 100);
-        }, 1000); // Aumentar la duración de la animación
-      }, 4000); // Aumentar a 4 segundos para mostrar el mensaje
+            setShowCountdown(false);
+            setShowFinalMessage(false);
+            setIsFadingOut(false);
+            setCountdownNumber(5); 
+          }, 1000);
+
+        }, 4000);
+      }
     }
     
     return () => {
-      if (countdownTimer) clearTimeout(countdownTimer);
+      if (initialCountdownTimerId) clearTimeout(initialCountdownTimerId);
+      if (finalMessageSequenceTimerId) { 
+        clearTimeout(finalMessageSequenceTimerId);
+        delete document.body.dataset.finalSequenceRunning;
+      }
     };
-  }, [showCountdown, countdownNumber, showFinalMessage]);
+  }, [showCountdown, countdownNumber, showFinalMessage, isFadingOut]); 
   
-  // Reiniciar la ronda (para depuración)
+  // Función para reiniciar la ronda (para demostración)
   const forceHideModal = () => {
-    // Primero activar la animación de desvanecimiento
     setIsFadingOut(true);
     
-    // Luego esperar a que termine la animación antes de ocultar
     setTimeout(() => {
       setShowCountdown(false);
       setShowFinalMessage(false);
       setIsFadingOut(false);
       setCountdownNumber(5);
       
-      console.log("Modal forzado a cerrar");
-    }, 3500); // Ajustar al nuevo tiempo de la animación CSS
+      // console.log("Modal forzado a cerrar");
+    }, 3500); 
   };
   
   // Función simulada para cuando un usuario apuesta
@@ -331,29 +311,18 @@ export default function GameBoard() {
 
   // Función para iniciar la animación de selección y eliminación
   const startSelectionAndElimination = () => {
-    console.log("Iniciando animación de selección y eliminación");
-    // Asegurarnos de que las imágenes estén precargadas
     const sniperImg = new Image();
     sniperImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23ff0000' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ff0000' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='5' fill='%23ff0000'/%3E%3Cline x1='5' y1='50' x2='25' y2='50' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='75' y1='50' x2='95' y2='50' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='50' y1='5' x2='50' y2='25' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='50' y1='75' x2='50' y2='95' stroke='%23ff0000' stroke-width='1'/%3E%3C/svg%3E";
 
-    // Seleccionar un personaje aleatorio
+    if (characters.length === 0) {
+      console.error("startSelectionAndElimination: No hay personajes para seleccionar.");
+      return;
+    }
     const randomIndex = Math.floor(Math.random() * characters.length);
     const winnerId = characters[randomIndex].id;
-    console.log(`Personaje ganador seleccionado: ${winnerId}`);
     setSelectedCharacterId(winnerId);
     setShowSelectionAnimation(true);
     
-    // Comprobar si los refs existen
-    console.log("Verificando referencias DOM:", {
-      hasSniperRef: !!sniperRef.current,
-      hasLaserBeamRef: !!laserBeamRef.current,
-      hasGunshotFlashRef: !!gunshotFlashRef.current,
-      hasDeathFlashRef: !!deathFlashRef.current,
-      hasGameContainerRef: !!gameContainerRef.current,
-      bloodSplatterRefsKeys: Object.keys(bloodSplatterRefs.current)
-    });
-    
-    // Crear el elemento de mira si no existe
     if (!sniperRef.current) {
       const sniperElement = document.createElement('div');
       sniperElement.className = styles.sniper;
@@ -362,10 +331,8 @@ export default function GameBoard() {
       sniperElement.style.display = 'none';
       document.body.appendChild(sniperElement);
       sniperRef.current = sniperElement;
-      console.log("Elemento de mira creado dinámicamente");
     }
     
-    // Crear el elemento de láser si no existe
     if (!laserBeamRef.current) {
       const laserElement = document.createElement('div');
       laserElement.className = styles.laserBeam;
@@ -374,10 +341,8 @@ export default function GameBoard() {
       laserElement.style.display = 'none';
       document.body.appendChild(laserElement);
       laserBeamRef.current = laserElement;
-      console.log("Elemento de láser creado dinámicamente");
     }
     
-    // Crear el elemento de destello si no existe
     if (!gunshotFlashRef.current) {
       const flashElement = document.createElement('div');
       flashElement.className = styles.gunshotFlash;
@@ -386,10 +351,8 @@ export default function GameBoard() {
       flashElement.style.display = 'none';
       document.body.appendChild(flashElement);
       gunshotFlashRef.current = flashElement;
-      console.log("Elemento de destello creado dinámicamente");
     }
     
-    // Crear el elemento de flash de muerte si no existe
     if (!deathFlashRef.current) {
       const deathFlashElement = document.createElement('div');
       deathFlashElement.className = styles.deathFlash;
@@ -398,68 +361,49 @@ export default function GameBoard() {
       deathFlashElement.style.display = 'none';
       document.body.appendChild(deathFlashElement);
       deathFlashRef.current = deathFlashElement;
-      console.log("Elemento de flash de muerte creado dinámicamente");
     }
     
-    // Empezar el proceso de eliminación
-    setEliminationStep(1); // Iniciar escaneo
+    setEliminationStep(1);
     
-    // Aplicar la clase de escaneo a todos los personajes
     setTimeout(() => {
       const characterCards = document.querySelectorAll(`.${styles.characterCard}`);
-      console.log(`Aplicando escaneo a ${characterCards.length} tarjetas de personajes`);
-      
       if (characterCards.length === 0) {
         console.error("Error: No se encontraron tarjetas de personajes");
-        return; // Terminar si no hay tarjetas
+        return;
       }
       
       characterCards.forEach(card => {
         card.classList.add(styles.scanning);
       });
       
-      console.log("Fase de escaneo iniciada");
-      
-      // Después de 2 segundos, mostrar el sniper y comenzar a apuntar
       setTimeout(() => {
-        setEliminationStep(2); // Apuntando
-        console.log("Fase de apuntado iniciada");
+        setEliminationStep(2);
         
         if (sniperRef.current) {
-          console.log("Mostrando mira de francotirador");
           sniperRef.current.style.display = 'block';
         } else {
           console.error("Error: sniperRef.current es null");
         }
         
-        // Mover el sniper a cada personaje excepto el ganador
         const losers = characters.filter(char => char.id !== winnerId);
-        console.log(`Personajes a eliminar: ${losers.map(l => l.id).join(", ")}`);
         
-        // Usamos una función recursiva para procesar cada perdedor secuencialmente
         const eliminateLoser = (index) => {
           if (index >= losers.length) {
-            // Todos los perdedores han sido eliminados
             setTimeout(() => {
-              setEliminationStep(4); // Eliminación completa
-              console.log("Fase de eliminación completa");
+              setEliminationStep(4);
               
-              // Ocultar el sniper
               if (sniperRef.current) {
                 sniperRef.current.style.display = 'none';
               }
               
-              // Mostrar el ganador
               const winnerCard = document.getElementById(`character-${winnerId}`);
               if (winnerCard) {
                 winnerCard.classList.remove(styles.scanning);
                 winnerCard.classList.add(styles.winner);
-                console.log(`Personaje ganador mostrado: ${winnerId}`);
               } else {
                 console.error(`Error: No se encontró el elemento con id character-${winnerId}`);
               }
               
-              // Resetear todo después de la animación completa
               setTimeout(() => {
                 resetCharacters();
               }, 5000);
@@ -471,68 +415,52 @@ export default function GameBoard() {
           const loserCard = document.getElementById(`character-${loser.id}`);
           
           if (loserCard && sniperRef.current) {
-            // Tomar las coordenadas relativas a la ventana, no al documento
             const rect = loserCard.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
             
-            console.log(`Apuntando a ${loser.name} en (${centerX}, ${centerY})`);
-            
-            // Mover la mira hacia el objetivo
             sniperRef.current.style.left = `${centerX - 50}px`;
             sniperRef.current.style.top = `${centerY - 50}px`;
             
-            // Después de apuntar, disparar
             setTimeout(() => {
-              setEliminationStep(3); // Disparando
-              console.log(`Disparando a ${loser.name}`);
+              setEliminationStep(3);
               
-              // Mostrar el láser
               if (laserBeamRef.current) {
                 const laserBeam = laserBeamRef.current;
                 laserBeam.style.display = 'block';
                 laserBeam.style.opacity = '1';
                 laserBeam.style.left = `${centerX}px`;
                 
-                // Rotación del láser (apuntando hacia abajo)
                 laserBeam.style.transform = `rotate(90deg)`;
               }
               
-              // Mostrar el destello del disparo
               if (gunshotFlashRef.current) {
                 gunshotFlashRef.current.style.display = 'block';
                 gunshotFlashRef.current.style.left = `${centerX - 30}px`;
                 gunshotFlashRef.current.style.top = `0px`;
               }
               
-              // Añadir efecto de temblor en la pantalla
               if (gameContainerRef.current) {
                 gameContainerRef.current.classList.add(styles.bodyShaking);
                 
-                // Quitar la clase después de la animación
                 setTimeout(() => {
                   gameContainerRef.current.classList.remove(styles.bodyShaking);
                 }, 500);
               }
               
-              // Mostrar el flash de muerte
               if (deathFlashRef.current) {
                 deathFlashRef.current.style.display = 'block';
                 
-                // Ocultar después de la animación
                 setTimeout(() => {
                   deathFlashRef.current.style.display = 'none';
                 }, 300);
               }
               
-              // Mostrar el efecto de sangre
               setTimeout(() => {
                 if (bloodSplatterRefs.current[loser.id]) {
                   bloodSplatterRefs.current[loser.id].style.display = 'block';
-                  console.log(`Efecto de sangre mostrado para ${loser.id}`);
                 } else {
                   console.error(`Error: bloodSplatterRefs.current[${loser.id}] es null`);
-                  // Intentar crear el efecto de sangre dinámicamente
                   const splatterElement = document.createElement('div');
                   splatterElement.className = styles.bloodSplatter;
                   splatterElement.style.display = 'block';
@@ -541,18 +469,14 @@ export default function GameBoard() {
                   if (imageContainer) {
                     imageContainer.appendChild(splatterElement);
                     bloodSplatterRefs.current[loser.id] = splatterElement;
-                    console.log(`Efecto de sangre creado dinámicamente para ${loser.id}`);
                   }
                 }
                 
-                // Añadir la clase de perdedor
                 if (loserCard) {
                   loserCard.classList.remove(styles.scanning);
                   loserCard.classList.add(styles.loser);
-                  console.log(`Personaje ${loser.id} marcado como perdedor`);
                 }
                 
-                // Ocultar el láser y el destello después de un breve tiempo
                 setTimeout(() => {
                   if (laserBeamRef.current) {
                     laserBeamRef.current.style.display = 'none';
@@ -561,7 +485,6 @@ export default function GameBoard() {
                     gunshotFlashRef.current.style.display = 'none';
                   }
                   
-                  // Continuar con el siguiente perdedor
                   setTimeout(() => {
                     eliminateLoser(index + 1);
                   }, 500);
@@ -569,13 +492,11 @@ export default function GameBoard() {
               }, 300);
             }, 800);
           } else {
-            // Si no se encuentra el elemento, pasar al siguiente
             console.error(`Error: No se encontró el elemento con id character-${loser.id} o sniperRef.current es null`);
             eliminateLoser(index + 1);
           }
         };
         
-        // Iniciar la eliminación con el primer perdedor
         setTimeout(() => {
           eliminateLoser(0);
         }, 1000);
@@ -590,26 +511,17 @@ export default function GameBoard() {
       card.classList.remove(styles.scanning, styles.winner, styles.loser);
     });
     
-    // Ocultar los efectos de sangre
     Object.values(bloodSplatterRefs.current).forEach(ref => {
       if (ref) ref.style.display = 'none';
     });
     
-    // Resetear los estados
     setSelectedCharacterId(null);
     setShowSelectionAnimation(false);
     setEliminationStep(0);
   };
 
-  // Función para iniciar manualmente la animación (para pruebas)
-  const triggerSelectionAnimation = () => {
-    console.log("Activando animación de selección manualmente");
-    startSelectionAndElimination();
-  };
-
   // Inicializar las referencias de salpicaduras de sangre
   useEffect(() => {
-    // Inicializar bloodSplatterRefs vacío
     bloodSplatterRefs.current = {};
   }, []);
   
@@ -682,7 +594,7 @@ export default function GameBoard() {
       </div>
     ));
   };
-
+  
   return (
     <div className={styles.gameContainer} ref={gameContainerRef}>
       {/* Logo y balance en la parte superior */}
@@ -700,7 +612,7 @@ export default function GameBoard() {
           <span className={`${styles.balanceAmount} ${styles[balanceState]}`}>${balance.toFixed(2)}</span>
         </div>
       </div>
-
+      
       {/* Modal de cuenta regresiva */}
       <div className={`
         ${styles.countdownModal} 
@@ -716,7 +628,7 @@ export default function GameBoard() {
           aria-label="Cerrar"
         >
           ×
-        </button>
+          </button>
         
         <div className={styles.countdownContent}>
           {!showFinalMessage && (
@@ -762,24 +674,6 @@ export default function GameBoard() {
         className={styles.deathFlash}
         style={{ position: 'fixed', zIndex: 989, display: 'none' }}
       ></div>
-
-      {/* Botón de prueba para activar la animación (solo para depuración) */}
-      <button 
-        onClick={triggerSelectionAnimation}
-        style={{ 
-          position: 'fixed', 
-          bottom: '10px', 
-          right: '10px', 
-          zIndex: 1100,
-          background: 'red',
-          color: 'white',
-          border: 'none',
-          padding: '5px 10px',
-          cursor: 'pointer'
-        }}
-      >
-        Activar Animación
-      </button>
 
       {/* Contenedor principal del juego */}
       <div className={styles.mainGameArea}>
@@ -1007,6 +901,9 @@ export default function GameBoard() {
           ))}
         </div>
       </div>
+
+      {/* Componente de Modales de Debug */}
+      <DebugModals />
     </div>
   );
 }
