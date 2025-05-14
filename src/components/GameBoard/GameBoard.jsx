@@ -380,7 +380,8 @@ export default function GameBoard() {
         setEliminationStep(2);
         
         if (sniperRef.current) {
-          sniperRef.current.style.display = 'block';
+          // Eliminamos esta línea que hacía que la mira apareciera en la esquina
+          // sniperRef.current.style.display = 'block';
         } else {
           console.error("Error: sniperRef.current es null");
         }
@@ -419,78 +420,124 @@ export default function GameBoard() {
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
             
-            sniperRef.current.style.left = `${centerX - 50}px`;
-            sniperRef.current.style.top = `${centerY - 50}px`;
+            // Ubicar el sniper en una posición inicial aleatoria alrededor del objetivo
+            const randomOffsetX = Math.random() * 40 - 20; // valor entre -20 y 20
+            const randomOffsetY = Math.random() * 40 - 20; // valor entre -20 y 20
             
-            setTimeout(() => {
-              setEliminationStep(3);
+            sniperRef.current.style.left = `${centerX - 50 + randomOffsetX}px`;
+            sniperRef.current.style.top = `${centerY - 50 + randomOffsetY}px`;
+            sniperRef.current.style.display = 'block';
+            
+            // Función para animar el movimiento del sniper
+            const moveSniperToTarget = () => {
+              let startTime = null;
+              const duration = 800; // duración en ms
+              const startX = parseFloat(sniperRef.current.style.left);
+              const startY = parseFloat(sniperRef.current.style.top);
+              const targetX = centerX - 50;
+              const targetY = centerY - 50;
               
-              if (laserBeamRef.current) {
-                const laserBeam = laserBeamRef.current;
-                laserBeam.style.display = 'block';
-                laserBeam.style.opacity = '1';
-                laserBeam.style.left = `${centerX}px`;
+              const animate = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
                 
-                laserBeam.style.transform = `rotate(90deg)`;
-              }
-              
-              if (gunshotFlashRef.current) {
-                gunshotFlashRef.current.style.display = 'block';
-                gunshotFlashRef.current.style.left = `${centerX - 30}px`;
-                gunshotFlashRef.current.style.top = `0px`;
-              }
-              
-              if (gameContainerRef.current) {
-                gameContainerRef.current.classList.add(styles.bodyShaking);
+                // Función de suavizado para un movimiento más natural
+                const easeOutQuad = t => t * (2 - t);
+                const easedProgress = easeOutQuad(progress);
                 
-                setTimeout(() => {
-                  gameContainerRef.current.classList.remove(styles.bodyShaking);
-                }, 500);
-              }
-              
-              if (deathFlashRef.current) {
-                deathFlashRef.current.style.display = 'block';
+                // Aplicar pequeñas oscilaciones aleatorias que disminuyen con el tiempo
+                const oscillationFactor = 1 - easedProgress;
+                const oscillationX = oscillationFactor * Math.sin(elapsed * 0.03) * 8;
+                const oscillationY = oscillationFactor * Math.sin(elapsed * 0.04) * 8;
                 
-                setTimeout(() => {
-                  deathFlashRef.current.style.display = 'none';
-                }, 300);
-              }
-              
-              setTimeout(() => {
-                if (bloodSplatterRefs.current[loser.id]) {
-                  bloodSplatterRefs.current[loser.id].style.display = 'block';
+                const newX = startX + (targetX - startX) * easedProgress + oscillationX;
+                const newY = startY + (targetY - startY) * easedProgress + oscillationY;
+                
+                sniperRef.current.style.left = `${newX}px`;
+                sniperRef.current.style.top = `${newY}px`;
+                
+                if (progress < 1) {
+                  requestAnimationFrame(animate);
                 } else {
-                  console.error(`Error: bloodSplatterRefs.current[${loser.id}] es null`);
-                  const splatterElement = document.createElement('div');
-                  splatterElement.className = styles.bloodSplatter;
-                  splatterElement.style.display = 'block';
-                  
-                  const imageContainer = loserCard.querySelector(`.${styles.characterImageContainer}`);
-                  if (imageContainer) {
-                    imageContainer.appendChild(splatterElement);
-                    bloodSplatterRefs.current[loser.id] = splatterElement;
-                  }
-                }
-                
-                if (loserCard) {
-                  loserCard.classList.remove(styles.scanning);
-                  loserCard.classList.add(styles.loser);
-                }
-                
-                setTimeout(() => {
-                  if (laserBeamRef.current) {
-                    laserBeamRef.current.style.display = 'none';
-                  }
-                  if (gunshotFlashRef.current) {
-                    gunshotFlashRef.current.style.display = 'none';
-                  }
-                  
+                  // Una vez completada la animación, disparar
                   setTimeout(() => {
-                    eliminateLoser(index + 1);
-                  }, 500);
-                }, 500);
-              }, 300);
-            }, 800);
+                    setEliminationStep(3);
+                    
+                    if (laserBeamRef.current) {
+                      const laserBeam = laserBeamRef.current;
+                      laserBeam.style.display = 'block';
+                      laserBeam.style.opacity = '1';
+                      laserBeam.style.left = `${centerX}px`;
+                      
+                      laserBeam.style.transform = `rotate(90deg)`;
+                    }
+                    
+                    if (gunshotFlashRef.current) {
+                      gunshotFlashRef.current.style.display = 'block';
+                      gunshotFlashRef.current.style.left = `${centerX - 30}px`;
+                      gunshotFlashRef.current.style.top = `0px`;
+                    }
+                    
+                    if (gameContainerRef.current) {
+                      gameContainerRef.current.classList.add(styles.bodyShaking);
+                      
+                      setTimeout(() => {
+                        gameContainerRef.current.classList.remove(styles.bodyShaking);
+                      }, 500);
+                    }
+                    
+                    if (deathFlashRef.current) {
+                      deathFlashRef.current.style.display = 'block';
+                      
+                      setTimeout(() => {
+                        deathFlashRef.current.style.display = 'none';
+                      }, 300);
+                    }
+                    
+                    setTimeout(() => {
+                      if (bloodSplatterRefs.current[loser.id]) {
+                        bloodSplatterRefs.current[loser.id].style.display = 'block';
+                      } else {
+                        console.error(`Error: bloodSplatterRefs.current[${loser.id}] es null`);
+                        const splatterElement = document.createElement('div');
+                        splatterElement.className = styles.bloodSplatter;
+                        splatterElement.style.display = 'block';
+                        
+                        const imageContainer = loserCard.querySelector(`.${styles.characterImageContainer}`);
+                        if (imageContainer) {
+                          imageContainer.appendChild(splatterElement);
+                          bloodSplatterRefs.current[loser.id] = splatterElement;
+                        }
+                      }
+                      
+                      if (loserCard) {
+                        loserCard.classList.remove(styles.scanning);
+                        loserCard.classList.add(styles.loser);
+                      }
+                      
+                      setTimeout(() => {
+                        if (laserBeamRef.current) {
+                          laserBeamRef.current.style.display = 'none';
+                        }
+                        if (gunshotFlashRef.current) {
+                          gunshotFlashRef.current.style.display = 'none';
+                        }
+                        
+                        setTimeout(() => {
+                          eliminateLoser(index + 1);
+                        }, 500);
+                      }, 500);
+                    }, 300);
+                  }, 200);
+                }
+              };
+              
+              requestAnimationFrame(animate);
+            };
+            
+            // Iniciar la animación tras un breve retraso
+            setTimeout(moveSniperToTarget, 200);
           } else {
             console.error(`Error: No se encontró el elemento con id character-${loser.id} o sniperRef.current es null`);
             eliminateLoser(index + 1);

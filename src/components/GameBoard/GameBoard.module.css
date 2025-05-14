@@ -119,7 +119,7 @@
 /* Logo en la parte superior */
 .logoHeader {
   text-align: left;
-  padding: 10px 20px;
+  padding: 10px 25px;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
@@ -263,13 +263,18 @@
 
 /* Lista de jugadores */
 .playersListContainer {
-  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #ff1453 !important;
+  background: #000c;
   border-right: none;
-  padding: 15px;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
   flex-direction: column;
+  height: 96%;
+  padding: 15px;
+  display: flex;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-left: 14px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .playersList {
@@ -360,6 +365,38 @@
   z-index: 5;
 }
 
+@media (max-width: 2400px) {
+  .potInfo {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 2200px) {
+  .charactersGrid::before {
+    top: 0px !important;
+  }
+  .charactersGrid {
+    transform: scale(0.9) !important;
+    margin: -30px !important;
+  }
+}
+
+@media (max-width: 1920px) {
+  .characterCard {
+    width: 17% !important;
+  }
+  .charactersGrid {
+    padding-top: 0px !important;
+  }
+  .characterCard::before {
+    top: -72px !important;
+  }
+  .characterImageContainer {
+    margin-bottom: 0px !important;
+  }
+}
+
+
 .potInfo::before {
   display: none;
 }
@@ -383,6 +420,12 @@
   text-shadow: 0 0 20px rgba(255, 20, 83, 0.9);
   letter-spacing: 2px;
   animation: textGlow 3s infinite ease-in-out;
+}
+
+@media (max-width: 2200px) {
+  .potAmount {
+    font-size: 3.5rem !important;
+  }
 }
 
 .charactersGrid {
@@ -637,12 +680,17 @@
 
 /* Área de chat */
 .chatContainer {
-  background: rgba(0, 0, 0, 0.8);
+  background: #000c;
   border-left: none;
+  flex-direction: column;
+  height: 96%;
   padding: 15px;
   display: flex;
-  flex-direction: column;
-  height: 100%;
+  border: 1px solid #ff1453 !important;
+  border-radius: 10px;
+  margin-right: 14px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .chatMessages {
@@ -1838,13 +1886,15 @@
   100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
 }
 
-@keyframes characterScanning {
-  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-  20% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
-  40% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-  60% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
-  80% { box-shadow: 0 0 0 5px rgba(255, 255, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+@keyframes targetSway {
+  0% { transform: translate(15px, 12px) rotate(2deg) scale(1); }
+  15% { transform: translate(-10px, -8px) rotate(-1.5deg) scale(1.02); }
+  30% { transform: translate(8px, -5px) rotate(1deg) scale(0.98); }
+  45% { transform: translate(-6px, 10px) rotate(-0.5deg) scale(1.01); }
+  60% { transform: translate(4px, -3px) rotate(0.8deg) scale(0.99); }
+  75% { transform: translate(-3px, 2px) rotate(-0.3deg) scale(1); }
+  90% { transform: translate(2px, -1px) rotate(0.2deg) scale(1); }
+  100% { transform: translate(0, 0) rotate(0) scale(1); }
 }
 
 @keyframes characterSelect {
@@ -1888,7 +1938,8 @@
   background-position: center;
   pointer-events: none;
   z-index: 500;
-  animation: targetScan 0.5s ease-out, targetPulse 1.5s infinite;
+  border-radius: 50%;
+  animation: targetSway 3s ease-out forwards, targetPulse 1.5s infinite;
   display: none;
 }
 
@@ -1922,22 +1973,6 @@
 .loser {
   animation: characterEliminate 1s forwards, characterShake 0.5s;
   position: relative;
-}
-
-.scanning {
-  position: relative;
-}
-
-.scanning::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 10px;
-  z-index: 5;
-  animation: characterScanning 1.5s infinite;
 }
 
 .bloodSplatter {
