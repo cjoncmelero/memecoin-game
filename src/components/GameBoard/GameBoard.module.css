@@ -364,6 +364,11 @@
   align-items: center;
   z-index: 5;
 }
+@media (max-height: 930px) {
+  .potInfo {
+    margin-bottom: 50px !important;
+  }
+}
 
 @media (max-width: 2400px) {
   .potInfo {
@@ -378,6 +383,12 @@
   .charactersGrid {
     transform: scale(0.9) !important;
     margin: -30px !important;
+  }
+}
+
+@media (max-height: 930px) {
+  .charactersGrid {
+    padding-top: 100px !important;
   }
 }
 
@@ -396,6 +407,20 @@
   }
 }
 
+@media (max-width: 1250px) {
+  .charactersGrid {
+    padding-top: 100px !important;
+  }
+}
+/* Aplicar reglas de max-height con mayor especificidad que sobreescribe max-width */
+@media (max-height: 930px) and (min-width: 0px) {
+  .potInfo {
+    margin-bottom: 50px !important;
+  }
+  .charactersGrid {
+    padding-top: 100px !important;
+  }
+}
 
 .potInfo::before {
   display: none;
@@ -770,7 +795,7 @@
 .notificationsBar {
   background: rgba(0, 0, 0, 0.8);
   border-top: 1px solid rgba(255, 20, 83, 0.3);
-  padding: 15px 0;
+  padding: 10px 0; /* Reducido de 15px a 10px para hacerla más pequeña */
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -781,6 +806,7 @@
   white-space: nowrap;
   animation: scroll 20s linear infinite;
   padding: 0 20px;
+  font-size: 0.95rem; /* Texto ligeramente más pequeño */
 }
 
 .notificationItem {
@@ -807,9 +833,91 @@
 }
 
 /* Media queries para responsive */
+@media (max-width: 1250px) {
+  .mainGameArea {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .charactersContainer {
+    padding: 15px;
+  }
+  
+  .mobileTabs {
+    display: block !important;
+    margin-top: 30px;
+    border-top: 1px solid rgba(255, 20, 83, 0.5);
+    padding-top: 10px;
+  }
+  
+  .mobilePanel {
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 20, 83, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+  }
+  
+  .tabsContainer {
+    display: flex;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .tab {
+    flex: 1;
+    padding: 12px 0;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.7);
+    border-bottom: 2px solid transparent;
+  }
+  
+  .tab.active {
+    color: #fff;
+    border-bottom: 2px solid #ff1453;
+    background: rgba(255, 20, 83, 0.1);
+  }
+  
+  /* Ajustes específicos para tabletas */
+  .charactersGrid {
+    margin-bottom: 20px;
+  }
+  
+  .potAmount {
+    font-size: 3.8rem;
+  }
+  
+  .roundTimerContainer {
+    margin-top: 15px;
+  }
+  
+  /* Mejorar la experiencia del chat en modo tableta */
+  .chatMessages {
+    margin-bottom: 10px;
+  }
+  
+  .emojiSection {
+    margin-bottom: 10px;
+  }
+  
+  .chatInputContainer {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+}
+
 @media (max-width: 1200px) {
   .mainGameArea {
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr;
     gap: 15px;
   }
   
@@ -1458,6 +1566,103 @@
   margin: 40px auto 0;
 }
 
+/* Nueva disposición diagonal */
+.diagonal-topleft {
+  grid-area: 1 / 1 / 2 / 2;
+  transform: translateX(-20%) translateY(-10%);
+}
+
+.diagonal-topright {
+  grid-area: 1 / 2 / 2 / 3;
+  transform: translateX(20%) translateY(-10%);
+}
+
+.diagonal-bottomleft {
+  grid-area: 2 / 1 / 3 / 2;
+  transform: translateX(-20%) translateY(10%);
+  margin-top: 30px;
+}
+
+.diagonal-bottomright {
+  grid-area: 2 / 2 / 3 / 3;
+  transform: translateX(20%) translateY(10%);
+  margin-top: 30px;
+}
+
+/* Disposición en Z */
+.z-topleft {
+  grid-area: 1 / 1 / 2 / 2;
+  transform: translateX(-30%);
+}
+
+.z-topright {
+  grid-area: 1 / 2 / 2 / 3;
+  transform: translateX(30%);
+}
+
+.z-bottomleft {
+  grid-area: 2 / 2 / 3 / 3;
+  transform: translateX(10%);
+  margin-top: 50px;
+}
+
+.z-bottomright {
+  grid-area: 2 / 1 / 3 / 2;
+  transform: translateX(-10%);
+  margin-top: 50px;
+}
+
+/* Disposición circular */
+.circle-topleft {
+  grid-area: 1 / 1 / 2 / 2;
+  transform: translateX(-10%) translateY(-10%) rotate(-5deg);
+}
+
+.circle-topright {
+  grid-area: 1 / 2 / 2 / 3;
+  transform: translateX(10%) translateY(-10%) rotate(5deg);
+}
+
+.circle-bottomleft {
+  grid-area: 2 / 1 / 3 / 2;
+  transform: translateX(-10%) translateY(0%) rotate(5deg);
+  margin-top: 35px;
+}
+
+.circle-bottomright {
+  grid-area: 2 / 2 / 3 / 3;
+  transform: translateX(10%) translateY(0%) rotate(-5deg);
+  margin-top: 35px;
+}
+
+/* Media queries específicas para cada tipo de distribución */
+@media (max-width: 430px) {
+  .mobileGrid.diagonal .characterCard {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .mobileGrid.diagonal .characterCard:hover {
+    transform: scale(1.05);
+  }
+  
+  .mobileGrid.z .characterCard {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .mobileGrid.z .characterCard:hover {
+    transform: scale(1.05) translateY(-5px);
+  }
+  
+  .mobileGrid.circle .characterCard {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .mobileGrid.circle .characterCard:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+  }
+}
+
 .countingUp {
   animation: countUp 0.5s ease-out;
   position: relative;
@@ -1903,6 +2108,12 @@
   100% { transform: scale(1.1); filter: brightness(1.3); }
 }
 
+@keyframes imageGlow {
+  0% { filter: brightness(1) drop-shadow(0 0 5px rgba(255, 255, 0, 0.5)); }
+  50% { filter: brightness(1.7) drop-shadow(0 0 20px rgba(255, 255, 0, 0.8)); }
+  100% { filter: brightness(1.5) drop-shadow(0 0 15px rgba(255, 255, 0, 0.7)); }
+}
+
 @keyframes characterEliminate {
   0% { transform: scale(1); filter: grayscale(0); opacity: 1; }
   20% { transform: scale(1.05); filter: grayscale(0.3); opacity: 0.9; }
@@ -1944,11 +2155,13 @@
 }
 
 .winner {
-  animation: characterSelect 0.5s forwards;
   position: relative;
   z-index: 10;
-  box-shadow: 0 0 30px rgba(255, 255, 0, 0.7);
   transform-origin: center bottom;
+}
+
+.winner .characterImage {
+  animation: imageGlow 2s infinite alternate;
 }
 
 .winner::after {
@@ -2059,4 +2272,443 @@
   0% { opacity: 0; }
   50% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+/* Botón flotante para abrir el chat */
+.chatFloatingButton {
+  position: fixed;
+  bottom: 30px;
+  left: 30px; /* Cambiado de right a left para posicionarlo a la izquierda */
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff1453, #ff56a0);
+  box-shadow: 0 4px 15px rgba(255, 20, 83, 0.6);
+  display: none; /* Oculto por defecto */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 900;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+/* Solo mostrar en dispositivos móviles */
+@media (max-width: 768px) {
+  .chatFloatingButton {
+    display: flex; /* Mostrar en dispositivos móviles */
+  }
+}
+
+.chatFloatingButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 20, 83, 0.8);
+}
+
+.chatFloatingButton::before {
+  content: "💬";
+  font-size: 1.8rem;
+}
+
+/* Chat en pantalla completa */
+.chatFullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.chatFullscreenVisible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.chatFullscreenHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 20, 83, 0.3);
+}
+
+.chatFullscreenTitle {
+  font-family: 'Game Of Squids', sans-serif;
+  font-size: 2rem;
+  color: #ff1453;
+  text-shadow: 0 0 10px rgba(255, 20, 83, 0.5);
+  margin: 0;
+}
+
+.chatFullscreenClose {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.chatFullscreenClose:hover {
+  background: rgba(255, 20, 83, 0.2);
+  transform: rotate(90deg);
+}
+
+.chatFullscreenBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chatFullscreenMessages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  scrollbar-width: thin;
+  scrollbar-color: #ff1453 rgba(0, 0, 0, 0.2);
+}
+
+.chatFullscreenMessages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chatFullscreenMessages::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.chatFullscreenMessages::-webkit-scrollbar-thumb {
+  background-color: #ff1453;
+  border-radius: 4px;
+}
+
+.chatFullscreenInputContainer {
+  display: flex;
+  gap: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 20, 83, 0.3);
+}
+
+.chatFullscreenInput {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 20, 83, 0.5);
+  border-radius: 8px;
+  padding: 12px 15px;
+  color: white;
+  font-size: 1.1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.chatFullscreenInput:focus {
+  border-color: #ff1453;
+  box-shadow: 0 0 10px rgba(255, 20, 83, 0.5);
+}
+
+.chatFullscreenSendButton {
+  background: linear-gradient(to right, #ff1453, #ff56a0);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1.1rem;
+  min-width: 120px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.chatFullscreenSendButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 20, 83, 0.4);
+}
+
+/* Solo mostrar en dispositivos móviles y tabletas */
+@media (max-width: 1250px) {
+  .chatFloatingButton {
+    display: flex; /* Mostrar en dispositivos con ancho <= 1250px */
+  }
+}
+
+/* Versión de la barra de notificaciones para la parte superior */
+.notificationsBarTop {
+  margin-top: 0;
+  border-top: 1px solid rgba(255, 20, 83, 0.3);
+  border-bottom: 1px solid rgba(255, 20, 83, 0.3);
+  box-shadow: 0 4px 10px -5px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 50;
+  padding: 8px 0; /* Reducir el padding para hacerla más pequeña */
+  background: rgba(0, 0, 0, 0.9); /* Fondo un poco más oscuro */
+}
+
+.notificationsBarTop .notificationsScroller {
+  font-size: 0.9rem; /* Texto ligeramente más pequeño */
+}
+
+.notificationsBarTop .notificationItem {
+  margin-right: 25px; /* Más espacio entre elementos */
+}
+
+@media (max-width: 1250px) {
+  .notificationsBarTop {
+    display: block;
+  }
+  
+  .charactersContainer {
+    padding-top: 5px;
+  }
+  
+  .notificationsBarTop .notificationsScroller {
+    animation: scroll 25s linear infinite;
+  }
+}
+
+/* Media query para corregir tamaños en pantallas entre 430px y 700px */
+@media (max-width: 700px) and (min-width: 431px) {
+  .characterCard {
+    width: 22% !important;
+    max-width: 160px !important;
+  }
+  
+  .characterImage {
+    max-width: 120px !important;
+    width: 100% !important;
+  }
+  
+  .characterName {
+    font-size: 1.1rem !important;
+    margin-top: 5px;
+  }
+  
+  .characterCard::before {
+    font-size: 2.2rem !important;
+    top: -65px !important;
+  }
+  
+  .characterCard::after {
+    height: 40px !important;
+    top: -40px !important;
+  }
+  
+  /* Ajustar controles de apuesta */
+  .betInputContainer {
+    transform: scale(0.9);
+    margin: 5px auto 0;
+  }
+  
+  .placeBetButton {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    margin-top: 5px;
+  }
+  
+  /* Mejorar distribución de la cuadrícula */
+  .charactersGrid {
+    padding-top: 90px !important;
+    gap: 15px;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+  }
+  
+  .charactersGrid::before {
+    top: 40px !important;
+  }
+  
+  /* Ajustar los multiplicadores para que sean más visibles */
+  .potAmount {
+    font-size: 2.5rem !important;
+  }
+}
+
+/* Media query específica para dispositivos móviles más pequeños */
+@media (max-width: 430px) {
+  .characterImage {
+    max-width: 90px !important; /* Aumentar de 80px */
+  }
+  
+  .characterName {
+    font-size: 0.95rem !important; /* Reducir tamaño del texto */
+    margin-top: 3px;
+  }
+}
+
+/* Media query para pantallas muy pequeñas (menos de 400px) */
+@media (max-width: 400px) {
+  .characterCard {
+    width: 40% !important;
+    max-width: 140px !important;
+    margin: 0 8px !important;
+  }
+  
+  .characterImage {
+    max-width: 85px !important;
+  }
+  
+  .characterName {
+    font-size: 0.9rem !important;
+  }
+  
+  .characterCard::before {
+    font-size: 1.8rem !important;
+    top: -50px !important;
+  }
+  
+  /* Reducir espaciado en los bordes */
+  .charactersContainer {
+    padding: 10px 5px !important;
+  }
+  
+  .potAmount {
+    font-size: 1.6rem !important;
+  }
+  
+  .betInputContainer {
+    transform: scale(0.85);
+  }
+}
+
+/* Media query específica para dispositivos móviles que no son tan pequeños pero necesitan ajustes */
+@media (max-width: 600px) {
+  .charactersGrid {
+    margin-bottom: 10px !important;
+  }
+  
+  .roundTimerContainer {
+    padding: 8px 0 !important;
+    margin-top: 15px !important;
+  }
+  
+  .roundTimer {
+    font-size: 2rem !important;
+  }
+  
+  .roundProgressContainer {
+    height: 8px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .charactersGrid {
+    padding-top: 150px !important;
+  }
+  .sniper {
+    width: 60px !important;
+    height: 60px !important;
+    min-width: 40px;
+    min-height: 40px;
+    position: fixed !important;
+    z-index: 1000 !important;
+  }
+}
+
+.characterName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
+}
+
+.winner.characterCard::before,
+.winner .characterCard::before {
+  top: -100px !important; /* Subir el multiplicador cuando es ganador */
+  color: rgba(255, 255, 0, 0.9) !important; /* Color dorado para el ganador */
+  text-shadow: 0 0 15px rgba(255, 255, 0, 0.7) !important; /* Resplandor dorado */
+  transition: all 0.5s ease-in-out;
+}
+
+/* Botón para cambiar disposición en móvil */
+.changeLayoutButton {
+  position: absolute;
+  bottom: 75px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff1453, #ff56a0);
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(255, 20, 83, 0.5);
+  cursor: pointer;
+  z-index: 100;
+  animation: pulseButton 2s infinite ease-in-out;
+  transition: transform 0.3s ease;
+}
+
+.changeLayoutButton:hover, .changeLayoutButton:active {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 5px 15px rgba(255, 20, 83, 0.7);
+}
+
+@keyframes pulseButton {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Estilos para los diferentes layouts */
+.diagonal .characterCard {
+  transition: transform 0.3s ease-out;
+}
+
+.z .characterCard {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.circle .characterCard {
+  transition: transform 0.3s ease-out, filter 0.3s ease-out;
+}
+
+/* Media query específica para dispositivos móviles que no son tan pequeños pero necesitan ajustes */
+@media (max-width: 600px) {
+  .charactersGrid {
+    margin-bottom: 10px !important;
+  }
+  
+  .roundTimerContainer {
+    padding: 8px 0 !important;
+    margin-top: 15px !important;
+  }
+  
+  .roundTimer {
+    font-size: 2rem !important;
+  }
+  
+  .roundProgressContainer {
+    height: 8px !important;
+  }
 }

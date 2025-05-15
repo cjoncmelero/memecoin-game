@@ -11,11 +11,14 @@ export default function GameBoard() {
   const [showAllEmojis, setShowAllEmojis] = useState(false);
   const [activeTab, setActiveTab] = useState('players'); // Para las pestañas móviles
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false); // Nuevo estado para modo tableta (1250px)
   const [isSmallMobile, setIsSmallMobile] = useState(false);
   const [potAmount, setPotAmount] = useState(3000);
   const [isCountingUp, setIsCountingUp] = useState(false);
   const [displayAmount, setDisplayAmount] = useState(3000);
   const [balanceState, setBalanceState] = useState(""); // "increasing" o "decreasing"
+  const [showFullscreenChat, setShowFullscreenChat] = useState(false); // Estado para controlar el chat pantalla completa
+  const [mobileLayout, setMobileLayout] = useState("normal"); // "normal", "diagonal", "z", "circle"
   
   // Estados para el contador de ronda
   const [roundTime, setRoundTime] = useState(10); // 2 minutos por ronda
@@ -151,8 +154,14 @@ export default function GameBoard() {
     };
   }, [showCountdown, countdownNumber, showFinalMessage, isFadingOut]); 
   
-  // Función para reiniciar la ronda (para demostración)
+  // Función para reiniciar la ronda (para demostración) - DESHABILITADA
   const forceHideModal = () => {
+    // Función deshabilitada - el usuario ya no puede cerrar manualmente el modal
+    console.log("Cerrar modal manualmente está deshabilitado");
+    return;
+    
+    // Código original comentado
+    /*
     setIsFadingOut(true);
     
     setTimeout(() => {
@@ -160,9 +169,8 @@ export default function GameBoard() {
       setShowFinalMessage(false);
       setIsFadingOut(false);
       setCountdownNumber(5);
-      
-      // console.log("Modal forzado a cerrar");
     }, 3500); 
+    */
   };
   
   // Función simulada para cuando un usuario apuesta
@@ -185,6 +193,7 @@ export default function GameBoard() {
   // Detectar si estamos en un dispositivo móvil
   useEffect(() => {
     const checkMobile = () => {
+      setIsTablet(window.innerWidth <= 1250); // Nuevo breakpoint para tabletas
       setIsMobile(window.innerWidth <= 768);
       setIsSmallMobile(window.innerWidth <= 430);
     };
@@ -212,36 +221,49 @@ export default function GameBoard() {
   };
 
   // Personajes del juego (como en GameRules.jsx)
-  const characters = [
+  const charactersBaseData = [
     {
       id: 'pepe',
       name: 'Pepe',
       img: '/images/pj/pepe.png',
-      multiplier: '1.5x',
-      position: 'top-left'
+      multiplier: '1.5x'
     },
     {
       id: 'doge',
       name: 'Doge',
       img: '/images/pj/doge.png',
-      multiplier: '2x',
-      position: 'top-right'
+      multiplier: '2x'
     },
     {
       id: 'chillguy',
       name: 'Chill Guy',
       img: '/images/pj/chillguy.png',
-      multiplier: '3x',
-      position: 'bottom-left'
+      multiplier: '3x'
     },
     {
       id: 'brett',
       name: 'Brett',
       img: '/images/pj/brett.png',
-      multiplier: '5x',
-      position: 'bottom-right'
+      multiplier: '5x'
     }
   ];
+
+  // Asignar posiciones según el layout seleccionado
+  const getPositionByLayout = (index, layout) => {
+    const positions = {
+      normal: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+      diagonal: ['diagonal-topleft', 'diagonal-topright', 'diagonal-bottomleft', 'diagonal-bottomright'],
+      z: ['z-topleft', 'z-topright', 'z-bottomleft', 'z-bottomright'],
+      circle: ['circle-topleft', 'circle-topright', 'circle-bottomleft', 'circle-bottomright']
+    };
+    return positions[layout][index];
+  };
+
+  // Crear array de personajes con las posiciones actualizadas según el layout
+  const characters = charactersBaseData.map((char, index) => ({
+    ...char,
+    position: getPositionByLayout(index, mobileLayout)
+  }));
 
   // Datos de ejemplo para el chat
   const chatMessages = [
@@ -424,8 +446,9 @@ export default function GameBoard() {
             const randomOffsetX = Math.random() * 40 - 20; // valor entre -20 y 20
             const randomOffsetY = Math.random() * 40 - 20; // valor entre -20 y 20
             
-            sniperRef.current.style.left = `${centerX - 50 + randomOffsetX}px`;
-            sniperRef.current.style.top = `${centerY - 50 + randomOffsetY}px`;
+            // Ajustes de posición: +30px a la derecha, -50px hacia arriba
+            sniperRef.current.style.left = `${centerX - 50 + randomOffsetX + 30}px`;
+            sniperRef.current.style.top = `${centerY - 50 + randomOffsetY - 50}px`;
             sniperRef.current.style.display = 'block';
             
             // Función para animar el movimiento del sniper
@@ -434,8 +457,9 @@ export default function GameBoard() {
               const duration = 800; // duración en ms
               const startX = parseFloat(sniperRef.current.style.left);
               const startY = parseFloat(sniperRef.current.style.top);
-              const targetX = centerX - 50;
-              const targetY = centerY - 50;
+              // Ajustamos también la posición final
+              const targetX = centerX - 50 + 10; // +30px a la derecha
+              const targetY = centerY - 50 - 50; // -50px hacia arriba
               
               const animate = (timestamp) => {
                 if (!startTime) startTime = timestamp;
@@ -461,74 +485,74 @@ export default function GameBoard() {
                   requestAnimationFrame(animate);
                 } else {
                   // Una vez completada la animación, disparar
+            setTimeout(() => {
+              setEliminationStep(3);
+              
+              if (laserBeamRef.current) {
+                const laserBeam = laserBeamRef.current;
+                laserBeam.style.display = 'block';
+                laserBeam.style.opacity = '1';
+                laserBeam.style.left = `${centerX + 15}px`;
+                
+                laserBeam.style.transform = `rotate(90deg)`;
+              }
+              
+              if (gunshotFlashRef.current) {
+                gunshotFlashRef.current.style.display = 'block';
+                gunshotFlashRef.current.style.left = `${centerX - 15}px`;
+                gunshotFlashRef.current.style.top = `0px`;
+              }
+              
+              if (gameContainerRef.current) {
+                gameContainerRef.current.classList.add(styles.bodyShaking);
+                
+                setTimeout(() => {
+                  gameContainerRef.current.classList.remove(styles.bodyShaking);
+                }, 500);
+              }
+              
+              if (deathFlashRef.current) {
+                deathFlashRef.current.style.display = 'block';
+                
+                setTimeout(() => {
+                  deathFlashRef.current.style.display = 'none';
+                }, 300);
+              }
+              
+              setTimeout(() => {
+                if (bloodSplatterRefs.current[loser.id]) {
+                  bloodSplatterRefs.current[loser.id].style.display = 'block';
+                } else {
+                  console.error(`Error: bloodSplatterRefs.current[${loser.id}] es null`);
+                  const splatterElement = document.createElement('div');
+                  splatterElement.className = styles.bloodSplatter;
+                  splatterElement.style.display = 'block';
+                  
+                  const imageContainer = loserCard.querySelector(`.${styles.characterImageContainer}`);
+                  if (imageContainer) {
+                    imageContainer.appendChild(splatterElement);
+                    bloodSplatterRefs.current[loser.id] = splatterElement;
+                  }
+                }
+                
+                if (loserCard) {
+                  loserCard.classList.remove(styles.scanning);
+                  loserCard.classList.add(styles.loser);
+                }
+                
+                setTimeout(() => {
+                  if (laserBeamRef.current) {
+                    laserBeamRef.current.style.display = 'none';
+                  }
+                  if (gunshotFlashRef.current) {
+                    gunshotFlashRef.current.style.display = 'none';
+                  }
+                  
                   setTimeout(() => {
-                    setEliminationStep(3);
-                    
-                    if (laserBeamRef.current) {
-                      const laserBeam = laserBeamRef.current;
-                      laserBeam.style.display = 'block';
-                      laserBeam.style.opacity = '1';
-                      laserBeam.style.left = `${centerX}px`;
-                      
-                      laserBeam.style.transform = `rotate(90deg)`;
-                    }
-                    
-                    if (gunshotFlashRef.current) {
-                      gunshotFlashRef.current.style.display = 'block';
-                      gunshotFlashRef.current.style.left = `${centerX - 30}px`;
-                      gunshotFlashRef.current.style.top = `0px`;
-                    }
-                    
-                    if (gameContainerRef.current) {
-                      gameContainerRef.current.classList.add(styles.bodyShaking);
-                      
-                      setTimeout(() => {
-                        gameContainerRef.current.classList.remove(styles.bodyShaking);
-                      }, 500);
-                    }
-                    
-                    if (deathFlashRef.current) {
-                      deathFlashRef.current.style.display = 'block';
-                      
-                      setTimeout(() => {
-                        deathFlashRef.current.style.display = 'none';
-                      }, 300);
-                    }
-                    
-                    setTimeout(() => {
-                      if (bloodSplatterRefs.current[loser.id]) {
-                        bloodSplatterRefs.current[loser.id].style.display = 'block';
-                      } else {
-                        console.error(`Error: bloodSplatterRefs.current[${loser.id}] es null`);
-                        const splatterElement = document.createElement('div');
-                        splatterElement.className = styles.bloodSplatter;
-                        splatterElement.style.display = 'block';
-                        
-                        const imageContainer = loserCard.querySelector(`.${styles.characterImageContainer}`);
-                        if (imageContainer) {
-                          imageContainer.appendChild(splatterElement);
-                          bloodSplatterRefs.current[loser.id] = splatterElement;
-                        }
-                      }
-                      
-                      if (loserCard) {
-                        loserCard.classList.remove(styles.scanning);
-                        loserCard.classList.add(styles.loser);
-                      }
-                      
-                      setTimeout(() => {
-                        if (laserBeamRef.current) {
-                          laserBeamRef.current.style.display = 'none';
-                        }
-                        if (gunshotFlashRef.current) {
-                          gunshotFlashRef.current.style.display = 'none';
-                        }
-                        
-                        setTimeout(() => {
-                          eliminateLoser(index + 1);
-                        }, 500);
-                      }, 500);
-                    }, 300);
+                    eliminateLoser(index + 1);
+                  }, 500);
+                }, 500);
+              }, 300);
                   }, 200);
                 }
               };
@@ -642,6 +666,28 @@ export default function GameBoard() {
     ));
   };
   
+  // Función para alternar la visibilidad del chat en pantalla completa
+  const toggleFullscreenChat = () => {
+    setShowFullscreenChat(!showFullscreenChat);
+    // Si abrimos el chat, enfocamos el campo de entrada
+    if (!showFullscreenChat) {
+      setTimeout(() => {
+        const fullscreenInput = document.getElementById('fullscreen-chat-input');
+        if (fullscreenInput) {
+          fullscreenInput.focus();
+        }
+      }, 300);
+    }
+  };
+  
+  // Cambiar al siguiente layout para dispositivos móviles
+  const changeLayout = () => {
+    const layouts = ['normal', 'diagonal', 'z', 'circle'];
+    const currentIndex = layouts.indexOf(mobileLayout);
+    const nextIndex = (currentIndex + 1) % layouts.length;
+    setMobileLayout(layouts[nextIndex]);
+  };
+  
   return (
     <div className={styles.gameContainer} ref={gameContainerRef}>
       {/* Logo y balance en la parte superior */}
@@ -660,6 +706,19 @@ export default function GameBoard() {
         </div>
       </div>
       
+      {/* Barra de notificaciones en la parte superior para vistas móviles/tablet */}
+      {isTablet && (
+        <div className={`${styles.notificationsBar} ${styles.notificationsBarTop}`}>
+          <div className={styles.notificationsScroller}>
+            {notifications.map((notification, index) => (
+              <span key={index} className={styles.notificationItem}>
+                {notification}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+      
       {/* Modal de cuenta regresiva */}
       <div className={`
         ${styles.countdownModal} 
@@ -668,15 +727,6 @@ export default function GameBoard() {
       `}
         style={{ display: (showCountdown || showFinalMessage) ? 'flex' : 'none' }}
       >
-        {/* Botón para cerrar el modal */}
-        <button 
-          className={styles.modalCloseButton}
-          onClick={forceHideModal}
-          aria-label="Cerrar"
-        >
-          ×
-          </button>
-        
         <div className={styles.countdownContent}>
           {!showFinalMessage && (
             <>
@@ -725,7 +775,7 @@ export default function GameBoard() {
       {/* Contenedor principal del juego */}
       <div className={styles.mainGameArea}>
         {/* Lista de jugadores a la izquierda (solo desktop) */}
-        {!isMobile && (
+        {!isTablet && (
           <div className={styles.playersListContainer}>
             <h3 className={styles.sectionTitle}>
               JUGADORES
@@ -765,10 +815,21 @@ export default function GameBoard() {
 
           <div 
             ref={charactersGridRef}
-            className={isSmallMobile ? `${styles.charactersGrid} ${styles.mobileGrid}` : styles.charactersGrid}
+            className={isSmallMobile ? `${styles.charactersGrid} ${styles.mobileGrid} ${styles[mobileLayout]}` : styles.charactersGrid}
           >
             {renderCharacterCards()}
           </div>
+
+          {/* Botón flotante para cambiar la disposición (solo en móvil) */}
+          {isSmallMobile && (
+            <button 
+              className={styles.changeLayoutButton}
+              onClick={changeLayout}
+              aria-label="Cambiar disposición"
+            >
+              <span role="img" aria-label="Disposición">🔄</span>
+            </button>
+          )}
 
           {/* Contador de tiempo para la ronda */}
           <div className={styles.roundTimerContainer}>
@@ -797,101 +858,92 @@ export default function GameBoard() {
                 {Math.ceil(roundTime / 60)} min
               </div>
             </div>
-            
-            {/* Botón de depuración para forzar el cierre del modal */}
-            {(showCountdown || showFinalMessage) && (
-              <button 
-                className={styles.placeBetButton} 
-                onClick={forceHideModal} 
-                style={{ position: 'absolute', right: '10px', bottom: '10px', zIndex: 1001 }}
-              >
-                Cerrar Modal
-              </button>
-            )}
           </div>
 
-          {/* Tabs para móvil - siempre presente en dispositivos móviles */}
-          <div className={styles.mobileTabs}>
-            <div className={styles.tabsContainer}>
-              <div 
-                className={`${styles.tab} ${activeTab === 'players' ? styles.active : ''}`}
-                onClick={() => setActiveTab('players')}
-              >
-                Jugadores
+          {/* Tabs para tableta/móvil - visible en dispositivos con ancho <= 1250px */}
+          {isTablet && (
+            <div className={styles.mobileTabs}>
+              <div className={styles.tabsContainer}>
+                <div 
+                  className={`${styles.tab} ${activeTab === 'players' ? styles.active : ''}`}
+                  onClick={() => setActiveTab('players')}
+                >
+                  Jugadores
+                </div>
+                <div 
+                  className={`${styles.tab} ${activeTab === 'chat' ? styles.active : ''}`}
+                  onClick={() => setActiveTab('chat')}
+                >
+                  Chat
+                </div>
               </div>
-              <div 
-                className={`${styles.tab} ${activeTab === 'chat' ? styles.active : ''}`}
-                onClick={() => setActiveTab('chat')}
-              >
-                Chat
-              </div>
-            </div>
-            
-            {activeTab === 'players' && (
-              <div className={styles.mobilePanel}>
-                <h3 className={styles.sectionTitle}>
-                  JUGADORES
-                  <span className={styles.playersCount}>{players.length}</span>
-                </h3>
-                {players.map(player => (
-                  <div key={player.id} className={styles.playerItem}>
-                    <span className={styles.playerName}>{player.name}</span>
-                    <span className={styles.playerBet}>${player.bet}</span>
-                    <span className={`${styles.playerCharacter} ${styles[player.character]}`}></span>
-                  </div>
-                ))}
-              </div>
-            )}
-            
-            {activeTab === 'chat' && (
-              <div className={styles.mobilePanel}>
-                <h3 className={styles.sectionTitle}>CHAT</h3>
-                <div className={styles.chatMessages}>
-                  {chatMessages.map(msg => (
-                    <div key={msg.id} className={styles.chatMessage}>
-                      <span className={styles.chatUser}>{msg.user}:</span>
-                      <span className={styles.chatText}>{msg.message}</span>
+              
+              {activeTab === 'players' && (
+                <div className={styles.mobilePanel}>
+                  <h3 className={styles.sectionTitle}>
+                    JUGADORES
+                    <span className={styles.playersCount}>{players.length}</span>
+                  </h3>
+                  {players.map(player => (
+                    <div key={player.id} className={styles.playerItem}>
+                      <span className={styles.playerName}>{player.name}</span>
+                      <span className={styles.playerBet}>${player.bet}</span>
+                      <span className={`${styles.playerCharacter} ${styles[player.character]}`}></span>
                     </div>
                   ))}
                 </div>
-                
-                <div className={styles.emojiSection}>
-                  <div className={styles.emojiContainer}>
-                    {(showAllEmojis ? allEmojis : commonEmojis).map((emoji, index) => (
-                      <button 
-                        key={index} 
-                        className={styles.emojiButton}
-                        onClick={() => insertEmoji(emoji)}
-                      >
-                        {emoji}
-                      </button>
+              )}
+              
+              {activeTab === 'chat' && (
+                <div className={styles.mobilePanel}>
+                  <h3 className={styles.sectionTitle}>CHAT</h3>
+                  <div className={styles.chatMessages}>
+                    {chatMessages.map(msg => (
+                      <div key={msg.id} className={styles.chatMessage}>
+                        <span className={styles.chatUser}>{msg.user}:</span>
+                        <span className={styles.chatText}>{msg.message}</span>
+                      </div>
                     ))}
                   </div>
-                  <button 
-                    className={styles.emojiToggleButton}
-                    onClick={() => setShowAllEmojis(!showAllEmojis)}
-                  >
-                    {showAllEmojis ? "Menos emojis" : "Más emojis"}
-                  </button>
+                  
+                  <div className={styles.emojiSection}>
+                    <div className={styles.emojiContainer}>
+                      {(showAllEmojis ? allEmojis : commonEmojis).map((emoji, index) => (
+                        <button 
+                          key={index} 
+                          className={styles.emojiButton}
+                          onClick={() => insertEmoji(emoji)}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                    <button 
+                      className={styles.emojiToggleButton}
+                      onClick={() => setShowAllEmojis(!showAllEmojis)}
+                    >
+                      {showAllEmojis ? "Menos emojis" : "Más emojis"}
+                    </button>
+                  </div>
+                  
+                  <div className={styles.chatInputContainer}>
+                    <input 
+                      type="text" 
+                      className={styles.chatInput} 
+                      placeholder="Escribe un mensaje..."
+                      value={chatInput}
+                      onChange={(e) => setChatInput(e.target.value)}
+                    />
+                    <button className={styles.chatSendButton}>Enviar</button>
+                  </div>
                 </div>
-                
-                <div className={styles.chatInputContainer}>
-                  <input 
-                    type="text" 
-                    className={styles.chatInput} 
-                    placeholder="Escribe un mensaje..."
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                  />
-                  <button className={styles.chatSendButton}>Enviar</button>
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Área de chat a la derecha (solo desktop) */}
-        {!isMobile && (
+        {!isTablet && (
           <div className={styles.chatContainer}>
             <h3 className={styles.sectionTitle}>CHAT</h3>
             <div className={styles.chatMessages}>
@@ -938,14 +990,84 @@ export default function GameBoard() {
         )}
       </div>
 
-      {/* Barra de notificaciones en la parte inferior */}
-      <div className={styles.notificationsBar}>
-        <div className={styles.notificationsScroller}>
-          {notifications.map((notification, index) => (
-            <span key={index} className={styles.notificationItem}>
-              {notification}
-            </span>
-          ))}
+      {/* Barra de notificaciones en la parte inferior solo para escritorio */}
+      {!isTablet && (
+        <div className={styles.notificationsBar}>
+          <div className={styles.notificationsScroller}>
+            {notifications.map((notification, index) => (
+              <span key={index} className={styles.notificationItem}>
+                {notification}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Botón flotante para abrir el chat en pantalla completa (visible en <= 1250px) */}
+      {isTablet && (
+        <button 
+          className={styles.chatFloatingButton}
+          onClick={toggleFullscreenChat}
+          aria-label="Abrir chat"
+        />
+      )}
+      
+      {/* Chat en pantalla completa */}
+      <div className={`${styles.chatFullscreen} ${showFullscreenChat ? styles.chatFullscreenVisible : ''}`}>
+        <div className={styles.chatFullscreenHeader}>
+          <h2 className={styles.chatFullscreenTitle}>CHAT DEL JUEGO</h2>
+          <button 
+            className={styles.chatFullscreenClose}
+            onClick={toggleFullscreenChat}
+            aria-label="Cerrar chat"
+          >
+            ×
+          </button>
+        </div>
+        <div className={styles.chatFullscreenBody}>
+          <div className={styles.chatFullscreenMessages}>
+            {chatMessages.map(msg => (
+              <div key={msg.id} className={styles.chatMessage}>
+                <span className={styles.chatUser}>{msg.user}:</span>
+                <span className={styles.chatText}>{msg.message}</span>
+              </div>
+            ))}
+          </div>
+          
+          {/* Sección de emojis rápidos */}
+          <div className={styles.emojiSection}>
+            <div className={styles.emojiContainer}>
+              {(showAllEmojis ? allEmojis : commonEmojis).map((emoji, index) => (
+                <button 
+                  key={index} 
+                  className={styles.emojiButton}
+                  onClick={() => insertEmoji(emoji)}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+            <button 
+              className={styles.emojiToggleButton}
+              onClick={() => setShowAllEmojis(!showAllEmojis)}
+            >
+              {showAllEmojis ? "Menos emojis" : "Más emojis"}
+            </button>
+          </div>
+          
+          <div className={styles.chatFullscreenInputContainer}>
+            <input 
+              id="fullscreen-chat-input"
+              type="text" 
+              className={styles.chatFullscreenInput} 
+              placeholder="Escribe un mensaje..."
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+            />
+            <button className={styles.chatFullscreenSendButton}>
+              Enviar
+            </button>
+          </div>
         </div>
       </div>
 
