@@ -5,7 +5,6 @@ import styles from './GameBoard.module.css';
 import DebugModals from '../DebugModals/DebugModals';
 
 export default function GameBoard() {
-  // Estados para manejar los diferentes elementos del juego (sin lógica, solo estructura)
   const [balance, setBalance] = useState(2345.67);
   const [chatInput, setChatInput] = useState("");
   const [showAllEmojis, setShowAllEmojis] = useState(false);
