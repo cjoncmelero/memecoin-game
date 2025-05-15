@@ -5,10 +5,10 @@ import styles from "./MenuDrawer.module.css";
 
 const leftPanelImages = {
   default: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
-  personajes: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
-  lugares: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
-  trailers: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
-  descargas: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
+  reglasJuego: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
+  objetivosJuego: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
+  comoJugar: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
+  contacto: "https://coingape.com/wp-content/uploads/2024/11/How-a-Memecoin-Investor-Turned-26-Into-61.5M.webp",
 };
 
 export default function MenuDrawer() {
@@ -44,14 +44,14 @@ export default function MenuDrawer() {
   const getLeftPanelImage = () => {
     if (isClosing) return leftPanelImages.default;
     switch (hovered) {
-      case "personajes":
-        return leftPanelImages.personajes;
-      case "lugares":
-        return leftPanelImages.lugares;
-      case "trailers":
-        return leftPanelImages.trailers;
-      case "descargas":
-        return leftPanelImages.descargas;
+      case "reglasJuego":
+        return leftPanelImages.reglasJuego;
+      case "objetivosJuego":
+        return leftPanelImages.objetivosJuego;
+      case "comoJugar":
+        return leftPanelImages.comoJugar;
+      case "contacto":
+        return leftPanelImages.contacto;
       default:
         return leftPanelImages.default;
     }
@@ -60,13 +60,14 @@ export default function MenuDrawer() {
   // Si no estamos en el cliente, renderizamos un botón sin funcionalidad
   if (!isClient) {
     return (
-      <button
-        type="button"
-        className={styles.menuButton}
-      >
+      <button type="button" className={styles.menuButton}>
         <div className={styles.iconWrapper}>
-          <div className={styles.line}></div>
-          <div className={styles.line}></div>
+          {/* SVG Icon: Placeholder simple - se reemplazará con uno más temático */}
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="28" height="4" rx="2" fill="#222"/>
+            <rect y="8" width="28" height="4" rx="2" fill="#222"/>
+            <rect y="16" width="28" height="4" rx="2" fill="#222"/>
+          </svg>
         </div>
         <span className={styles.srOnly}>Ampliar el menú de navegación</span>
       </button>
@@ -82,14 +83,18 @@ export default function MenuDrawer() {
         aria-controls="menu-drawer"
         data-state={open ? "open" : "closed"}
         data-pressed={open}
-        className={styles.menuButton}
-        onClick={handleOpen}
+        className={`${styles.menuButton} ${open ? styles.menuButtonOpen : ''}`}
+        onClick={open ? handleClose : handleOpen}
       >
         <div className={styles.iconWrapper}>
-          <div className={styles.line}></div>
-          <div className={styles.line}></div>
+          {/* SVG Icon: Este es el que se animará y estilizará más */}
+          <svg className={styles.menuIconSvg} width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path className={`${styles.menuIconLine} ${styles.menuIconLineTop}`} d="M2 4H26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <path className={`${styles.menuIconLine} ${styles.menuIconLineMiddle}`} d="M2 12H26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            <path className={`${styles.menuIconLine} ${styles.menuIconLineBottom}`} d="M2 20H26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
-        <span className={styles.srOnly}>Ampliar el menú de navegación</span>
+        <span className={styles.srOnly}>{(open ? "Cerrar" : "Ampliar")} el menú de navegación</span>
       </button>
 
       {(open || isClosing) && (
@@ -107,31 +112,42 @@ export default function MenuDrawer() {
               <nav className={styles.menuNav}>
                 <ul>
                   <li>
-                    <a href="#"
-                      onMouseEnter={() => setHovered("personajes")}
+                    <a href="#reglas-del-juego"
+                      onClick={handleClose}
+                      onMouseEnter={() => setHovered("reglasJuego")}
                       onMouseLeave={() => setHovered(null)}
-                    >Personajes</a>
+                    >Reglas del Juego</a>
                   </li>
                   <li>
-                    <a href="#"
-                      onMouseEnter={() => setHovered("lugares")}
+                    <a href="#objetivos-del-juego"
+                      onClick={handleClose}
+                      onMouseEnter={() => setHovered("objetivosJuego")}
                       onMouseLeave={() => setHovered(null)}
-                    >Lugares</a>
+                    >Objetivos</a>
                   </li>
                   <li>
-                    <a href="#"
-                      onMouseEnter={() => setHovered("trailers")}
+                    <a href="#como-jugar"
+                      onClick={handleClose}
+                      onMouseEnter={() => setHovered("comoJugar")}
                       onMouseLeave={() => setHovered(null)}
-                    >Tráilers</a>
+                    >Cómo Jugar</a>
                   </li>
                   <li>
-                    <a href="#"
-                      onMouseEnter={() => setHovered("descargas")}
+                    <a href="#contacto"
+                      onClick={handleClose}
+                      onMouseEnter={() => setHovered("contacto")}
                       onMouseLeave={() => setHovered(null)}
-                    >Descargas</a>
+                    >Contacto</a>
                   </li>
                 </ul>
               </nav>
+              
+              {/* Elementos decorativos de esquina */}
+              <div className={`${styles.cornerAccent} ${styles.cornerAccentTopLeft}`}></div>
+              <div className={`${styles.cornerAccent} ${styles.cornerAccentTopRight}`}></div>
+              <div className={`${styles.cornerAccent} ${styles.cornerAccentBottomLeft}`}></div>
+              <div className={`${styles.cornerAccent} ${styles.cornerAccentBottomRight}`}></div>
+
             </div>
           </div>
         </div>

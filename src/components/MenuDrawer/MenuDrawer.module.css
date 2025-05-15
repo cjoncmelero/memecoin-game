@@ -1,35 +1,52 @@
 .menuButton {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
+  top: 1.5rem;
+  right: 1.5rem;
   z-index: 100;
-  background: #fff;
-  border: none;
-  border-radius: 2rem;
-  padding: 0.5rem 1.5rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+  border: 2px solid #ff0066;
+  border-radius: 50px;
+  padding: 0.6rem 0.8rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(255, 0, 102, 0.5), 0 0 5px rgba(255, 255, 255, 0.3) inset;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.2s, transform 0.18s;
+  transition: background 0.3s, transform 0.2s, border-color 0.3s, box-shadow 0.3s;
+  width: 60px;
+  height: 60px;
+}
+.menuButton:hover {
+  background: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+  border-color: #00f2ff;
+  box-shadow: 0 0 25px rgba(0, 242, 255, 0.7), 0 0 8px rgba(255, 255, 255, 0.4) inset;
+  transform: scale(1.05);
 }
 .menuButton:active, .menuButton:focus {
-  background: #f0f0f0;
-  transform: scale(0.97);
+  background: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+  transform: scale(0.98);
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.5), 0 0 3px rgba(255, 255, 255, 0.2) inset;
 }
 .iconWrapper {
   display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+  align-items: center;
+  justify-content: center;
 }
-.line {
-  width: 28px;
-  height: 4px;
-  background: #222;
-  border-radius: 2px;
-  transition: background 0.2s;
+.menuIconSvg path {
+  stroke: #fff;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s ease, stroke 0.3s;
+}
+.menuButton:hover .menuIconSvg path {
+  stroke: #00f2ff;
+}
+.menuButtonOpen .menuIconLineTop {
+  transform: translate(4px, 2px) rotate(45deg) scaleX(0.9);
+}
+.menuButtonOpen .menuIconLineMiddle {
+  opacity: 0;
+}
+.menuButtonOpen .menuIconLineBottom {
+  transform: translate(4px, -10px) rotate(-45deg) scaleX(0.9);
 }
 .srOnly {
   position: absolute;
@@ -127,16 +144,18 @@
 }
 .leftPanelOut {
   flex: 1 1 50%;
-  background: linear-gradient(135deg, #3a6c7a 0%, #6e5c7b 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   animation: fadeOutLeftPanel 0.4s cubic-bezier(.4,0,.2,1) forwards;
+  border-right: 2px solid #ff0066;
 }
 .leftPanelImg {
   flex: 1 1 50%;
-  background: #222;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -145,6 +164,7 @@
   justify-content: center;
   opacity: 1;
   animation: fadeInLeftPanel 0.5s cubic-bezier(.4,0,.2,1);
+  border-right: 2px solid #ff0066;
 }
 @keyframes fadeInLeftPanel {
   from { opacity: 0; transform: scale(0.98); }
@@ -156,31 +176,83 @@
 }
 .rightPanel {
   flex: 1 1 50%;
-  background: #181622;
-  color: #fff;
+  background-color: #121212;
+  color: #e0e0e0;
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 2.5rem 3rem 2rem 3rem;
-  min-width: 350px;
+  padding: 3rem 3.5rem 2rem 3.5rem;
+  min-width: 380px;
   max-width: 50%;
-  box-shadow: -2px 0 24px rgba(0,0,0,0.12);
+  box-shadow: -5px 0 30px rgba(0,0,0,0.3);
   transform: translateX(0);
   animation: slideInRightPanel 0.45s cubic-bezier(.4,0,.2,1);
+  border-left: 2px solid #ff0066;
+  overflow: hidden;
+}
+.rightPanel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/patterns/circuit-pattern.svg');
+  background-repeat: repeat;
+  background-size: 4000px;
+  opacity: 0.4;
+  z-index: 0;
+  filter: drop-shadow(0 0 6px #ff0066) drop-shadow(0 0 12px #ff0066);
+
+  /* Animación de flujo de energía */
+  mask-image: linear-gradient(
+    135deg, 
+    transparent 40%, 
+    white 50%, 
+    transparent 60%
+  );
+  mask-size: 300% 300%;
+  animation: energyFlow 3s linear infinite;
 }
 .rightPanelOut {
   flex: 1 1 50%;
-  background: #181622;
-  color: #fff;
+  background-color: #121212;
+  color: #e0e0e0;
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 2.5rem 3rem 2rem 3rem;
-  min-width: 350px;
-  max-width: 700px;
-  box-shadow: -2px 0 24px rgba(0,0,0,0.12);
+  padding: 3rem 3.5rem 2rem 3.5rem;
+  min-width: 380px;
+  max-width: 50%;
+  box-shadow: -5px 0 30px rgba(0,0,0,0.3);
   transform: translateX(100%);
   animation: slideOutRightPanel 0.4s cubic-bezier(.4,0,.2,1) forwards;
+  border-left: 2px solid #ff0066;
+  overflow: hidden;
+}
+.rightPanelOut::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/patterns/circuit-pattern.svg');
+  background-repeat: repeat;
+  background-size: 200px;
+  opacity: 0.4;
+  filter: drop-shadow(0 0 6px #ff0066) drop-shadow(0 0 12px #ff0066);
+  z-index: 0;
+
+  /* Animación de flujo de energía */
+  mask-image: linear-gradient(
+    135deg, 
+    transparent 40%, 
+    white 50%, 
+    transparent 60%
+  );
+  mask-size: 300% 300%;
+  animation: energyFlow 3s linear infinite;
 }
 @keyframes slideInRightPanel {
   from { transform: translateX(100%); opacity: 0.7; }
@@ -192,28 +264,35 @@
 }
 .closeButton {
   position: absolute;
-  top: 2rem;
-  right: 2rem;
-  background: rgba(255,255,255,0.08);
-  border: none;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 0, 102, 0.2);
+  border: 1px solid #ff0066;
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   color: #fff;
-  font-size: 2rem;
+  font-size: 2.2rem;
   cursor: pointer;
   z-index: 10;
-  transition: background 0.2s, transform 0.18s;
+  transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .closeButton:hover {
-  background: rgba(255,255,255,0.18);
-  transform: scale(1.08);
+  background: rgba(255, 0, 102, 0.4);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 0 10px #ff0066;
 }
 .menuNav {
-  margin-top: 5rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+  z-index: 1;
 }
 .menuNav ul {
   list-style: none;
@@ -221,18 +300,59 @@
   margin: 0;
 }
 .menuNav li {
-  margin-bottom: 2.2rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+.rightPanel:not(.rightPanelOut) .menuNav li:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.rightPanel:not(.rightPanelOut) .menuNav li:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.rightPanel:not(.rightPanelOut) .menuNav li:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.rightPanel:not(.rightPanelOut) .menuNav li:nth-child(4) {
+  animation-delay: 0.5s;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .menuNav a {
-  font-size: 2.6rem;
-  font-weight: 800;
-  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #e0e0e0;
   text-decoration: none;
-  letter-spacing: -0.02em;
-  transition: color 0.2s;
+  letter-spacing: 0.02em;
+  transition: color 0.2s, text-shadow 0.3s;
+  position: relative;
+  padding: 5px 0;
+  display: inline-block;
+}
+.menuNav a::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #00f2ff;
+  transition: width 0.3s ease-in-out;
+  box-shadow: 0 0 8px #00f2ff;
 }
 .menuNav a:hover {
-  color: #ff0066;
+  color: #fff;
+  text-shadow: 0 0 10px #ff0066, 0 0 5px #fff;
+}
+.menuNav a:hover::before {
+  width: 100%;
 }
 
 @media (max-width: 900px) {
@@ -250,5 +370,49 @@
   }
   .menuNav a {
     font-size: 2rem;
+  }
+}
+
+.cornerAccent {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-image: url('/images/decorations/corner-accent.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: drop-shadow(0 0 3px #ff0066) drop-shadow(0 0 6px #ff0066);
+  z-index: 1;
+}
+
+.cornerAccentTopLeft {
+  top: 10px;
+  left: 10px;
+  transform: rotate(180deg);
+}
+
+.cornerAccentTopRight {
+  top: 10px;
+  right: 10px;
+  transform: rotate(270deg);
+}
+
+.cornerAccentBottomLeft {
+  bottom: 10px;
+  left: 10px;
+  transform: rotate(90deg);
+}
+
+.cornerAccentBottomRight {
+  bottom: 10px;
+  right: 10px;
+  transform: rotate(0deg);
+}
+
+@keyframes energyFlow {
+  0% {
+    mask-position: 100% 100%;
+  }
+  100% {
+    mask-position: 0% 0%;
   }
 } 

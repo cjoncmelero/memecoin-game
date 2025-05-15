@@ -1,0 +1,9 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="circuitPattern" patternUnits="userSpaceOnUse" width="50" height="50" x="0" y="0">
+      <path d="M0 25 H12.5 V12.5 H25 V25 H37.5 V12.5 H50 M25 0 V12.5 M12.5 50 V37.5 H0 M37.5 50 V37.5 H50 M25 50V37.5 M0 12.5V0 M50 12.5V0" 
+            fill="none" stroke="#cccccc" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#circuitPattern)"/>
+</svg> 

@@ -57,14 +57,22 @@ export default function Home() {
       <main>
         <HeroHeader />
         <GameIntro />
+        <section id="objetivos-del-juego">
         <GameObjectives />
+        </section>
+        <section id="como-jugar">
         <GameFlow />
+        </section>
+        <section id="reglas-del-juego">
         <GameRules />
+        </section>
         <div className="py-20 px-4 max-w-6xl mx-auto">
           {/* Contenido adicional de la página */}
         </div>
       </main>
+      <section id="contacto">
       <Footer />
+      </section>
     </div>
   );
 }

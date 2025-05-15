@@ -569,7 +569,7 @@ export default function GameBoard() {
         
         setTimeout(() => {
           eliminateLoser(0);
-        }, 1000);
+    }, 1000);
       }, 2000);
     }, 500);
   };
@@ -1001,7 +1001,7 @@ export default function GameBoard() {
           </div>
         </div>
       )}
-
+      
       {/* Botón flotante para abrir el chat en pantalla completa (visible en <= 1250px) */}
       {isTablet && (
         <button 
