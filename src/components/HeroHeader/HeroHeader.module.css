@@ -277,6 +277,19 @@
   }
 }
 
+@media (max-width: 420px) {
+  .leftMe {
+    left: 2%;
+    transform: translate3d(-12vw, 0, 0);
+    font-size: clamp(7.5rem, 18vw, 18rem);
+  }  
+  .rightMe {
+    right: 2%;
+    transform: translate3d(12vw, 0, 0);
+    font-size: clamp(7.5rem, 18vw, 18rem);
+  }
+}
+
 @media (max-width: 390px) {
   .leftMe {
     font-size: clamp(6.8  rem, 18vw, 18rem);
@@ -383,6 +396,57 @@
   font-size: clamp(6rem, 12vw, 12rem) !important;
   letter-spacing: -0.05em !important;
   animation: memeGameAppear 0.7s forwards !important;
+}
+
+@media (max-width: 768px) {
+  .fullTitleText {
+    font-size: clamp(4.5rem, 10vw, 10rem) !important;
+  }
+  
+  .memeText {
+    margin-right: 8px;
+  }
+  
+  .gameText {
+    font-size: clamp(6rem, 12vw, 12rem);
+  }
+}
+
+@media (max-width: 550px) {
+  .fullTitleText {
+    font-size: clamp(3.5rem, 9vw, 9rem) !important;
+  }
+  
+  .memeText {
+    margin-right: 5px;
+  }
+  
+  .gameText {
+    font-size: clamp(5rem, 10vw, 10rem);
+  }
+  
+  .gameText::before {
+    -webkit-text-stroke: 1.5px #ff1453;
+  }
+}
+
+@media (max-width: 390px) {
+  .fullTitleText {
+    font-size: clamp(3rem, 8vw, 8rem) !important;
+  }
+  
+  .memeText {
+    margin-right: 3px;
+  }
+  
+  .gameText {
+    font-size: clamp(4rem, 9vw, 9rem);
+  }
+  
+  .gameText::before {
+    -webkit-text-stroke: 1px #ff1453;
+    left: 2px;
+  }
 }
 
 @keyframes squidShake {
