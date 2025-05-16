@@ -8,32 +8,29 @@ export default function GameBoard() {
   const [balance, setBalance] = useState(2345.67);
   const [chatInput, setChatInput] = useState("");
   const [showAllEmojis, setShowAllEmojis] = useState(false);
-  const [activeTab, setActiveTab] = useState('players'); // Para las pestañas móviles
+  const [activeTab, setActiveTab] = useState('players');
   const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false); // Nuevo estado para modo tableta (1250px)
+  const [isTablet, setIsTablet] = useState(false);
   const [isSmallMobile, setIsSmallMobile] = useState(false);
   const [potAmount, setPotAmount] = useState(3000);
   const [isCountingUp, setIsCountingUp] = useState(false);
   const [displayAmount, setDisplayAmount] = useState(3000);
   const [balanceState, setBalanceState] = useState(""); // "increasing" o "decreasing"
-  const [showFullscreenChat, setShowFullscreenChat] = useState(false); // Estado para controlar el chat pantalla completa
-  const [mobileLayout, setMobileLayout] = useState("normal"); // "normal", "diagonal", "z", "circle"
+  const [showFullscreenChat, setShowFullscreenChat] = useState(false);
+  const [mobileLayout, setMobileLayout] = useState("normal");
   
-  // Estados para el contador de ronda
-  const [roundTime, setRoundTime] = useState(10); // 2 minutos por ronda
+  const [roundTime, setRoundTime] = useState(10); // Tiempo de ronda en segundos
   const [isRoundActive, setIsRoundActive] = useState(true);
   const [showCountdown, setShowCountdown] = useState(false);
   const [countdownNumber, setCountdownNumber] = useState(5);
   const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
   
-  // Estados para la selección y eliminación de personajes
   const [selectedCharacterId, setSelectedCharacterId] = useState(null);
   const [showSelectionAnimation, setShowSelectionAnimation] = useState(false);
   const [eliminationStep, setEliminationStep] = useState(0); // 0: no iniciado, 1: escaneo, 2: apuntando, 3: disparando, 4: eliminación completa
-  const [eliminatedCharactersIds, setEliminatedCharactersIds] = useState(new Set()); // Nuevo estado
+  const [eliminatedCharactersIds, setEliminatedCharactersIds] = useState(new Set());
   
-  // Referencias a los elementos DOM
   const prevAmount = useRef(3000);
   const prevBalance = useRef(2345.67);
   const charactersGridRef = useRef(null);
@@ -44,12 +41,11 @@ export default function GameBoard() {
   const deathFlashRef = useRef(null);
   const gameContainerRef = useRef(null);
   
-  // Efecto para animar el incremento del monto
   useEffect(() => {
     if (isCountingUp) {
       const diff = potAmount - prevAmount.current;
-      const duration = 1500; // duración de la animación en ms
-      const increment = diff / (duration / 16); // incremento por frame (60fps)
+      const duration = 1500; 
+      const increment = diff / (duration / 16);
       let currentAmount = prevAmount.current;
       let lastTime = 0;
       
@@ -76,7 +72,6 @@ export default function GameBoard() {
     }
   }, [isCountingUp, potAmount]);
   
-  // Efecto para el contador de ronda
   useEffect(() => {
     let timer;
     if (isRoundActive && roundTime > 0) {
@@ -110,22 +105,16 @@ export default function GameBoard() {
     };
   }, [isRoundActive, roundTime, showCountdown]);
   
-  // Para depuración: monitorear el estado del modal
-  useEffect(() => {
-    // console.log("Estado del modal:", { showCountdown, showFinalMessage, isFadingOut });
-  }, [showCountdown, showFinalMessage, isFadingOut]);
-  
-  // Efecto para la cuenta regresiva
   useEffect(() => {
     let initialCountdownTimerId;
-    let finalMessageSequenceTimerId; // Un solo timer para la secuencia final
+    let finalMessageSequenceTimerId;
 
     if (showCountdown && countdownNumber > 0 && !showFinalMessage) {
       initialCountdownTimerId = setTimeout(() => {
         setCountdownNumber(prev => prev - 1);
       }, 1000);
     } else if (showCountdown && countdownNumber === 0 && !showFinalMessage) {
-      setShowFinalMessage(true); // Esto re-ejecutará el efecto
+      setShowFinalMessage(true);
     } else if (showCountdown && countdownNumber === 0 && showFinalMessage) {
       if (!isFadingOut && !document.body.dataset.finalSequenceRunning) { 
         document.body.dataset.finalSequenceRunning = "true"; 
@@ -154,46 +143,29 @@ export default function GameBoard() {
     };
   }, [showCountdown, countdownNumber, showFinalMessage, isFadingOut]); 
   
-  // Función para reiniciar la ronda (para demostración) - DESHABILITADA
   const forceHideModal = () => {
     // Función deshabilitada - el usuario ya no puede cerrar manualmente el modal
     console.log("Cerrar modal manualmente está deshabilitado");
     return;
-    
-    // Código original comentado
-    /*
-    setIsFadingOut(true);
-    
-    setTimeout(() => {
-      setShowCountdown(false);
-      setShowFinalMessage(false);
-      setIsFadingOut(false);
-      setCountdownNumber(5);
-    }, 3500); 
-    */
   };
   
-  // Función simulada para cuando un usuario apuesta
   const handleBet = (amount) => {
     prevAmount.current = potAmount;
     setPotAmount(prev => prev + amount);
     setIsCountingUp(true);
     
-    // Actualizar el balance (disminuye)
     prevBalance.current = balance;
     setBalance(prev => prev - amount);
     setBalanceState("decreasing");
     
-    // Restaurar el estado normal después de la animación
     setTimeout(() => {
       setBalanceState("");
     }, 1500);
   };
   
-  // Detectar si estamos en un dispositivo móvil
   useEffect(() => {
     const checkMobile = () => {
-      setIsTablet(window.innerWidth <= 1250); // Nuevo breakpoint para tabletas
+      setIsTablet(window.innerWidth <= 1250);
       setIsMobile(window.innerWidth <= 768);
       setIsSmallMobile(window.innerWidth <= 430);
     };
@@ -206,7 +178,6 @@ export default function GameBoard() {
     };
   }, []);
   
-  // Emojis comunes para el chat
   const commonEmojis = ["😀", "👍", "🔥", "🚀", "💰", "😎", "🎮", "🎯"];
   const allEmojis = [
     "😀", "😁", "😂", "🤣", "😃", "😄", "😅", "😆", "😉", "😊", 
@@ -215,12 +186,10 @@ export default function GameBoard() {
     "💎", "🏆", "🥇", "🥈", "🥉", "🎖️", "🎨", "🎭", "🎪", "🎟️"
   ];
   
-  // Función para insertar emoji en el chat
   const insertEmoji = (emoji) => {
     setChatInput(prev => prev + emoji);
   };
 
-  // Personajes del juego (como en GameRules.jsx)
   const charactersBaseData = [
     {
       id: 'pepe',
@@ -260,7 +229,6 @@ export default function GameBoard() {
     }
   ];
 
-  // Asignar posiciones según el layout seleccionado
   const getPositionByLayout = (index, layout) => {
     const positions = {
       normal: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
@@ -271,20 +239,17 @@ export default function GameBoard() {
     return positions[layout][index];
   };
 
-  // Crear array de personajes con las posiciones actualizadas según el layout
   const characters = charactersBaseData.map((char, index) => ({
     ...char,
     position: getPositionByLayout(index, mobileLayout)
   }));
 
-  // Datos de ejemplo para el chat
   const chatMessages = [
     { id: 1, user: 'Player1', message: 'Buena suerte a todos!' },
     { id: 2, user: 'Player2', message: 'Vamos por Doge!' },
     { id: 3, user: 'Player3', message: 'Pepe es el mejor!' }
   ];
 
-  // Jugadores ejemplo
   const players = [
     { id: 1, name: 'Player1', bet: 100, character: 'pepe' },
     { id: 2, name: 'Player2', bet: 250, character: 'doge' },
@@ -293,14 +258,12 @@ export default function GameBoard() {
     { id: 5, name: 'Player5', bet: 50, character: 'pepe' }
   ];
 
-  // Notificaciones ejemplo
   const notifications = [
     "Player1 apostó 100 a Pepe",
     "Player2 apostó 250 a Doge",
     "Nueva ronda comienza en 5 minutos"
   ];
 
-  // Función para reiniciar la ronda (para demostración)
   const resetRound = () => {
     setRoundTime(10);
     setIsRoundActive(true);
@@ -309,21 +272,18 @@ export default function GameBoard() {
     setCountdownNumber(5);
   };
   
-  // Función para formatear el tiempo en formato mm:ss
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
   
-  // Función para renderizar los dígitos del tiempo con animación
   const renderTimeDigits = (timeString) => {
     return timeString.split('').map((char, index) => {
       if (char === ':') {
         return <span key={index} className={styles.timeColon}>:</span>;
       }
       
-      // Determinar si este carácter es parte de los segundos
       const isSecondDigit = index >= 3;
       
       return (
@@ -337,34 +297,22 @@ export default function GameBoard() {
     });
   };
   
-  // Determinar si el tiempo está en estado de advertencia (menos de 30 segundos)
   const isTimeWarning = roundTime <= 30;
-  
-  // Calcular el porcentaje de tiempo transcurrido para la barra de progreso
   const progressPercentage = ((120 - roundTime) / 120) * 100;
 
-  // Función para determinar la imagen del personaje según el estado del juego
   const getCharacterImageSrc = (character) => {
-    // 1. Estado Ganador (Máxima prioridad)
     if (eliminationStep === 4 && character.id === selectedCharacterId) {
       return character.imgGanador;
     }
-
-    // 2. Estado Muerto (Siguiente prioridad)
     if (eliminatedCharactersIds.has(character.id)) {
       return character.imgMuerto;
     }
-
-    // 3. Estado Preocupado
     if (showSelectionAnimation && eliminationStep > 0 && eliminationStep < 4) {
       return character.imgPreocupado;
     }
-    
-    // 4. Estado Normal (Por defecto)
     return character.imgNormal;
   };
-
-  // Función para iniciar la animación de selección y eliminación
+  
   const startSelectionAndElimination = () => {
     const sniperImg = new Image();
     sniperImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23ff0000' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ff0000' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='5' fill='%23ff0000'/%3E%3Cline x1='5' y1='50' x2='25' y2='50' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='75' y1='50' x2='95' y2='50' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='50' y1='5' x2='50' y2='25' stroke='%23ff0000' stroke-width='1'/%3E%3Cline x1='50' y1='75' x2='50' y2='95' stroke='%23ff0000' stroke-width='1'/%3E%3C/svg%3E";
@@ -435,8 +383,6 @@ export default function GameBoard() {
         setEliminationStep(2);
         
         if (sniperRef.current) {
-          // Eliminamos esta línea que hacía que la mira apareciera en la esquina
-          // sniperRef.current.style.display = 'block';
         } else {
           console.error("Error: sniperRef.current es null");
         }
@@ -475,35 +421,29 @@ export default function GameBoard() {
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
             
-            // Ubicar el sniper en una posición inicial aleatoria alrededor del objetivo
-            const randomOffsetX = Math.random() * 40 - 20; // valor entre -20 y 20
-            const randomOffsetY = Math.random() * 40 - 20; // valor entre -20 y 20
+            const randomOffsetX = Math.random() * 40 - 20;
+            const randomOffsetY = Math.random() * 40 - 20;
             
-            // Ajustes de posición: +30px a la derecha, -50px hacia arriba
             sniperRef.current.style.left = `${centerX - 50 + randomOffsetX + 30}px`;
             sniperRef.current.style.top = `${centerY - 50 + randomOffsetY - 50}px`;
             sniperRef.current.style.display = 'block';
             
-            // Función para animar el movimiento del sniper
             const moveSniperToTarget = () => {
               let startTime = null;
-              const duration = 800; // duración en ms
+              const duration = 800;
               const startX = parseFloat(sniperRef.current.style.left);
               const startY = parseFloat(sniperRef.current.style.top);
-              // Ajustamos también la posición final
-              const targetX = centerX - 50 + 10; // +30px a la derecha
-              const targetY = centerY - 50 - 50; // -50px hacia arriba
+              const targetX = centerX - 50 + 10;
+              const targetY = centerY - 50 - 50;
               
               const animate = (timestamp) => {
                 if (!startTime) startTime = timestamp;
                 const elapsed = timestamp - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 
-                // Función de suavizado para un movimiento más natural
                 const easeOutQuad = t => t * (2 - t);
                 const easedProgress = easeOutQuad(progress);
                 
-                // Aplicar pequeñas oscilaciones aleatorias que disminuyen con el tiempo
                 const oscillationFactor = 1 - easedProgress;
                 const oscillationX = oscillationFactor * Math.sin(elapsed * 0.03) * 8;
                 const oscillationY = oscillationFactor * Math.sin(elapsed * 0.04) * 8;
@@ -517,7 +457,6 @@ export default function GameBoard() {
                 if (progress < 1) {
                   requestAnimationFrame(animate);
                 } else {
-                  // Una vez completada la animación, disparar
                   setTimeout(() => {
                     setEliminationStep(3);
                     
@@ -526,7 +465,6 @@ export default function GameBoard() {
                       laserBeam.style.display = 'block';
                       laserBeam.style.opacity = '1';
                       laserBeam.style.left = `${centerX + 15}px`;
-                      
                       laserBeam.style.transform = `rotate(90deg)`;
                     }
                     
@@ -594,7 +532,6 @@ export default function GameBoard() {
               requestAnimationFrame(animate);
             };
             
-            // Iniciar la animación tras un breve retraso
             setTimeout(moveSniperToTarget, 200);
           } else {
             console.error(`Error: No se encontró el elemento con id character-${loser.id} o sniperRef.current es null`);
@@ -609,7 +546,6 @@ export default function GameBoard() {
     }, 500);
   };
   
-  // Función para resetear el estado de los personajes
   const resetCharacters = () => {
     const characterCards = document.querySelectorAll(`.${styles.characterCard}`);
     characterCards.forEach(card => {
@@ -626,15 +562,13 @@ export default function GameBoard() {
     setEliminationStep(0);
   };
 
-  // Inicializar las referencias de salpicaduras de sangre
   useEffect(() => {
     bloodSplatterRefs.current = {};
   }, []);
   
-  // Renderizar los personajes con IDs correctos
   const renderCharacterCards = () => {
     return characters.map(character => {
-      const imageSrc = getCharacterImageSrc(character); // Obtener la imagen dinámicamente
+      const imageSrc = getCharacterImageSrc(character);
       return (
         <div 
           key={character.id}
@@ -644,7 +578,7 @@ export default function GameBoard() {
         >
           <div className={styles.characterImageContainer}>
             <img 
-              src={imageSrc} // Usar la imagen dinámica
+              src={imageSrc}
               alt={character.name} 
               className={styles.characterImage}
             />
@@ -704,10 +638,8 @@ export default function GameBoard() {
     });
   };
   
-  // Función para alternar la visibilidad del chat en pantalla completa
   const toggleFullscreenChat = () => {
     setShowFullscreenChat(!showFullscreenChat);
-    // Si abrimos el chat, enfocamos el campo de entrada
     if (!showFullscreenChat) {
       setTimeout(() => {
         const fullscreenInput = document.getElementById('fullscreen-chat-input');
@@ -718,7 +650,6 @@ export default function GameBoard() {
     }
   };
   
-  // Cambiar al siguiente layout para dispositivos móviles
   const changeLayout = () => {
     const layouts = ['normal', 'diagonal', 'z', 'circle'];
     const currentIndex = layouts.indexOf(mobileLayout);
@@ -728,7 +659,6 @@ export default function GameBoard() {
   
   return (
     <div className={styles.gameContainer} ref={gameContainerRef}>
-      {/* Logo y balance en la parte superior */}
       <div className={styles.logoHeader}>
         <div style={{ flex: 1 }}>
           <h1 className={styles.logo}>
@@ -737,14 +667,12 @@ export default function GameBoard() {
           </h1>
         </div>
         
-        {/* Información del balance del usuario */}
         <div className={styles.balanceContainer}>
           <span className={styles.balanceLabel}>BALANCE</span>
           <span className={`${styles.balanceAmount} ${styles[balanceState]}`}>${balance.toFixed(2)}</span>
         </div>
       </div>
       
-      {/* Barra de notificaciones en la parte superior para vistas móviles/tablet */}
       {isTablet && (
         <div className={`${styles.notificationsBar} ${styles.notificationsBarTop}`}>
           <div className={styles.notificationsScroller}>
@@ -757,7 +685,6 @@ export default function GameBoard() {
         </div>
       )}
       
-      {/* Modal de cuenta regresiva */}
       <div className={`
         ${styles.countdownModal} 
         ${(showCountdown || showFinalMessage) ? styles.countdownModalVisible : ''} 
@@ -788,7 +715,6 @@ export default function GameBoard() {
         </div>
       </div>
       
-      {/* Elementos de animación para la selección y eliminación */}
       <div 
         ref={sniperRef} 
         className={styles.sniper}
@@ -810,9 +736,7 @@ export default function GameBoard() {
         style={{ position: 'fixed', zIndex: 989, display: 'none' }}
       ></div>
 
-      {/* Contenedor principal del juego */}
       <div className={styles.mainGameArea}>
-        {/* Lista de jugadores a la izquierda (solo desktop) */}
         {!isTablet && (
           <div className={styles.playersListContainer}>
             <h3 className={styles.sectionTitle}>
@@ -831,7 +755,6 @@ export default function GameBoard() {
           </div>
         )}
 
-        {/* Área central con los personajes y apuestas */}
         <div className={styles.charactersContainer}>
           <div className={styles.potInfo}>
             <span className={styles.potLabel}>TOTAL APOSTADO</span>
@@ -858,7 +781,6 @@ export default function GameBoard() {
             {renderCharacterCards()}
           </div>
 
-          {/* Botón flotante para cambiar la disposición (solo en móvil) */}
           {isSmallMobile && (
             <button 
               className={styles.changeLayoutButton}
@@ -869,7 +791,6 @@ export default function GameBoard() {
             </button>
           )}
 
-          {/* Contador de tiempo para la ronda */}
           <div className={styles.roundTimerContainer}>
             <span className={styles.roundTimerLabel}>LA SIGUIENTE RONDA COMIENZA EN </span>
             <div className={styles.roundTimer}>
@@ -898,7 +819,6 @@ export default function GameBoard() {
             </div>
           </div>
 
-          {/* Tabs para tableta/móvil - visible en dispositivos con ancho <= 1250px */}
           {isTablet && (
             <div className={styles.mobileTabs}>
               <div className={styles.tabsContainer}>
@@ -980,7 +900,6 @@ export default function GameBoard() {
           )}
         </div>
 
-        {/* Área de chat a la derecha (solo desktop) */}
         {!isTablet && (
           <div className={styles.chatContainer}>
             <h3 className={styles.sectionTitle}>CHAT</h3>
@@ -993,7 +912,6 @@ export default function GameBoard() {
               ))}
             </div>
             
-            {/* Sección de emojis rápidos */}
             <div className={styles.emojiSection}>
               <div className={styles.emojiContainer}>
                 {(showAllEmojis ? allEmojis : commonEmojis).map((emoji, index) => (
@@ -1028,7 +946,6 @@ export default function GameBoard() {
         )}
       </div>
 
-      {/* Barra de notificaciones en la parte inferior solo para escritorio */}
       {!isTablet && (
         <div className={styles.notificationsBar}>
           <div className={styles.notificationsScroller}>
@@ -1041,7 +958,6 @@ export default function GameBoard() {
         </div>
       )}
       
-      {/* Botón flotante para abrir el chat en pantalla completa (visible en <= 1250px) */}
       {isTablet && (
         <button 
           className={styles.chatFloatingButton}
@@ -1050,7 +966,6 @@ export default function GameBoard() {
         />
       )}
       
-      {/* Chat en pantalla completa */}
       <div className={`${styles.chatFullscreen} ${showFullscreenChat ? styles.chatFullscreenVisible : ''}`}>
         <div className={styles.chatFullscreenHeader}>
           <h2 className={styles.chatFullscreenTitle}>CHAT DEL JUEGO</h2>
@@ -1072,7 +987,6 @@ export default function GameBoard() {
             ))}
           </div>
           
-          {/* Sección de emojis rápidos */}
           <div className={styles.emojiSection}>
             <div className={styles.emojiContainer}>
               {(showAllEmojis ? allEmojis : commonEmojis).map((emoji, index) => (
@@ -1109,7 +1023,6 @@ export default function GameBoard() {
         </div>
       </div>
 
-      {/* Componente de Modales de Debug */}
       <DebugModals />
     </div>
   );
