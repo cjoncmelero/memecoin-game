@@ -196,12 +196,94 @@
 
 .leftMe {
   transform: translate3d(-25vw, 0, 0);
-  left: 25%;
+  left: 23%;
 }
 
 .rightMe {
   transform: translate3d(25vw, 0, 0);
-  right: 25%;
+  right: 23%;
+}
+
+@media (max-width: 2150px) {
+  .leftMe {
+    transform: translate3d(-25vw, 0, 0);
+    left: 20%;
+  }
+  .rightMe {
+    transform: translate3d(25vw, 0, 0);
+    right: 20%;
+  }
+}
+
+@media (max-width: 1920px) {
+  .leftMe {
+    transform: translate3d(-25vw, 0, 0);
+    left: 15%;
+  }  
+  .rightMe {
+    transform: translate3d(25vw, 0, 0);
+    right: 15%;
+  }
+}
+
+@media (max-width: 1800px) {
+  .leftMe {
+    transform: translate3d(-25vw, 0, 0);
+    left: 12%;
+  }  
+  .rightMe {
+    transform: translate3d(25vw, 0, 0);
+    right: 12%;
+  }
+}
+
+@media (max-width: 1650px) {
+  .leftMe {
+    left: 10%;
+  }  
+  .rightMe {
+    right: 10%;
+  }
+}
+
+@media (max-width: 650px) {
+  .leftMe {
+    left: 8%;
+  }  
+  .rightMe {
+    right: 8%;
+  }
+}
+
+@media (max-width: 600px) {
+  .leftMe {
+    left: 5%;
+  }  
+  .rightMe {
+    right: 5%;
+  }
+}
+
+@media (max-width: 550px) {
+  .leftMe {
+    left: 2%;
+    transform: translate3d(-15vw, 0, 0);
+    font-size: clamp(8rem, 20vw, 20rem);
+  }  
+  .rightMe {
+    right: 2%;
+    transform: translate3d(15vw, 0, 0);
+    font-size: clamp(8rem, 20vw, 20rem);
+  }
+}
+
+@media (max-width: 390px) {
+  .leftMe {
+    font-size: clamp(6.8  rem, 18vw, 18rem);
+  }  
+  .rightMe {
+    font-size: clamp(6.8rem, 18vw, 18rem);
+  }
 }
 
 .gameContainer {

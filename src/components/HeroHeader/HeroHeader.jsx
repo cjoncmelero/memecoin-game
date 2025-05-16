@@ -52,15 +52,20 @@ const HeroHeader = () => {
         leftMeRef.current.style.opacity = appearProgress;
         rightMeRef.current.style.opacity = appearProgress;
         
-        // Movimiento de los laterales hacia el centro
+        // Movimiento de los laterales hacia posición invertida
         const moveProgress = Math.min(Math.max((scrollY - windowHeight * 0.6) / (windowHeight * 0.3), 0), 1);
         
-        // Ancho del viewport, dividido por 4 para obtener una cuarta parte (la mitad de la mitad)
-        const viewportWidth = window.innerWidth;
-        const moveDistance = viewportWidth / 4;
+        // Obtenemos la posición inicial de los elementos (en píxeles desde los bordes)
+        const computedLeftStyle = window.getComputedStyle(leftMeRef.current);
+        const computedRightStyle = window.getComputedStyle(rightMeRef.current);
         
-        leftMeRef.current.style.transform = `translateX(${moveProgress * moveDistance}px)`;
-        rightMeRef.current.style.transform = `translateX(${-moveProgress * moveDistance}px)`;
+        // Calculamos la distancia que deben moverse para cambiar exactamente de posición
+        // Cuando moveProgress = 1, leftMe tomará la posición de rightMe y viceversa
+        const leftToRight = window.innerWidth - parseFloat(computedLeftStyle.left) - leftMeRef.current.offsetWidth - parseFloat(computedRightStyle.right);
+        const rightToLeft = window.innerWidth - parseFloat(computedRightStyle.right) - rightMeRef.current.offsetWidth - parseFloat(computedLeftStyle.left);
+        
+        leftMeRef.current.style.transform = `translateX(${moveProgress * leftToRight}px)`;
+        rightMeRef.current.style.transform = `translateX(${-moveProgress * rightToLeft}px)`;
         
         // Segunda fase: Cambio de color de fondo y aparición de "GAME"
         const colorChangeProgress = Math.min(Math.max((scrollY - windowHeight * 1.0) / (windowHeight * 0.2), 0), 1);
