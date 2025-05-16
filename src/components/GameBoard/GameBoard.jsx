@@ -31,6 +31,7 @@ export default function GameBoard() {
   const [selectedCharacterId, setSelectedCharacterId] = useState(null);
   const [showSelectionAnimation, setShowSelectionAnimation] = useState(false);
   const [eliminationStep, setEliminationStep] = useState(0); // 0: no iniciado, 1: escaneo, 2: apuntando, 3: disparando, 4: eliminación completa
+  const [eliminatedCharactersIds, setEliminatedCharactersIds] = useState(new Set()); // Nuevo estado
   
   // Referencias a los elementos DOM
   const prevAmount = useRef(3000);
@@ -224,25 +225,37 @@ export default function GameBoard() {
     {
       id: 'pepe',
       name: 'Pepe',
-      img: '/images/pj/pepe.png',
+      imgNormal: '/images/pj/pepe.png',
+      imgPreocupado: '/images/pj/preocupado.jpeg',
+      imgMuerto: '/images/pj/muerto.jpeg',
+      imgGanador: '/images/pj/ganador.jpeg',
       multiplier: '1.5x'
     },
     {
       id: 'doge',
       name: 'Doge',
-      img: '/images/pj/doge.png',
+      imgNormal: '/images/pj/doge.png',
+      imgPreocupado: '/images/pj/preocupado.jpeg',
+      imgMuerto: '/images/pj/muerto.jpeg',
+      imgGanador: '/images/pj/ganador.jpeg',
       multiplier: '2x'
     },
     {
       id: 'chillguy',
       name: 'Chill Guy',
-      img: '/images/pj/chillguy.png',
+      imgNormal: '/images/pj/chillguy.png',
+      imgPreocupado: '/images/pj/preocupado.jpeg',
+      imgMuerto: '/images/pj/muerto.jpeg',
+      imgGanador: '/images/pj/ganador.jpeg',
       multiplier: '3x'
     },
     {
       id: 'brett',
       name: 'Brett',
-      img: '/images/pj/brett.png',
+      imgNormal: '/images/pj/brett.png',
+      imgPreocupado: '/images/pj/preocupado.jpeg',
+      imgMuerto: '/images/pj/muerto.jpeg',
+      imgGanador: '/images/pj/ganador.jpeg',
       multiplier: '5x'
     }
   ];
@@ -329,6 +342,27 @@ export default function GameBoard() {
   
   // Calcular el porcentaje de tiempo transcurrido para la barra de progreso
   const progressPercentage = ((120 - roundTime) / 120) * 100;
+
+  // Función para determinar la imagen del personaje según el estado del juego
+  const getCharacterImageSrc = (character) => {
+    // 1. Estado Ganador (Máxima prioridad)
+    if (eliminationStep === 4 && character.id === selectedCharacterId) {
+      return character.imgGanador;
+    }
+
+    // 2. Estado Muerto (Siguiente prioridad)
+    if (eliminatedCharactersIds.has(character.id)) {
+      return character.imgMuerto;
+    }
+
+    // 3. Estado Preocupado
+    if (showSelectionAnimation && eliminationStep > 0 && eliminationStep < 4) {
+      return character.imgPreocupado;
+    }
+    
+    // 4. Estado Normal (Por defecto)
+    return character.imgNormal;
+  };
 
   // Función para iniciar la animación de selección y eliminación
   const startSelectionAndElimination = () => {
@@ -484,74 +518,75 @@ export default function GameBoard() {
                   requestAnimationFrame(animate);
                 } else {
                   // Una vez completada la animación, disparar
-            setTimeout(() => {
-              setEliminationStep(3);
-              
-              if (laserBeamRef.current) {
-                const laserBeam = laserBeamRef.current;
-                laserBeam.style.display = 'block';
-                laserBeam.style.opacity = '1';
-                laserBeam.style.left = `${centerX + 15}px`;
-                
-                laserBeam.style.transform = `rotate(90deg)`;
-              }
-              
-              if (gunshotFlashRef.current) {
-                gunshotFlashRef.current.style.display = 'block';
-                gunshotFlashRef.current.style.left = `${centerX - 15}px`;
-                gunshotFlashRef.current.style.top = `0px`;
-              }
-              
-              if (gameContainerRef.current) {
-                gameContainerRef.current.classList.add(styles.bodyShaking);
-                
-                setTimeout(() => {
-                  gameContainerRef.current.classList.remove(styles.bodyShaking);
-                }, 500);
-              }
-              
-              if (deathFlashRef.current) {
-                deathFlashRef.current.style.display = 'block';
-                
-                setTimeout(() => {
-                  deathFlashRef.current.style.display = 'none';
-                }, 300);
-              }
-              
-              setTimeout(() => {
-                if (bloodSplatterRefs.current[loser.id]) {
-                  bloodSplatterRefs.current[loser.id].style.display = 'block';
-                } else {
-                  console.error(`Error: bloodSplatterRefs.current[${loser.id}] es null`);
-                  const splatterElement = document.createElement('div');
-                  splatterElement.className = styles.bloodSplatter;
-                  splatterElement.style.display = 'block';
-                  
-                  const imageContainer = loserCard.querySelector(`.${styles.characterImageContainer}`);
-                  if (imageContainer) {
-                    imageContainer.appendChild(splatterElement);
-                    bloodSplatterRefs.current[loser.id] = splatterElement;
-                  }
-                }
-                
-                if (loserCard) {
-                  loserCard.classList.remove(styles.scanning);
-                  loserCard.classList.add(styles.loser);
-                }
-                
-                setTimeout(() => {
-                  if (laserBeamRef.current) {
-                    laserBeamRef.current.style.display = 'none';
-                  }
-                  if (gunshotFlashRef.current) {
-                    gunshotFlashRef.current.style.display = 'none';
-                  }
-                  
                   setTimeout(() => {
-                    eliminateLoser(index + 1);
-                  }, 500);
-                }, 500);
-              }, 300);
+                    setEliminationStep(3);
+                    
+                    if (laserBeamRef.current) {
+                      const laserBeam = laserBeamRef.current;
+                      laserBeam.style.display = 'block';
+                      laserBeam.style.opacity = '1';
+                      laserBeam.style.left = `${centerX + 15}px`;
+                      
+                      laserBeam.style.transform = `rotate(90deg)`;
+                    }
+                    
+                    if (gunshotFlashRef.current) {
+                      gunshotFlashRef.current.style.display = 'block';
+                      gunshotFlashRef.current.style.left = `${centerX - 15}px`;
+                      gunshotFlashRef.current.style.top = `0px`;
+                    }
+                    
+                    if (gameContainerRef.current) {
+                      gameContainerRef.current.classList.add(styles.bodyShaking);
+                      
+                      setTimeout(() => {
+                        gameContainerRef.current.classList.remove(styles.bodyShaking);
+                      }, 500);
+                    }
+                    
+                    if (deathFlashRef.current) {
+                      deathFlashRef.current.style.display = 'block';
+                      
+                      setTimeout(() => {
+                        deathFlashRef.current.style.display = 'none';
+                      }, 300);
+                    }
+                    
+                    setTimeout(() => {
+                      if (bloodSplatterRefs.current[loser.id]) {
+                        bloodSplatterRefs.current[loser.id].style.display = 'block';
+                      } else {
+                        console.error(`Error: bloodSplatterRefs.current[${loser.id}] es null`);
+                        const splatterElement = document.createElement('div');
+                        splatterElement.className = styles.bloodSplatter;
+                        splatterElement.style.display = 'block';
+                        
+                        const imageContainer = loserCard.querySelector(`.${styles.characterImageContainer}`);
+                        if (imageContainer) {
+                          imageContainer.appendChild(splatterElement);
+                          bloodSplatterRefs.current[loser.id] = splatterElement;
+                        }
+                      }
+                      
+                      if (loserCard) {
+                        loserCard.classList.remove(styles.scanning);
+                        loserCard.classList.add(styles.loser);
+                        setEliminatedCharactersIds(prevIds => new Set(prevIds).add(loser.id));
+                      }
+                      
+                      setTimeout(() => {
+                        if (laserBeamRef.current) {
+                          laserBeamRef.current.style.display = 'none';
+                        }
+                        if (gunshotFlashRef.current) {
+                          gunshotFlashRef.current.style.display = 'none';
+                        }
+                        
+                        setTimeout(() => {
+                          eliminateLoser(index + 1);
+                        }, 500);
+                      }, 500);
+                    }, 300);
                   }, 200);
                 }
               };
@@ -569,7 +604,7 @@ export default function GameBoard() {
         
         setTimeout(() => {
           eliminateLoser(0);
-    }, 1000);
+        }, 1000);
       }, 2000);
     }, 500);
   };
@@ -585,6 +620,7 @@ export default function GameBoard() {
       if (ref) ref.style.display = 'none';
     });
     
+    setEliminatedCharactersIds(new Set());
     setSelectedCharacterId(null);
     setShowSelectionAnimation(false);
     setEliminationStep(0);
@@ -597,72 +633,75 @@ export default function GameBoard() {
   
   // Renderizar los personajes con IDs correctos
   const renderCharacterCards = () => {
-    return characters.map(character => (
-      <div 
-        key={character.id}
-        id={`character-${character.id}`}
-        className={`${styles.characterCard} ${styles[character.id]} ${isSmallMobile ? styles[character.position] : ''}`}
-        data-multiplier={character.multiplier}
-      >
-        <div className={styles.characterImageContainer}>
-          <img 
-            src={character.img} 
-            alt={character.name} 
-            className={styles.characterImage}
-          />
-          <div 
-            ref={el => bloodSplatterRefs.current[character.id] = el}
-            className={styles.bloodSplatter}
-            style={{ display: 'none' }}
-          ></div>
-        </div>
-        <div className={styles.characterInfo}>
-          <h4 className={styles.characterName}>{character.name}</h4>
-        </div>
-        <div className={styles.betInputContainer}>
-          <button 
-            className={`${styles.betArrow} ${styles.betArrowDown}`}
-            onClick={() => {
-              const input = document.getElementById(`bet-${character.id}`);
-              const newValue = parseInt(input.value || 0) - 1;
-              input.value = newValue >= 0 ? newValue : 0;
-            }}
-          >
-            <span>-</span>
-          </button>
-          <input 
-            id={`bet-${character.id}`}
-            type="number" 
-            className={styles.characterBetInput} 
-            defaultValue="0"
-            min="0"
-            step="1"
-          />
-          <button 
-            className={`${styles.betArrow} ${styles.betArrowUp}`}
-            onClick={() => {
-              const input = document.getElementById(`bet-${character.id}`);
-              input.value = parseInt(input.value || 0) + 1;
-            }}
-          >
-            <span>+</span>
-          </button>
-        </div>
-        <button
-          className={styles.placeBetButton}
-          onClick={() => {
-            const input = document.getElementById(`bet-${character.id}`);
-            const betAmount = parseInt(input.value || 0);
-            if (betAmount > 0) {
-              handleBet(betAmount);
-              input.value = "0";
-            }
-          }}
+    return characters.map(character => {
+      const imageSrc = getCharacterImageSrc(character); // Obtener la imagen dinámicamente
+      return (
+        <div 
+          key={character.id}
+          id={`character-${character.id}`}
+          className={`${styles.characterCard} ${styles[character.id]} ${isSmallMobile ? styles[character.position] : ''}`}
+          data-multiplier={character.multiplier}
         >
-          Apostar
-        </button>
-      </div>
-    ));
+          <div className={styles.characterImageContainer}>
+            <img 
+              src={imageSrc} // Usar la imagen dinámica
+              alt={character.name} 
+              className={styles.characterImage}
+            />
+            <div 
+              ref={el => bloodSplatterRefs.current[character.id] = el}
+              className={styles.bloodSplatter}
+              style={{ display: 'none' }}
+            ></div>
+          </div>
+          <div className={styles.characterInfo}>
+            <h4 className={styles.characterName}>{character.name}</h4>
+          </div>
+          <div className={styles.betInputContainer}>
+            <button 
+              className={`${styles.betArrow} ${styles.betArrowDown}`}
+              onClick={() => {
+                const input = document.getElementById(`bet-${character.id}`);
+                const newValue = parseInt(input.value || 0) - 1;
+                input.value = newValue >= 0 ? newValue : 0;
+              }}
+            >
+              <span>-</span>
+            </button>
+            <input 
+              id={`bet-${character.id}`}
+              type="number" 
+              className={styles.characterBetInput} 
+              defaultValue="0"
+              min="0"
+              step="1"
+            />
+            <button 
+              className={`${styles.betArrow} ${styles.betArrowUp}`}
+              onClick={() => {
+                const input = document.getElementById(`bet-${character.id}`);
+                input.value = parseInt(input.value || 0) + 1;
+              }}
+            >
+              <span>+</span>
+            </button>
+          </div>
+          <button
+            className={styles.placeBetButton}
+            onClick={() => {
+              const input = document.getElementById(`bet-${character.id}`);
+              const betAmount = parseInt(input.value || 0);
+              if (betAmount > 0) {
+                handleBet(betAmount);
+                input.value = "0";
+              }
+            }}
+          >
+            Apostar
+          </button>
+        </div>
+      );
+    });
   };
   
   // Función para alternar la visibilidad del chat en pantalla completa
