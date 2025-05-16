@@ -567,6 +567,12 @@
   .content {
     gap: 30px;
     padding: 20px;
+    width: 100%;
+  }
+  
+  .mainImageContainer {
+    max-width: 450px;
+    height: 450px;
   }
 }
 
@@ -575,18 +581,53 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
     width: 95%;
-    gap: 30px;
+    gap: 20px;
+    margin: 0 auto;
   }
   
   .textContent {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .description {
+    margin: 0 auto 20px auto;
+    text-align: center;
+  }
+  
+  .title::after {
+    right: 0;
+    margin: 0 auto;
+  }
+  
+  .stats {
+    margin: 10px auto;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
   }
   
   .imageContainer {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 10px;
+  }
+  
+  .mainImageContainer {
+    max-width: 400px;
+    height: 400px;
+    margin: 0 auto;
+  }
+  
+  .imageWrapper {
+    margin-top: 0;
   }
   
   .ctaContainer {
@@ -597,14 +638,21 @@
 }
 
 @media (max-width: 768px) {
+  .introSection {
+    height: auto;
+    min-height: 100vh;
+    padding: 20px 10px;
+    align-items: flex-start;
+  }
+  
   .content {
     padding: 15px;
-    gap: 20px;
+    gap: 15px;
   }
   
   .title {
     font-size: clamp(2rem, 6vw, 3rem);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   
   .textContent::before, .textContent::after {
@@ -613,47 +661,103 @@
   }
   
   .mainImageContainer {
-    height: 350px;
-    max-width: 350px;
+    height: 320px;
+    max-width: 320px;
+    margin-top: -10px;
+    /* Desactivar animaciones en modo teléfono */
+    transition: opacity 0.5s ease;
+    will-change: opacity;
+    transform: none;
+  }
+  
+  .mainImageVisible {
+    transform: none;
+    transition-delay: 0.1s;
   }
   
   .description {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    padding: 15px;
+    width: 100%;
   }
   
   .ctaText {
     font-size: 1.1rem;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    padding: 0 10px;
   }
   
   .buttonGroup {
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .playButton, .gameButton {
+    width: 100%;
+    min-width: unset;
   }
 
   .scrollIndicator {
     display: none;
+  }
+  
+  .headerShape {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .statBox {
+    padding: 10px;
+  }
+  
+  .statNumber {
+    font-size: 1.8rem;
+  }
+  
+  .statLabel {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .content {
     padding: 10px;
+    margin-top: 10px;
+    gap: 10px;
   }
   
   .title {
     font-size: 1.8rem;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    width: 100%;
+    text-align: center;
   }
   
   .description {
     font-size: 0.9rem;
-    padding: 15px;
+    padding: 10px;
+    margin-bottom: 12px;
   }
   
   .stats {
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    margin: 5px auto;
+  }
+  
+  .statBox {
+    padding: 8px;
+  }
+  
+  .statNumber {
+    font-size: 1.5rem;
+  }
+  
+  .statLabel {
+    font-size: 0.7rem;
   }
 
   .playButton, .gameButton {
@@ -662,12 +766,117 @@
   }
   
   .mainImageContainer {
-    height: 250px;
-    max-width: 250px;
+    height: 230px;
+    max-width: 230px;
+    margin-top: -15px;
+    /* Desactivar animaciones en modo teléfono */
+    transition: none;
+    will-change: auto;
+    animation: none;
   }
   
   .ctaText {
     font-size: 1rem;
+    margin-bottom: 12px;
+  }
+  
+  .imageWrapper {
+    margin-top: 0;
+  }
+  
+  .textContent {
+    padding: 15px 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .stats {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .statBox {
+    width: 100%;
+    padding: 6px;
+  }
+  
+  .mainImageContainer {
+    height: 200px;
+    max-width: 200px;
+    margin-top: -20px;
+    /* Asegurar que no hay animaciones en el teléfono más pequeño */
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+  
+  .description {
+    font-size: 0.85rem;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .introSection {
+    padding: 15px 10px;
+  }
+}
+
+/* Landscape mode para móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .introSection {
+    height: auto;
+    min-height: 120vh;
+    padding: 60px 20px;
+  }
+  
+  .content {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+  
+  .textContent {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    padding: 15px;
+    text-align: left;
+    align-items: flex-start;
+  }
+  
+  .imageContainer {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+  
+  .ctaContainer {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+  }
+  
+  .mainImageContainer {
+    height: 250px;
+    max-width: 250px;
+  }
+  
+  .title {
+    font-size: 1.7rem;
+    margin-bottom: 15px;
+  }
+  
+  .description {
+    font-size: 0.85rem;
+    padding: 12px;
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;
+  }
+  
+  .buttonGroup {
+    flex-direction: row;
   }
 }
 

@@ -50,18 +50,36 @@ const GameIntro = () => {
     const progress = Math.min(Math.max((scrollY - sectionTop + window.innerHeight * 0.5) / (sectionHeight * 0.7), 0), 1);
     setScrollProgress(progress);
     
+    // Verificar si estamos en un dispositivo móvil
+    const isMobile = window.innerWidth <= 768;
+    
     // Aplicar efectos basados en el progreso del scroll con paralaje
     if (textRef.current) {
-      textRef.current.style.transform = `translateY(${-progress * 80}px) scale(${1 - progress * 0.05})`;
+      // Reducir o eliminar la transformación en móviles
+      if (isMobile) {
+        textRef.current.style.transform = 'none';
+      } else {
+        textRef.current.style.transform = `translateY(${-progress * 80}px) scale(${1 - progress * 0.05})`;
+      }
     }
     
     if (ctaRef.current) {
-      ctaRef.current.style.transform = `translateY(${-progress * 120}px) scale(${1 - progress * 0.1})`;
+      // Reducir o eliminar la transformación en móviles
+      if (isMobile) {
+        ctaRef.current.style.transform = 'none';
+      } else {
+        ctaRef.current.style.transform = `translateY(${-progress * 120}px) scale(${1 - progress * 0.1})`;
+      }
     }
     
     if (imageRef.current) {
-      // Efecto paralaje más pronunciado para la imagen
-      imageRef.current.style.transform = `translateY(${progress * 50}px) perspective(1000px) rotateX(${progress * 5}deg) scale(${1 - progress * 0.15})`;
+      // Eliminar completamente los efectos en dispositivos móviles
+      if (isMobile) {
+        imageRef.current.style.transform = 'none';
+      } else {
+        // Efecto paralaje más pronunciado para la imagen en desktop
+        imageRef.current.style.transform = `translateY(${progress * 50}px) perspective(1000px) rotateX(${progress * 5}deg) scale(${1 - progress * 0.15})`;
+      }
     }
     
     // Determinar si la sección es visible para activar animaciones
@@ -90,7 +108,15 @@ const GameIntro = () => {
     
     // Ejecutar una vez al inicio para establecer posiciones iniciales
     setTimeout(() => {
-      handleScroll();
+      // Asegurarnos de que no haya transformaciones en móviles desde el inicio
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        if (textRef.current) textRef.current.style.transform = 'none';
+        if (ctaRef.current) ctaRef.current.style.transform = 'none';
+        if (imageRef.current) imageRef.current.style.transform = 'none';
+      } else {
+        handleScroll();
+      }
     }, 100);
     
     return () => {
@@ -141,20 +167,64 @@ const GameIntro = () => {
   
   // Crear un efecto con la imagen
   useEffect(() => {
-    // Efecto de resplandor para la imagen
-    const interval = setInterval(() => {
-      if (imageRef.current && isVisible) {
-        imageRef.current.classList.add(styles.imagePulse);
-        setTimeout(() => {
-          if (imageRef.current) {
-            imageRef.current.classList.remove(styles.imagePulse);
-          }
-        }, 1500);
-      }
-    }, 3000);
+    // Verificar si es un dispositivo móvil
+    const isMobile = window.innerWidth <= 768;
     
-    return () => clearInterval(interval);
+    // Solo aplicar el efecto de resplandor en desktop
+    if (!isMobile) {
+      // Efecto de resplandor para la imagen
+      const interval = setInterval(() => {
+        if (imageRef.current && isVisible) {
+          imageRef.current.classList.add(styles.imagePulse);
+          setTimeout(() => {
+            if (imageRef.current) {
+              imageRef.current.classList.remove(styles.imagePulse);
+            }
+          }, 1500);
+        }
+      }, 3000);
+      
+      return () => clearInterval(interval);
+    }
+    
+    return () => {}; // Retorno vacío para dispositivos móviles
   }, [isVisible]);
+  
+  // Agregar detector de cambio de tamaño de ventana para actualizar transformaciones
+  useEffect(() => {
+    // Función para manejar el cambio de tamaño
+    const handleResize = () => {
+      // Resetear transformaciones en móviles al cambiar el tamaño
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        if (textRef.current) textRef.current.style.transform = 'none';
+        if (ctaRef.current) ctaRef.current.style.transform = 'none';
+        if (imageRef.current) imageRef.current.style.transform = 'none';
+      } else {
+        // Volver a aplicar el scroll actual
+        handleScroll();
+      }
+    };
+    
+    // Agregar el event listener con throttling
+    let resizeTimer;
+    const throttledResize = () => {
+      if (!resizeTimer) {
+        resizeTimer = setTimeout(() => {
+          resizeTimer = null;
+          handleResize();
+        }, 100);
+      }
+    };
+    
+    window.addEventListener('resize', throttledResize);
+    
+    // Limpiar al desmontar
+    return () => {
+      window.removeEventListener('resize', throttledResize);
+    };
+  }, [handleScroll]);
   
   return (
     <section ref={sectionRef} className={`${styles.introSection} ${isVisible ? styles.sectionVisible : ''}`} data-lenis-scroll-snap-align="start">

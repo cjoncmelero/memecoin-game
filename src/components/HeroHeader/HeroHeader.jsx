@@ -156,12 +156,6 @@ const HeroHeader = () => {
         <a href="https://dexscreener.com/" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
           <i className="fas fa-chart-line"></i> DEX_SCREENER
         </a>
-        <a href="#" className={styles.socialButton}>
-          <i className="fas fa-shopping-cart"></i> BUY
-        </a>
-        <a href="#" className={styles.socialButton}>
-          <i className="fas fa-file-alt"></i> WHITEPAPER
-        </a>
       </div>
       
       <div ref={welcomeRef} className={styles.welcomeContainer}>
@@ -210,4 +204,4 @@ const HeroHeader = () => {
   );
 };
 
-export default HeroHeader; 
+export default HeroHeader;
