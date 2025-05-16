@@ -195,36 +195,36 @@ export default function GameBoard() {
       id: 'pepe',
       name: 'Pepe',
       imgNormal: '/images/pj/pepe.png',
-      imgPreocupado: '/images/pj/preocupado.jpeg',
-      imgMuerto: '/images/pj/muerto.jpeg',
-      imgGanador: '/images/pj/ganador.jpeg',
+      imgPreocupado: '/images/pj/pepe_preocupado.png',
+      imgMuerto: '/images/pj/pepe_muerto.png',
+      imgGanador: '/images/pj/pepe_ganador.png',
       multiplier: '1.5x'
     },
     {
       id: 'doge',
       name: 'Doge',
       imgNormal: '/images/pj/doge.png',
-      imgPreocupado: '/images/pj/preocupado.jpeg',
-      imgMuerto: '/images/pj/muerto.jpeg',
-      imgGanador: '/images/pj/ganador.jpeg',
+      imgPreocupado: '/images/pj/doge_preocupado.png',
+      imgMuerto: '/images/pj/doge_muerto.png',
+      imgGanador: '/images/pj/doge_ganador.png',
       multiplier: '2x'
     },
     {
       id: 'chillguy',
       name: 'Chill Guy',
       imgNormal: '/images/pj/chillguy.png',
-      imgPreocupado: '/images/pj/preocupado.jpeg',
-      imgMuerto: '/images/pj/muerto.jpeg',
-      imgGanador: '/images/pj/ganador.jpeg',
+      imgPreocupado: '/images/pj/chillguy_preocupado.png',
+      imgMuerto: '/images/pj/chillguy_muerto.png',
+      imgGanador: '/images/pj/chillguy_ganador.png',
       multiplier: '3x'
     },
     {
       id: 'brett',
       name: 'Brett',
       imgNormal: '/images/pj/brett.png',
-      imgPreocupado: '/images/pj/preocupado.jpeg',
-      imgMuerto: '/images/pj/muerto.jpeg',
-      imgGanador: '/images/pj/ganador.jpeg',
+      imgPreocupado: '/images/pj/brett_preocupado.png',
+      imgMuerto: '/images/pj/brett_muerto.png',
+      imgGanador: '/images/pj/brett_ganador.png',
       multiplier: '5x'
     }
   ];
