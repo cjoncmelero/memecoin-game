@@ -51,17 +51,11 @@ const Footer = () => {
           <div className={styles.footerSocial}>
             <h4>Síguenos</h4>
             <div className={styles.socialIcons}>
-              <a href="#" aria-label="Twitter">
+              <a href="https://x.com/thememegames2?s=21&t=VGVHbBWJBWztEjUlrZhPLg" aria-label="Twitter">
                 <i className="fab fa-twitter"></i>
               </a>
-              <a href="#" aria-label="Discord">
-                <i className="fab fa-discord"></i>
-              </a>
-              <a href="#" aria-label="Telegram">
+              <a href="https://t.me/+7MS1Wb-45XMwNThk" aria-label="Telegram">
                 <i className="fab fa-telegram"></i>
-              </a>
-              <a href="#" aria-label="Medium">
-                <i className="fab fa-medium"></i>
               </a>
             </div>
           </div>

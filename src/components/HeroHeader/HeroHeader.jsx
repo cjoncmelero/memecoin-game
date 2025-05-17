@@ -147,13 +147,13 @@ const HeroHeader = () => {
       <div ref={bgColorRef} className={styles.colorOverlay}></div>
       
       <div className={styles.socialButtons}>
-        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
+        <a href="https://x.com/thememegames2?s=21&t=VGVHbBWJBWztEjUlrZhPLg" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
           <i className="fab fa-twitter"></i> TWITTER
         </a>
-        <a href="https://telegram.org/" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
+        <a href="https://t.me/+7MS1Wb-45XMwNThk" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
           <i className="fab fa-telegram-plane"></i> TELEGRAM
         </a>
-        <a href="https://dexscreener.com/" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
+        <a href="https://dexscreener.com/solana/9tD91NGYMhRitLBM43WCPVfjHsjwqyoVyoyddhkhED61" target="_blank" rel="noopener noreferrer" className={styles.socialButton}>
           <i className="fas fa-chart-line"></i> DEX_SCREENER
         </a>
       </div>
