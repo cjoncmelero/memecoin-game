@@ -57,12 +57,10 @@ export default function MenuDrawer() {
     }
   };
 
-  // Si no estamos en el cliente, renderizamos un botón sin funcionalidad
   if (!isClient) {
     return (
       <button type="button" className={styles.menuButton}>
         <div className={styles.iconWrapper}>
-          {/* SVG Icon: Placeholder simple - se reemplazará con uno más temático */}
           <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="28" height="4" rx="2" fill="#222"/>
             <rect y="8" width="28" height="4" rx="2" fill="#222"/>
@@ -87,7 +85,6 @@ export default function MenuDrawer() {
         onClick={open ? handleClose : handleOpen}
       >
         <div className={styles.iconWrapper}>
-          {/* SVG Icon: Este es el que se animará y estilizará más */}
           <svg className={styles.menuIconSvg} width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path className={`${styles.menuIconLine} ${styles.menuIconLineTop}`} d="M2 4H26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             <path className={`${styles.menuIconLine} ${styles.menuIconLineMiddle}`} d="M2 12H26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -142,7 +139,6 @@ export default function MenuDrawer() {
                 </ul>
               </nav>
               
-              {/* Elementos decorativos de esquina */}
               <div className={`${styles.cornerAccent} ${styles.cornerAccentTopLeft}`}></div>
               <div className={`${styles.cornerAccent} ${styles.cornerAccentTopRight}`}></div>
               <div className={`${styles.cornerAccent} ${styles.cornerAccentBottomLeft}`}></div>

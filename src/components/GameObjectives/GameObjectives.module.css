@@ -13,7 +13,6 @@
   transform: translateY(0);
 }
 
-/* Elementos decorativos inspirados en Squid Game */
 .decorationCircle, 
 .decorationTriangle, 
 .decorationSquare {
@@ -430,7 +429,6 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 1200px) {
   .gridContainer {
     grid-template-columns: repeat(2, 1fr);

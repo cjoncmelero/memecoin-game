@@ -13,7 +13,6 @@ const GameRules = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isCarouselLoaded, setIsCarouselLoaded] = useState(false);
   
-  // Array de personajes para facilitar el carrusel
   const characters = [
     {
       id: 'pepe',
@@ -49,15 +48,12 @@ const GameRules = () => {
     }
   ];
   
-  // Usar useCallback para optimizar el event listener
   const handleScroll = useCallback(() => {
-    // Usar requestAnimationFrame para una mejor performance
     requestAnimationFrame(() => {
       if (sectionRef.current) {
         const sectionTop = sectionRef.current.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
         
-        // Hacer visible la sección cuando está a punto de entrar en la vista
         if (sectionTop < windowHeight * 0.9) {
           setSectionVisible(true);
         }
@@ -69,7 +65,6 @@ const GameRules = () => {
         
         if (elementTop < windowHeight * 0.75) {
           charactersRef.current.classList.add(styles.charactersVisible);
-          // Iniciar la animación de carga del carrusel
           setTimeout(() => {
             setIsCarouselLoaded(true);
           }, 300);
@@ -79,7 +74,6 @@ const GameRules = () => {
   }, []);
   
   useEffect(() => {
-    // Throttling del evento de scroll para mejor rendimiento
     let scrollTimeout;
     const throttledScrollHandler = () => {
       if (!scrollTimeout) {
@@ -91,14 +85,13 @@ const GameRules = () => {
     };
     
     window.addEventListener('scroll', throttledScrollHandler, { passive: true });
-    handleScroll(); // Verificar al cargar
+    handleScroll(); 
     
     return () => {
       window.removeEventListener('scroll', throttledScrollHandler);
     };
   }, [handleScroll]);
 
-  // Intervalo automático para el carrusel
   useEffect(() => {
     if (!isCarouselLoaded) return;
     
@@ -111,22 +104,19 @@ const GameRules = () => {
     return () => clearInterval(autoplayInterval);
   }, [activeCharIndex, isTransitioning, isCarouselLoaded]);
 
-  // Función para mostrar detalles al seleccionar un personaje
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character === selectedCharacter ? null : character);
   };
   
-  // Funciones para el carrusel
   const nextCharacter = () => {
     if (isTransitioning) return;
     
     setIsTransitioning(true);
     setActiveCharIndex((prev) => (prev + 1) % characters.length);
     
-    // Reset the transition flag after animation completes
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 700); // Matches the CSS transition time
+    }, 700);
   };
   
   const prevCharacter = () => {
@@ -135,10 +125,9 @@ const GameRules = () => {
     setIsTransitioning(true);
     setActiveCharIndex((prev) => (prev - 1 + characters.length) % characters.length);
     
-    // Reset the transition flag after animation completes
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 700); // Matches the CSS transition time
+    }, 700);
   };
   
   const goToCharacter = (index) => {
@@ -161,11 +150,11 @@ const GameRules = () => {
     const touchEndX = e.changedTouches[0].clientX;
     const diff = getTouchStartX.current - touchEndX;
     
-    if (Math.abs(diff) > 50) { // Mínimo desplazamiento para considerar swipe
+    if (Math.abs(diff) > 50) { 
       if (diff > 0) {
-        nextCharacter(); // Swipe izquierda
+        nextCharacter(); 
       } else {
-        prevCharacter(); // Swipe derecha
+        prevCharacter(); 
       }
     }
   };

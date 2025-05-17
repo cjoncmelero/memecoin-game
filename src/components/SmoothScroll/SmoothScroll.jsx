@@ -22,7 +22,6 @@ export default function SmoothScroll({ children }) {
     
     requestAnimationFrame(raf);
     
-    // Exponer Lenis globalmente para usarlo desde otros componentes
     window.lenis = lenis;
     
     return () => {

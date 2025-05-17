@@ -6,29 +6,23 @@ import styles from './ScrollToTop.module.css';
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Mostrar el botón cuando el usuario se desplaza más allá de 300px
   useEffect(() => {
     const toggleVisibility = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       setIsVisible(scrollTop > 300);
     };
 
-    // Iniciar verificando la posición actual
     toggleVisibility();
     
-    // Eventos para detectar scroll
     window.addEventListener('scroll', toggleVisibility);
     
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  // Función para volver al inicio
   const scrollToTop = () => {
-    // Si estamos usando Lenis para el scroll suave, usarlo
     if (window.lenis) {
       window.lenis.scrollTo(0, { duration: 1.2 });
     } else {
-      // Fallback para navegadores sin Lenis
       window.scrollTo({
         top: 0,
         behavior: 'smooth'

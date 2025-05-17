@@ -6,5 +6,4 @@
   height: 100%;
   z-index: -1;
   filter: contrast(1.05) saturate(1.1);
-  /* pointer-events: none; */
 } 

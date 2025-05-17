@@ -2615,7 +2615,6 @@
   }
 }
 
-/* Media query específica para dispositivos móviles que no son tan pequeños pero necesitan ajustes */
 @media (max-width: 600px) {
   .charactersGrid {
     margin-bottom: 10px !important;
@@ -2665,9 +2664,9 @@
 
 .winner.characterCard::before,
 .winner .characterCard::before {
-  top: -100px !important; /* Subir el multiplicador cuando es ganador */
-  color: rgba(255, 255, 0, 0.9) !important; /* Color dorado para el ganador */
-  text-shadow: 0 0 15px rgba(255, 255, 0, 0.7) !important; /* Resplandor dorado */
+  top: -100px !important; 
+  color: rgba(255, 255, 0, 0.9) !important;
+  text-shadow: 0 0 15px rgba(255, 255, 0, 0.7) !important;
   transition: all 0.5s ease-in-out;
 }
 
@@ -2717,7 +2716,6 @@
   transition: transform 0.3s ease-out, filter 0.3s ease-out;
 }
 
-/* Media query específica para dispositivos móviles que no son tan pequeños pero necesitan ajustes */
 @media (max-width: 600px) {
   .charactersGrid {
     margin-bottom: 10px !important;

@@ -16,16 +16,13 @@ const HeroHeader = () => {
   const [gameActive, setGameActive] = useState(false);
   const [showFullTitle, setShowFullTitle] = useState(false);
   
-  // Usamos useCallback para mejorar la performance de los event listeners
   const handleScroll = useCallback(() => {
     if (!headerRef.current) return;
     
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
     
-    // Usar requestAnimationFrame para reducir la carga durante el scroll
     requestAnimationFrame(() => {
-      // Hacer que todo el header desaparezca gradualmente cuando se hace scroll a la sección de reglas
       const headerFadeoutProgress = Math.min(Math.max((scrollY - windowHeight * 1.5) / (windowHeight * 0.5), 0), 1);
       
       if (headerRef.current) {
@@ -37,7 +34,6 @@ const HeroHeader = () => {
         }
       }
       
-      // Fase inicial: Bienvenido desaparece
       if (welcomeRef.current) {
         const welcomeProgress = Math.min(Math.max(scrollY / (windowHeight * 0.2), 0), 1);
         welcomeRef.current.style.opacity = 1 - welcomeProgress;
@@ -45,46 +41,34 @@ const HeroHeader = () => {
       }
       
       if (leftMeRef.current && rightMeRef.current) {
-        // Primera fase: Las letras ME aparecen y se mueven hacia el centro
         const appearProgress = Math.min(Math.max((scrollY - windowHeight * 0.2) / (windowHeight * 0.4), 0), 1);
         
-        // Opacidad
         leftMeRef.current.style.opacity = appearProgress;
         rightMeRef.current.style.opacity = appearProgress;
         
-        // Movimiento de los laterales hacia posición invertida
         const moveProgress = Math.min(Math.max((scrollY - windowHeight * 0.6) / (windowHeight * 0.3), 0), 1);
         
-        // Obtenemos la posición inicial de los elementos (en píxeles desde los bordes)
         const computedLeftStyle = window.getComputedStyle(leftMeRef.current);
         const computedRightStyle = window.getComputedStyle(rightMeRef.current);
         
-        // Calculamos la distancia que deben moverse para cambiar exactamente de posición
-        // Cuando moveProgress = 1, leftMe tomará la posición de rightMe y viceversa
         const leftToRight = window.innerWidth - parseFloat(computedLeftStyle.left) - leftMeRef.current.offsetWidth - parseFloat(computedRightStyle.right);
         const rightToLeft = window.innerWidth - parseFloat(computedRightStyle.right) - rightMeRef.current.offsetWidth - parseFloat(computedLeftStyle.left);
         
         leftMeRef.current.style.transform = `translateX(${moveProgress * leftToRight}px)`;
         rightMeRef.current.style.transform = `translateX(${-moveProgress * rightToLeft}px)`;
         
-        // Segunda fase: Cambio de color de fondo y aparición de "GAME"
         const colorChangeProgress = Math.min(Math.max((scrollY - windowHeight * 1.0) / (windowHeight * 0.2), 0), 1);
         
         if (bgColorRef.current) {
-          // Cambiar color de fondo
           bgColorRef.current.style.opacity = colorChangeProgress;
         }
         
         if (gameRef.current) {
-          // Hacer aparecer "GAME"
           gameRef.current.style.opacity = colorChangeProgress;
           gameRef.current.style.transform = `translateY(${(1 - colorChangeProgress) * 50}px)`;
           
-          // Activar efecto Squid Game cuando la opacidad es mayor a 0.8
           if (colorChangeProgress > 0.8 && !gameActive) {
             setGameActive(true);
-            
-            // Después de 1.5 segundos (duración de la animación de temblor más suave), mostrar el título completo
             setTimeout(() => {
               setShowFullTitle(true);
             }, 1500);
@@ -93,7 +77,6 @@ const HeroHeader = () => {
             setShowFullTitle(false);
           }
           
-          // Desvanecer "MEME" al aparecer "GAME"
           if (colorChangeProgress > 0.5) {
             leftMeRef.current.style.opacity = 2 - colorChangeProgress * 2;
             rightMeRef.current.style.opacity = 2 - colorChangeProgress * 2;
@@ -106,13 +89,12 @@ const HeroHeader = () => {
   useEffect(() => {
     setMounted(true);
     
-    // Cargar el script de partículas de forma optimizada
     if (typeof window !== 'undefined') {
       if (!window.particlesJS) {
         const script = document.createElement('script');
         script.src = '/particles.min.js';
         script.async = true;
-        script.defer = true; // Agregar defer para mejorar el rendimiento de carga
+        script.defer = true;
         script.onload = () => {
           window.particlesJS && window.particlesJS.load('particles-js', '/particles.json');
         };
@@ -122,18 +104,16 @@ const HeroHeader = () => {
       }
     }
     
-    // Throttling del evento de scroll para mejor rendimiento
     let scrollTimeout;
     const throttledScrollHandler = () => {
       if (!scrollTimeout) {
         scrollTimeout = setTimeout(() => {
           handleScroll();
           scrollTimeout = null;
-        }, 10); // Throttle a 10ms
+        }, 10);
       }
     };
     
-    // Ejecutar una vez al cargar
     handleScroll();
     
     window.addEventListener('scroll', throttledScrollHandler, { passive: true });

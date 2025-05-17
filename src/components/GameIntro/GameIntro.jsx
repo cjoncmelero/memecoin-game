@@ -15,7 +15,6 @@ const GameIntro = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [lenisInstance, setLenisInstance] = useState(null);
   
-  // Inicializar Lenis para scroll suave
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -40,7 +39,6 @@ const GameIntro = () => {
     };
   }, []);
   
-  // Manejar las animaciones basadas en scroll
   const handleScroll = useCallback(() => {
     if (!sectionRef.current) return;
     
@@ -50,12 +48,9 @@ const GameIntro = () => {
     const progress = Math.min(Math.max((scrollY - sectionTop + window.innerHeight * 0.5) / (sectionHeight * 0.7), 0), 1);
     setScrollProgress(progress);
     
-    // Verificar si estamos en un dispositivo móvil
     const isMobile = window.innerWidth <= 768;
     
-    // Aplicar efectos basados en el progreso del scroll con paralaje
     if (textRef.current) {
-      // Reducir o eliminar la transformación en móviles
       if (isMobile) {
         textRef.current.style.transform = 'none';
       } else {
@@ -64,7 +59,6 @@ const GameIntro = () => {
     }
     
     if (ctaRef.current) {
-      // Reducir o eliminar la transformación en móviles
       if (isMobile) {
         ctaRef.current.style.transform = 'none';
       } else {
@@ -73,16 +67,13 @@ const GameIntro = () => {
     }
     
     if (imageRef.current) {
-      // Eliminar completamente los efectos en dispositivos móviles
       if (isMobile) {
         imageRef.current.style.transform = 'none';
       } else {
-        // Efecto paralaje más pronunciado para la imagen en desktop
         imageRef.current.style.transform = `translateY(${progress * 50}px) perspective(1000px) rotateX(${progress * 5}deg) scale(${1 - progress * 0.15})`;
       }
     }
     
-    // Determinar si la sección es visible para activar animaciones
     const rect = sectionRef.current.getBoundingClientRect();
     const isInView = (
       rect.top <= window.innerHeight * 0.75 &&
@@ -96,7 +87,6 @@ const GameIntro = () => {
     }
   }, [isVisible]);
 
-  // Conectar el manejador de scroll a Lenis
   useEffect(() => {
     if (!lenisInstance) return;
     
@@ -106,9 +96,7 @@ const GameIntro = () => {
 
     lenisInstance.on('scroll', onScroll);
     
-    // Ejecutar una vez al inicio para establecer posiciones iniciales
     setTimeout(() => {
-      // Asegurarnos de que no haya transformaciones en móviles desde el inicio
       const isMobile = window.innerWidth <= 768;
       if (isMobile) {
         if (textRef.current) textRef.current.style.transform = 'none';
@@ -124,7 +112,6 @@ const GameIntro = () => {
     };
   }, [lenisInstance, handleScroll]);
   
-  // Animación de caracteres del título 
   useEffect(() => {
     if (!isVisible || !titleRef.current) return;
     
@@ -133,7 +120,6 @@ const GameIntro = () => {
     title.textContent = '';
     title.classList.add(styles.titleVisible);
     
-    // Crear un span para cada carácter y animarlo
     [...titleText].forEach((char, index) => {
       const span = document.createElement('span');
       span.textContent = char;
@@ -141,20 +127,17 @@ const GameIntro = () => {
       
       title.appendChild(span);
       
-      // Animar cada carácter con un retraso proporcional a su posición
       setTimeout(() => {
         span.classList.add(styles.titleCharVisible);
       }, 100 + index * 50);
     });
     
-    // Añadir efecto de brillo después de que aparezcan todos los caracteres
     setTimeout(() => {
       title.classList.add(styles.titleGlowing);
     }, 100 + titleText.length * 50 + 500);
     
   }, [isVisible]);
   
-  // Manejar el clic en el botón de jugar
   const handlePlayClick = () => {
     const rulesSection = document.querySelector('#game-rules');
     if (rulesSection && lenisInstance) {
@@ -165,14 +148,10 @@ const GameIntro = () => {
     }
   };
   
-  // Crear un efecto con la imagen
   useEffect(() => {
-    // Verificar si es un dispositivo móvil
     const isMobile = window.innerWidth <= 768;
     
-    // Solo aplicar el efecto de resplandor en desktop
     if (!isMobile) {
-      // Efecto de resplandor para la imagen
       const interval = setInterval(() => {
         if (imageRef.current && isVisible) {
           imageRef.current.classList.add(styles.imagePulse);
@@ -190,11 +169,8 @@ const GameIntro = () => {
     return () => {}; // Retorno vacío para dispositivos móviles
   }, [isVisible]);
   
-  // Agregar detector de cambio de tamaño de ventana para actualizar transformaciones
   useEffect(() => {
-    // Función para manejar el cambio de tamaño
     const handleResize = () => {
-      // Resetear transformaciones en móviles al cambiar el tamaño
       const isMobile = window.innerWidth <= 768;
       
       if (isMobile) {
@@ -202,12 +178,10 @@ const GameIntro = () => {
         if (ctaRef.current) ctaRef.current.style.transform = 'none';
         if (imageRef.current) imageRef.current.style.transform = 'none';
       } else {
-        // Volver a aplicar el scroll actual
         handleScroll();
       }
     };
     
-    // Agregar el event listener con throttling
     let resizeTimer;
     const throttledResize = () => {
       if (!resizeTimer) {
@@ -220,7 +194,6 @@ const GameIntro = () => {
     
     window.addEventListener('resize', throttledResize);
     
-    // Limpiar al desmontar
     return () => {
       window.removeEventListener('resize', throttledResize);
     };

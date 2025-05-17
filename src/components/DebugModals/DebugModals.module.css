@@ -1,21 +1,21 @@
 .debugButtonContainer {
   position: fixed;
-  bottom: 70px; /* Ajustado para no solaparse con la barra de notificaciones si existe */
+  bottom: 70px;
   right: 20px;
   display: flex;
-  flex-direction: column; /* Botones uno encima del otro */
-  gap: 10px; /* Espacio entre botones */
-  z-index: 1050; /* Encima de la mayoría de los elementos del juego, pero por debajo del modal de resultado si es necesario */
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1050;
 }
 
 .debugButton {
   padding: 10px 15px;
-  background-color: #3498db; /* Azul para acciones neutrales/positivas */
+  background-color: #3498db;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'Orbitron', sans-serif; /* Coincide con la fuente del juego */
+  font-family: 'Orbitron', sans-serif;
   font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   transition: background-color 0.3s ease, transform 0.1s ease;
@@ -30,38 +30,33 @@
 }
 
 .defeatButtonTheme {
-  background-color: #c0392b; /* Rojo distintivo para derrota */
+  background-color: #c0392b;
 }
 
 .defeatButtonTheme:hover {
-  background-color: #e74c3c; /* Rojo más claro al pasar el mouse */
+  background-color: #e74c3c;
 }
 
-/* Estilo para el contenedor del modal de resultado (Victoria/Derrota) */
 .debugResultModal {
-  /* Hereda mucho de countdownModal, pero podemos anular o añadir z-index si es necesario */
-  z-index: 2000; /* Asegura que esté por encima de otros elementos, incluido el debugButtonContainer */
+  z-index: 2000;
 }
 
-/* Estilos para el contenido específico dentro del modal de resultado */
 .debugModalContentStyles {
-  padding: 50px; /* Más padding ya que el contenido es más simple */
+  padding: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Estilo para el texto "Victoria" / "Derrota" */
 .resultText {
-  font-size: 4rem; /* Texto grande y legible */
+  font-size: 4rem;
   font-weight: bold;
   text-align: center;
   line-height: 1.2;
-  /* Las clases countdownMessage y countdownMessageFading se encargan de la animación de aparición/desaparición */
 }
 
 .victoryText {
-  color: #2ecc71; /* Verde brillante para victoria */
+  color: #2ecc71;
   text-shadow: 
     0 0 5px rgba(46, 204, 113, 0.7),
     0 0 10px rgba(46, 204, 113, 0.5),
@@ -69,7 +64,7 @@
 }
 
 .defeatText {
-  color: #e74c3c; /* Rojo brillante para derrota */
+  color: #e74c3c;
   text-shadow: 
     0 0 5px rgba(231, 76, 60, 0.7),
     0 0 10px rgba(231, 76, 60, 0.5),

@@ -2,7 +2,6 @@
 
 import dynamic from 'next/dynamic';
 
-// Importar los componentes de forma dinámica con opciones optimizadas
 const Background = dynamic(() => import('../components/Background/Background'), { 
   ssr: false, 
   loading: () => null 
@@ -43,6 +42,11 @@ const GameFlow = dynamic(() => import('../components/GameFlow/GameFlow'), {
   loading: () => null 
 });
 
+const CasinoRevenueSplit = dynamic(() => import('../components/CasinoRevenueSplit/CasinoRevenueSplit'), {
+  ssr: false,
+  loading: () => null
+});
+
 const Footer = dynamic(() => import('../components/Footer/Footer'), { 
   ssr: false, 
   loading: () => null 
@@ -67,8 +71,8 @@ export default function Home() {
         <GameRules />
         </section>
         <div className="py-20 px-4 max-w-6xl mx-auto">
-          {/* Contenido adicional de la página */}
         </div>
+        <CasinoRevenueSplit />
       </main>
       <section id="contacto">
       <Footer />

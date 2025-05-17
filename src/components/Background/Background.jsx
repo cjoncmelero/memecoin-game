@@ -9,7 +9,6 @@ export default function Background() {
   useEffect(() => {
     setMounted(true);
     
-    // Cargar el script solo una vez que estemos en el cliente
     if (typeof window !== 'undefined') {
       if (!window.particlesJS) {
         const script = document.createElement('script');

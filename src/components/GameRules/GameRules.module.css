@@ -550,7 +550,6 @@
   }
 }
 
-/* Efectos para botones del carrusel */
 .carouselButton:hover .prevArrow,
 .carouselButton:hover .nextArrow {
   border-color: white;
@@ -562,12 +561,10 @@
   transform: rotate(45deg) scale(1.2);
 }
 
-/* Asegurar que los botones sean siempre visibles */
 .carouselWrapper {
   padding: 0 20px;
 }
 
-/* Añadir nuevo layout de contenido */
 .contentLayout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -587,7 +584,6 @@
   position: relative;
 }
 
-/* Estilos del carousel */
 .carouselContainer {
   width: 100%;
   max-width: 450px;

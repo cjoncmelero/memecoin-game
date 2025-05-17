@@ -302,7 +302,6 @@
   opacity: 1;
 }
 
-/* Remover clases relacionadas con las flechas */
 .arrowContainer,
 .arrow,
 .arrow::before,
